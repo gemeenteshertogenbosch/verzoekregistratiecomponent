@@ -1,9 +1,12 @@
 # Default values for api.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+docker:
+  containerRegistryBase: docker.io/conduction/
+  containerProjectName: verzoeken
 
 php:
-  repository: quay.io/api-platform/php
+  repository: docker.io/conduction/verzoeken-php
   tag: latest
   pullPolicy: Always
   replicaCount: 1
@@ -12,15 +15,15 @@ php:
   env: prod
   debug: '0'
   secret: ""
-  corsAllowOrigin: "^https?://.*?\\.example\\.com$"
-  trustedHosts: "^.*\\.example\\.com$"
+  corsAllowOrigin: "^https?://.*?\\.zaakonline\\.nl$"
+  trustedHosts: "^.*\\.zaakonline\\.nl$"
   trustedProxies:
     - 10.0.0.0/8
     - 172.16.0.0/12
     - 192.168.0.0/16
 
 nginx:
-  repository: quay.io/api-platform/nginx
+  repository: docker.io/conduction/verzoeken-nginx
   tag: latest
   pullPolicy: Always
   replicaCount: 1
@@ -28,7 +31,7 @@ nginx:
 varnish:
   enabled: true
   #url: https://example.com
-  repository: quay.io/api-platform/varnish
+  repository: docker.io/conduction/verzoeken-varnish
   tag: latest
   pullPolicy: Always
   replicaCount: 1
@@ -44,7 +47,7 @@ postgresql:
   # Persistent Volume Storage configuration.
   # ref: https://kubernetes.io/docs/user-guide/persistent-volumes
   persistence:
-    enabled: false
+    enabled: true
   pullPolicy: IfNotPresent
 #  image:
 #    repository: postgres

@@ -1,0 +1,258 @@
+<?php
+
+namespace App\Entity;
+
+use ApiPlatform\Core\Annotation\ApiSubresource;
+use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * 
+ * @ApiResource( 
+ *  normalizationContext={"groups"={"read"}},
+ *  denormalizationContext={"groups"={"write"}},
+ *  collectionOperations={
+ *  	"get",
+ *  	"post"
+ *  },
+ * 	itemOperations={
+ *     "get"={
+ *  		"openapi_context" = {
+ *                  "parameters" = {
+ *                      {
+ *                          "name" = "extend",
+ *                          "in" = "query",
+ *                          "description" = "Add the properties of the requestType that this requetType extends",
+ *                          "required" = "false",
+ *                          "type" : "boolean"
+ *                      }
+ *                  }
+ *          }        
+ *  	},
+ *     "put",
+ *     "delete"
+ *  }
+ * )
+ * @ORM\Entity(repositoryClass="App\Repository\RequestTypeRepository")
+ */
+class RequestType
+{
+    /**
+     * @Groups({"write"})
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+
+    /**
+     * @Groups({"read", "write"})
+     * @ORM\Column(type="string", length=255)
+     */
+    private $rsin;
+
+    /**
+     * @Groups({"read", "write"})
+     * @ORM\Column(type="string", length=255)
+     */
+    private $name;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $description;
+
+    /**
+     * @Groups({"read", "write"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Property", mappedBy="requestType", orphanRemoval=true, fetch="EAGER", cascade={"persist"})
+     */
+    private $properties;
+
+    /**
+     * @Groups({"write"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\RequestType", inversedBy="extendedBy", fetch="EAGER")
+     */
+    private $extends;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\RequestType", mappedBy="extends")
+     */
+    private $extendedBy;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Request", mappedBy="requestType")
+     */
+    private $requests;
+
+
+    public function __construct()
+    {
+    	$this->properties= new ArrayCollection();
+     $this->extendedBy = new ArrayCollection();
+     $this->requests = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getRsin(): ?string
+    {
+        return $this->rsin;
+    }
+
+    public function setRsin(string $rsin): self
+    {
+        $this->rsin = $rsin;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Properties[]
+     */
+    public function getProperties(): Collection
+    {
+    	return $this->properties;
+    }
+
+    public function addProperty(Property $property): self
+    {
+    	if (!$this->properties->contains($property)) {
+    		$this->properties[] = $property;
+    		$property->setRequestType($this);
+        }
+
+        return $this;
+    }
+        
+    /*
+     * Used for soft adding properties for the extention functionality
+     */
+    public function extendProperty(Property $property): self
+    {
+    	if (!$this->properties->contains($property)) {
+    		$this->properties[] = $property;
+    	}
+    	
+    	return $this;
+    }
+
+    public function removeProperty(Property $property): self
+    {
+    	if ($this->properties->contains($property)) {
+    		$this->properties->removeElement($property);
+            // set the owning side to null (unless already changed)
+    		if ($property->getRequestType() === $this) {
+    			$property->setRequestType(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getExtends(): ?self
+    {
+        return $this->extends;
+    }
+
+    public function setExtends(?self $extends): self
+    {
+        $this->extends = $extends;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getExtendedBy(): Collection
+    {
+        return $this->extendedBy;
+    }
+
+    public function addExtendedBy(self $extendedBy): self
+    {
+        if (!$this->extendedBy->contains($extendedBy)) {
+            $this->extendedBy[] = $extendedBy;
+            $extendedBy->setExtends($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExtendedBy(self $extendedBy): self
+    {
+        if ($this->extendedBy->contains($extendedBy)) {
+            $this->extendedBy->removeElement($extendedBy);
+            // set the owning side to null (unless already changed)
+            if ($extendedBy->getExtends() === $this) {
+                $extendedBy->setExtends(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Request[]
+     */
+    public function getRequests(): Collection
+    {
+        return $this->requests;
+    }
+
+    public function addRequest(Request $request): self
+    {
+        if (!$this->requests->contains($request)) {
+            $this->requests[] = $request;
+            $request->setRequestType($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRequest(Request $request): self
+    {
+        if ($this->requests->contains($request)) {
+            $this->requests->removeElement($request);
+            // set the owning side to null (unless already changed)
+            if ($request->getRequestType() === $this) {
+                $request->setRequestType(null);
+            }
+        }
+
+        return $this;
+    }
+
+}
