@@ -20,27 +20,16 @@ api_platform:
     description: |
         %env(APP_DESCRIPTION)% 
               
-        Word lid van het slackkanaal [https://zaakonline.slack.com](https://zaakonline.slack.com) voor ondersteuning door het ontwikkel team. En krijg regelmatig updates over de ontwikkelingen op het gebied van de zaakonline componenten.
-                
-        Om het voor alle partijen zo makkelijk mogelijk te maken, stellen we zo veel mogelijk informatie over dit component openbaar beschikbaar.
-        - [datamodel als pdf](/schema/datamodel.pdf)
-        - [datamodel als mwb](/schema/datamodel.mwb)
-        - [codebase op github](%env(APP_REPRO)%)
-        - [codebase als zip](%env(APP_REPRO)%/archive/master.zip)
-        - [docker container](%env(APP_REPRO)%/%env(CONTAINER_PROJECT_NAME)%) 
-        - [online demo](%env(APP_DEMO)%)
-                
-        
-        Applicaties kunnen op deze API alleen wijzigingen uitvoeren waarvoor zij over de juiste rechten(scopes) beschikken. De op deze api beschikbare scopes zijn:
-        - adres:schrijven
-        - adres:lezen
-        - adres:maken
-        - adres:verwijderen   
-                         
-        Voor het gebruik van deze applicatie is een JWT Token nodig, deze hangt altijd vast aan een applicatie, ofwel user. Geldige JWT Tokens worden aangemaakt bij het registreren van een applicatie en kennen een beperkte houdbaarheid. 
-        JWT Tokens kunnen zowel worden verlengd, als opnieuw worden aangevraagd, dit aan de hand van de applicatie id en sleutel.
-        Let er bij het meegeven van JWT tokens op dat deze moet worden voorafgegaan door een Bearer en een spatie, onder de header Authorization. De volledig naam wordt daarmee: 'Authorization: Bearer [TOKEN]'.
-        
+        Request Types can be stacked in a parent child like manner, do there is no technical limitation this principle is designed with two to three layers in mind. E.g. the is a country wide definition of a relocation requests (verhuizen in dutch) requiring a person, adres and date property. That is then extended bij the city of Eindhoven to include a current address and phone number. 
+
+        Eindhoven could then expends its own requests to make an expat version including preferred language.
+
+        This would then lead to a string of parent child relations with properties added at each level. To prevent a situation where a party using the requests needs to make a GET call to all of the requests in the stack IT is possible to Just get the requests you need with An extend=true query. Al of the properties of al the requests in that stack Will then be added to the request you GET. Keep in mind that this can get slow with extremely large request types or stacks thereof.
+
+        Properties titles need to be unique in a request post and therefore request stack. This is both checked when getting an request type and when posting of updating a requests type (and will result in a specific error). It is however not checked when posting a requests itself (since a double property nog chance the suspected outcome but would confront the end user with a error). When posting a request against a request type stack that includes more occurences of the same title the property will be validated against the lowest occurrence.
+
+        A request is expected to exists out of properties, the exact properties that An request is expected to exist from are defined in a request type where the request is posted against. As is validation (the requirements that a parameter is held to). A request is validated when posted or updated. And will return An error when not compliant tot validation defined in the request type properties. 
+       
     
     version: '%env(APP_VERSION)%'  
     

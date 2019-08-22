@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: php
+  name: {{ include "name" . }}-php
   labels:
     app.kubernetes.io/name: {{ include "name" . }}-php
     app.kubernetes.io/part-of: {{ include "name" . }}

@@ -14,7 +14,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use App\Entity\RequestType;
 
 /**
- * 
  * This property follows the following shemes (in order of impotance)
  * https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#specificationExtensions 
  * https://tools.ietf.org/html/draft-wright-json-schema-validation-00
@@ -75,12 +74,12 @@ class Property
      *
      * @ApiProperty(
      * 		iri="http://schema.org/name",
-     * 		swaggerContext={"enum"={"int32","int64","float","double","byte","binary","date","date-time","password","boolean","string","uuid","uri","email","rsin","bag","bsn","iban"}}
+     * 		swaggerContext={"enum"={"int32","int64","float","double","byte","binary","date","duration","date-time","password","boolean","string","uuid","uri","email","rsin","bag","bsn","iban"}}
      * )
      * 
      * @Assert\NotBlank
      * @Assert\Length(max = 255)
-     * @Assert\Choice({"int32","int64","float","double","byte","binary","date","date-time","password","boolean","string","uuid","uri","email","rsin","bag","bsn","iban"})
+     * @Assert\Choice({"int32","int64","float","double","byte","binary","date","date-time","duration","password","boolean","string","uuid","uri","email","rsin","bag","bsn","iban"})
      * @Groups({"read", "write"})
      * @ORM\Column(type="string", length=255)
      */
@@ -370,6 +369,31 @@ class Property
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $deprecated;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $availableFrom;
+
+    /**
+     * 
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $availableUntil;
+
+    /**
+     * Either a date, datetime or duration (ISO_8601)
+     * 
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $minDate;
+
+    /**
+     * Either a date, datetime or duration (ISO_8601)
+     * 
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $maxDate;
 
     public function __construct()
     {
@@ -847,6 +871,54 @@ class Property
     public function setDeprecated(?bool $deprecated): self
     {
         $this->deprecated = $deprecated;
+
+        return $this;
+    }
+
+    public function getAvailableFrom(): ?\DateTimeInterface
+    {
+        return $this->availableFrom;
+    }
+
+    public function setAvailableFrom(\DateTimeInterface $availableFrom): self
+    {
+        $this->availableFrom = $availableFrom;
+
+        return $this;
+    }
+
+    public function getAvailableUntil(): ?\DateTimeInterface
+    {
+        return $this->availableUntil;
+    }
+
+    public function setAvailableUntil(?\DateTimeInterface $availableUntil): self
+    {
+        $this->availableUntil = $availableUntil;
+
+        return $this;
+    }
+
+    public function getMinDate(): ?string
+    {
+        return $this->minDate;
+    }
+
+    public function setMinDate(?string $minDate): self
+    {
+        $this->minDate = $minDate;
+
+        return $this;
+    }
+
+    public function getMaxDate(): ?string
+    {
+        return $this->maxDate;
+    }
+
+    public function setMaxDate(?string $maxDate): self
+    {
+        $this->maxDate = $maxDate;
 
         return $this;
     }

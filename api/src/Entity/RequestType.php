@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *  },
  * 	itemOperations={
  *     "get"={
- *  		"openapi_context" = {
+ *  		"swagger_context" = {
  *                  "parameters" = {
  *                      {
  *                          "name" = "extend",
@@ -88,6 +88,16 @@ class RequestType
      * @ORM\OneToMany(targetEntity="App\Entity\Request", mappedBy="requestType")
      */
     private $requests;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $availableFrom;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $availableUntil;
 
 
     public function __construct()
@@ -251,6 +261,30 @@ class RequestType
                 $request->setRequestType(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAvailableFrom(): ?\DateTimeInterface
+    {
+        return $this->availableFrom;
+    }
+
+    public function setAvailableFrom(\DateTimeInterface $availableFrom): self
+    {
+        $this->availableFrom = $availableFrom;
+
+        return $this;
+    }
+
+    public function getAvailableUntil(): ?\DateTimeInterface
+    {
+        return $this->availableUntil;
+    }
+
+    public function setAvailableUntil(?\DateTimeInterface $availableUntil): self
+    {
+        $this->availableUntil = $availableUntil;
 
         return $this;
     }

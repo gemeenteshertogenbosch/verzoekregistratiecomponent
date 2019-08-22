@@ -12,11 +12,11 @@ php:
   replicaCount: 1
   mercure:
     jwtSecret: ""
-  env: prod
-  debug: '0'
+  env: dev
+  debug: '1'
   secret: ""
-  corsAllowOrigin: "^https?://.*?\\.zaakonline\\.nl$"
-  trustedHosts: "^.*\\.zaakonline\\.nl$"
+  corsAllowOrigin: ['*']
+  trustedHosts: ['^(.+\.)?zaakonline\.nl$','^example\.com$','^206.189.243.5']
   trustedProxies:
     - 10.0.0.0/8
     - 172.16.0.0/12
@@ -30,7 +30,7 @@ nginx:
 
 varnish:
   enabled: true
-  #url: https://example.com
+  #url: https://zaakonline.nl
   repository: docker.io/conduction/verzoeken-varnish
   tag: latest
   pullPolicy: Always
@@ -40,7 +40,7 @@ postgresql:
   enabled: true
   imageTag: 10-alpine
   # If bringing your own PostgreSQL, the full uri to use
-  #url: pgsql://api-platform:!ChangeMe!@example.com/api?serverVersion=10.1
+  #url: pgsql://examplen:!ChangeMe!@api/example.com
   postgresqlUsername: "example"
   postgresqlPassword: "!ChangeMe!"
   postgresqlDatabase: "api"
@@ -54,7 +54,7 @@ postgresql:
 #    tag: alpine
 
 mercure:
-  enabled: true
+  enabled: false
   publishUrl: http://mercure/hub
   subscribeUrl: https://mercure.example.com/hub
   allowAnonymous: "1"

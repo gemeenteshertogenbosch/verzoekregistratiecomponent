@@ -9,6 +9,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * A request (or verzoek in dutch) to an organisations (usually govenmental) to do 'something' on behave of a citicen
+ * 
  * @ApiResource(
  *     normalizationContext={"groups"={"read"}},
  *     denormalizationContext={"groups"={"write"}}
@@ -61,6 +63,16 @@ class Request
      * @ORM\Column(type="array", nullable=true)
      */
     private $cases = [];
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $proces;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $submittedAt;
 
     public function getId(): ?int
     {
@@ -135,6 +147,30 @@ class Request
     public function setCases(?array $cases): self
     {
         $this->cases = $cases;
+
+        return $this;
+    }
+
+    public function getProces(): ?string
+    {
+        return $this->proces;
+    }
+
+    public function setProces(?string $proces): self
+    {
+        $this->proces = $proces;
+
+        return $this;
+    }
+
+    public function getSubmittedAt(): ?\DateTimeInterface
+    {
+        return $this->submittedAt;
+    }
+
+    public function setSubmittedAt(\DateTimeInterface $submittedAt): self
+    {
+        $this->submittedAt = $submittedAt;
 
         return $this;
     }
