@@ -1,0 +1,1229 @@
+openapi: 3.0.2
+info:
+  title: 'Requests (Verzoeken)'
+  version: 0.0.1
+  description: |2
+     
+          
+    Request Types can be stacked in a parent child like manner, do there is no technical limitation this principle is designed with two to three layers in mind. E.g. the is a country wide definition of a relocation requests (verhuizen in dutch) requiring a person, adres and date property. That is then extended bij the city of Eindhoven to include a current address and phone number. 
+    
+    Eindhoven could then expends its own requests to make an expat version including preferred language.
+    
+    This would then lead to a string of parent child relations with properties added at each level. To prevent a situation where a party using the requests needs to make a GET call to all of the requests in the stack IT is possible to Just get the requests you need with An extend=true query. Al of the properties of al the requests in that stack Will then be added to the request you GET. Keep in mind that this can get slow with extremely large request types or stacks thereof.
+    
+    Properties titles need to be unique in a request post and therefore request stack. This is both checked when getting an request type and when posting of updating a requests type (and will result in a specific error). It is however not checked when posting a requests itself (since a double property nog chance the suspected outcome but would confront the end user with a error). When posting a request against a request type stack that includes more occurences of the same title the property will be validated against the lowest occurrence.
+    
+    A request is expected to exists out of properties, the exact properties that An request is expected to exist from are defined in a request type where the request is posted against. As is validation (the requirements that a parameter is held to). A request is validated when posted or updated. And will return An error when not compliant tot validation defined in the request type properties. 
+    
+paths:
+  /properties:
+    get:
+      tags:
+        - Property
+      operationId: getPropertyCollection
+      summary: 'Retrieves the collection of Property resources.'
+      responses:
+        200:
+          description: 'Property collection response'
+          content:
+            application/hal+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Property-read'
+            application/ld+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Property-read'
+            application/vnd.api+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Property-read'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Property-read'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Property-read'
+            application/x-yaml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Property-read'
+            text/csv:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Property-read'
+            text/html:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Property-read'
+      parameters:
+        -
+          name: page
+          in: query
+          required: false
+          description: 'The collection page number'
+          schema:
+            type: integer
+    post:
+      tags:
+        - Property
+      operationId: postPropertyCollection
+      summary: 'Creates a Property resource.'
+      responses:
+        201:
+          description: 'Property resource created'
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/Property-read'
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Property-read'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Property-read'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Property-read'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Property-read'
+            application/x-yaml:
+              schema:
+                $ref: '#/components/schemas/Property-read'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/Property-read'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/Property-read'
+          links:
+            GetPropertyItem:
+              parameters:
+                id: '$response.body#/id'
+              operationId: getPropertyItem
+              description: 'The `id` value returned in the response can be used as the `id` parameter in `GET /properties/{id}`.'
+        400:
+          description: 'Invalid input'
+        404:
+          description: 'Resource not found'
+      requestBody:
+        content:
+          application/hal+json:
+            schema:
+              $ref: '#/components/schemas/Property-write'
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/Property-write'
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/Property-write'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Property-write'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Property-write'
+          application/x-yaml:
+            schema:
+              $ref: '#/components/schemas/Property-write'
+          text/csv:
+            schema:
+              $ref: '#/components/schemas/Property-write'
+          text/html:
+            schema:
+              $ref: '#/components/schemas/Property-write'
+        description: 'The new Property resource'
+  '/properties/{id}':
+    get:
+      tags:
+        - Property
+      operationId: getPropertyItem
+      summary: 'Retrieves a Property resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: 'Property resource response'
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/Property-read'
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Property-read'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Property-read'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Property-read'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Property-read'
+            application/x-yaml:
+              schema:
+                $ref: '#/components/schemas/Property-read'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/Property-read'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/Property-read'
+        404:
+          description: 'Resource not found'
+    delete:
+      tags:
+        - Property
+      operationId: deletePropertyItem
+      summary: 'Removes the Property resource.'
+      responses:
+        204:
+          description: 'Property resource deleted'
+        404:
+          description: 'Resource not found'
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+    put:
+      tags:
+        - Property
+      operationId: putPropertyItem
+      summary: 'Replaces the Property resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: 'Property resource updated'
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/Property-read'
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Property-read'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Property-read'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Property-read'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Property-read'
+            application/x-yaml:
+              schema:
+                $ref: '#/components/schemas/Property-read'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/Property-read'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/Property-read'
+        400:
+          description: 'Invalid input'
+        404:
+          description: 'Resource not found'
+      requestBody:
+        content:
+          application/hal+json:
+            schema:
+              $ref: '#/components/schemas/Property-write'
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/Property-write'
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/Property-write'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Property-write'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Property-write'
+          application/x-yaml:
+            schema:
+              $ref: '#/components/schemas/Property-write'
+          text/csv:
+            schema:
+              $ref: '#/components/schemas/Property-write'
+          text/html:
+            schema:
+              $ref: '#/components/schemas/Property-write'
+        description: 'The updated Property resource'
+    patch:
+      tags:
+        - Property
+      operationId: patchPropertyItem
+      summary: 'Updates the Property resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: 'Property resource updated'
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/Property-read'
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Property-read'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Property-read'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Property-read'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Property-read'
+            application/x-yaml:
+              schema:
+                $ref: '#/components/schemas/Property-read'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/Property-read'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/Property-read'
+        400:
+          description: 'Invalid input'
+        404:
+          description: 'Resource not found'
+      requestBody:
+        content:
+          application/hal+json:
+            schema:
+              $ref: '#/components/schemas/Property-write'
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/Property-write'
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/Property-write'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Property-write'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Property-write'
+          application/x-yaml:
+            schema:
+              $ref: '#/components/schemas/Property-write'
+          text/csv:
+            schema:
+              $ref: '#/components/schemas/Property-write'
+          text/html:
+            schema:
+              $ref: '#/components/schemas/Property-write'
+        description: 'The updated Property resource'
+  /request_types:
+    get:
+      tags:
+        - RequestType
+      operationId: getRequestTypeCollection
+      summary: 'Retrieves the collection of RequestType resources.'
+      responses:
+        200:
+          description: 'RequestType collection response'
+          content:
+            application/hal+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RequestType-read'
+            application/ld+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RequestType-read'
+            application/vnd.api+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RequestType-read'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RequestType-read'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RequestType-read'
+            application/x-yaml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RequestType-read'
+            text/csv:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RequestType-read'
+            text/html:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RequestType-read'
+      parameters:
+        -
+          name: page
+          in: query
+          required: false
+          description: 'The collection page number'
+          schema:
+            type: integer
+    post:
+      tags:
+        - RequestType
+      operationId: postRequestTypeCollection
+      summary: 'Creates a RequestType resource.'
+      responses:
+        201:
+          description: 'RequestType resource created'
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/RequestType-read'
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/RequestType-read'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/RequestType-read'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestType-read'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestType-read'
+            application/x-yaml:
+              schema:
+                $ref: '#/components/schemas/RequestType-read'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/RequestType-read'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/RequestType-read'
+          links:
+            GetRequestTypeItem:
+              parameters:
+                id: '$response.body#/id'
+              operationId: getRequestTypeItem
+              description: 'The `id` value returned in the response can be used as the `id` parameter in `GET /request_types/{id}`.'
+        400:
+          description: 'Invalid input'
+        404:
+          description: 'Resource not found'
+      requestBody:
+        content:
+          application/hal+json:
+            schema:
+              $ref: '#/components/schemas/RequestType-write'
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/RequestType-write'
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/RequestType-write'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestType-write'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/RequestType-write'
+          application/x-yaml:
+            schema:
+              $ref: '#/components/schemas/RequestType-write'
+          text/csv:
+            schema:
+              $ref: '#/components/schemas/RequestType-write'
+          text/html:
+            schema:
+              $ref: '#/components/schemas/RequestType-write'
+        description: 'The new RequestType resource'
+  '/request_types/{id}':
+    get:
+      tags:
+        - RequestType
+      operationId: getRequestTypeItem
+      summary: 'Retrieves a RequestType resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: 'RequestType resource response'
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/RequestType-read'
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/RequestType-read'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/RequestType-read'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestType-read'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestType-read'
+            application/x-yaml:
+              schema:
+                $ref: '#/components/schemas/RequestType-read'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/RequestType-read'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/RequestType-read'
+        404:
+          description: 'Resource not found'
+    put:
+      tags:
+        - RequestType
+      operationId: putRequestTypeItem
+      summary: 'Replaces the RequestType resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: 'RequestType resource updated'
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/RequestType-read'
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/RequestType-read'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/RequestType-read'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestType-read'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestType-read'
+            application/x-yaml:
+              schema:
+                $ref: '#/components/schemas/RequestType-read'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/RequestType-read'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/RequestType-read'
+        400:
+          description: 'Invalid input'
+        404:
+          description: 'Resource not found'
+      requestBody:
+        content:
+          application/hal+json:
+            schema:
+              $ref: '#/components/schemas/RequestType-write'
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/RequestType-write'
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/RequestType-write'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestType-write'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/RequestType-write'
+          application/x-yaml:
+            schema:
+              $ref: '#/components/schemas/RequestType-write'
+          text/csv:
+            schema:
+              $ref: '#/components/schemas/RequestType-write'
+          text/html:
+            schema:
+              $ref: '#/components/schemas/RequestType-write'
+        description: 'The updated RequestType resource'
+    delete:
+      tags:
+        - RequestType
+      operationId: deleteRequestTypeItem
+      summary: 'Removes the RequestType resource.'
+      responses:
+        204:
+          description: 'RequestType resource deleted'
+        404:
+          description: 'Resource not found'
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+  /requests:
+    get:
+      tags:
+        - Request
+      operationId: getRequestCollection
+      summary: 'Retrieves the collection of Request resources.'
+      responses:
+        200:
+          description: 'Request collection response'
+          content:
+            application/hal+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Request-read'
+            application/ld+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Request-read'
+            application/vnd.api+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Request-read'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Request-read'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Request-read'
+            application/x-yaml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Request-read'
+            text/csv:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Request-read'
+            text/html:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Request-read'
+      parameters:
+        -
+          name: page
+          in: query
+          required: false
+          description: 'The collection page number'
+          schema:
+            type: integer
+    post:
+      tags:
+        - Request
+      operationId: postRequestCollection
+      summary: 'Creates a Request resource.'
+      responses:
+        201:
+          description: 'Request resource created'
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/Request-read'
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Request-read'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Request-read'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Request-read'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Request-read'
+            application/x-yaml:
+              schema:
+                $ref: '#/components/schemas/Request-read'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/Request-read'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/Request-read'
+          links:
+            GetRequestItem:
+              parameters:
+                id: '$response.body#/id'
+              operationId: getRequestItem
+              description: 'The `id` value returned in the response can be used as the `id` parameter in `GET /requests/{id}`.'
+        400:
+          description: 'Invalid input'
+        404:
+          description: 'Resource not found'
+      requestBody:
+        content:
+          application/hal+json:
+            schema:
+              $ref: '#/components/schemas/Request-write'
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/Request-write'
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/Request-write'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Request-write'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Request-write'
+          application/x-yaml:
+            schema:
+              $ref: '#/components/schemas/Request-write'
+          text/csv:
+            schema:
+              $ref: '#/components/schemas/Request-write'
+          text/html:
+            schema:
+              $ref: '#/components/schemas/Request-write'
+        description: 'The new Request resource'
+  '/requests/{id}':
+    get:
+      tags:
+        - Request
+      operationId: getRequestItem
+      summary: 'Retrieves a Request resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: 'Request resource response'
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/Request-read'
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Request-read'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Request-read'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Request-read'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Request-read'
+            application/x-yaml:
+              schema:
+                $ref: '#/components/schemas/Request-read'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/Request-read'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/Request-read'
+        404:
+          description: 'Resource not found'
+    delete:
+      tags:
+        - Request
+      operationId: deleteRequestItem
+      summary: 'Removes the Request resource.'
+      responses:
+        204:
+          description: 'Request resource deleted'
+        404:
+          description: 'Resource not found'
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+    put:
+      tags:
+        - Request
+      operationId: putRequestItem
+      summary: 'Replaces the Request resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: 'Request resource updated'
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/Request-read'
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Request-read'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Request-read'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Request-read'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Request-read'
+            application/x-yaml:
+              schema:
+                $ref: '#/components/schemas/Request-read'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/Request-read'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/Request-read'
+        400:
+          description: 'Invalid input'
+        404:
+          description: 'Resource not found'
+      requestBody:
+        content:
+          application/hal+json:
+            schema:
+              $ref: '#/components/schemas/Request-write'
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/Request-write'
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/Request-write'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Request-write'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Request-write'
+          application/x-yaml:
+            schema:
+              $ref: '#/components/schemas/Request-write'
+          text/csv:
+            schema:
+              $ref: '#/components/schemas/Request-write'
+          text/html:
+            schema:
+              $ref: '#/components/schemas/Request-write'
+        description: 'The updated Request resource'
+    patch:
+      tags:
+        - Request
+      operationId: patchRequestItem
+      summary: 'Updates the Request resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: 'Request resource updated'
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/Request-read'
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Request-read'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Request-read'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Request-read'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Request-read'
+            application/x-yaml:
+              schema:
+                $ref: '#/components/schemas/Request-read'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/Request-read'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/Request-read'
+        400:
+          description: 'Invalid input'
+        404:
+          description: 'Resource not found'
+      requestBody:
+        content:
+          application/hal+json:
+            schema:
+              $ref: '#/components/schemas/Request-write'
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/Request-write'
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/Request-write'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Request-write'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Request-write'
+          application/x-yaml:
+            schema:
+              $ref: '#/components/schemas/Request-write'
+          text/csv:
+            schema:
+              $ref: '#/components/schemas/Request-write'
+          text/html:
+            schema:
+              $ref: '#/components/schemas/Request-write'
+        description: 'The updated Request resource'
+components:
+  schemas:
+    Property-read:
+      type: object
+      description: |
+        This property follows the following shemes (in order of impotance)
+        https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#specificationExtensions
+        https://tools.ietf.org/html/draft-wright-json-schema-validation-00
+        http://json-schema.org/
+      properties:
+        id:
+          readOnly: true
+          type: integer
+        title:
+          type: string
+        type:
+          description: 'Not yet supported by business logic'
+          type: string
+        format:
+          description: 'Not yet supported by business logic'
+          type: string
+        multiple_of:
+          type: integer
+        maximum:
+          description: 'Not yet supported by business logic'
+          type: integer
+        exclusive_maximum:
+          description: 'Not yet supported by business logic'
+          type: boolean
+        minimum:
+          description: 'Not yet supported by business logic'
+          type: integer
+        exclusive_minimum:
+          description: 'Not yet supported by business logic'
+          type: boolean
+        max_length:
+          description: Suported
+          type: integer
+        min_length:
+          description: Suported
+          type: integer
+        pattern:
+          description: 'Not yet supported by business logic'
+          type: string
+        items:
+          description: 'Not yet supported by business logic'
+          type: array
+          items:
+            $ref: '#/components/schemas/Property-read'
+        additional_items:
+          description: 'Not yet supported by business logic'
+          type: boolean
+        max_items:
+          description: 'Not yet supported by business logic'
+          type: integer
+        min_items:
+          description: 'Not yet supported by business logic'
+          type: integer
+        unique_items:
+          description: 'Not yet supported by business logic'
+          type: boolean
+        max_properties:
+          description: 'Not yet supported by business logic'
+          type: integer
+        min_properties:
+          description: 'Not yet supported by business logic'
+          type: integer
+        required:
+          description: |
+            Suported
+                 *
+          type: boolean
+        properties:
+          description: 'Not yet supported by business logic'
+          type: string
+        additional_properties:
+          description: 'Not yet supported by business logic'
+          type: string
+        object:
+          description: 'Not yet supported by business logic'
+          type: string
+        enum:
+          description: Supported
+          type: array
+          items:
+            type: string
+        description:
+          description: 'Not yet supported by business logic'
+          type: string
+        default_value:
+          description: 'Not yet supported by business logic'
+          type: string
+        nullable:
+          description: 'Not yet supported by business logic'
+          type: boolean
+        read_only:
+          description: 'Not yet supported by business logic'
+          type: boolean
+        write_only:
+          description: 'Not yet supported by business logic'
+          type: boolean
+        external_doc:
+          description: 'Not yet supported by business logic'
+          type: string
+        example:
+          description: 'Not yet supported by business logic'
+          type: string
+        deprecated:
+          description: 'Not yet supported by business logic'
+          type: boolean
+      required:
+        - title
+        - type
+        - format
+    Property-write:
+      type: object
+      description: |
+        This property follows the following shemes (in order of impotance)
+        https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#specificationExtensions
+        https://tools.ietf.org/html/draft-wright-json-schema-validation-00
+        http://json-schema.org/
+      required:
+        - title
+        - type
+        - format
+      properties:
+        title:
+          type: string
+        type:
+          description: 'Not yet supported by business logic'
+          type: string
+        format:
+          description: 'Not yet supported by business logic'
+          type: string
+        multiple_of:
+          type: integer
+        maximum:
+          description: 'Not yet supported by business logic'
+          type: integer
+        exclusive_maximum:
+          description: 'Not yet supported by business logic'
+          type: boolean
+        minimum:
+          description: 'Not yet supported by business logic'
+          type: integer
+        exclusive_minimum:
+          description: 'Not yet supported by business logic'
+          type: boolean
+        max_length:
+          description: Suported
+          type: integer
+        min_length:
+          description: Suported
+          type: integer
+        pattern:
+          description: 'Not yet supported by business logic'
+          type: string
+        items:
+          description: 'Not yet supported by business logic'
+          type: array
+          items:
+            $ref: '#/components/schemas/Property-write'
+        additional_items:
+          description: 'Not yet supported by business logic'
+          type: boolean
+        max_items:
+          description: 'Not yet supported by business logic'
+          type: integer
+        min_items:
+          description: 'Not yet supported by business logic'
+          type: integer
+        unique_items:
+          description: 'Not yet supported by business logic'
+          type: boolean
+        max_properties:
+          description: 'Not yet supported by business logic'
+          type: integer
+        min_properties:
+          description: 'Not yet supported by business logic'
+          type: integer
+        required:
+          description: |
+            Suported
+                 *
+          type: boolean
+        properties:
+          description: 'Not yet supported by business logic'
+          type: string
+        additional_properties:
+          description: 'Not yet supported by business logic'
+          type: string
+        object:
+          description: 'Not yet supported by business logic'
+          type: string
+        enum:
+          description: Supported
+          type: array
+          items:
+            type: string
+        description:
+          description: 'Not yet supported by business logic'
+          type: string
+        default_value:
+          description: 'Not yet supported by business logic'
+          type: string
+        nullable:
+          description: 'Not yet supported by business logic'
+          type: boolean
+        read_only:
+          description: 'Not yet supported by business logic'
+          type: boolean
+        write_only:
+          description: 'Not yet supported by business logic'
+          type: boolean
+        external_doc:
+          description: 'Not yet supported by business logic'
+          type: string
+        example:
+          description: 'Not yet supported by business logic'
+          type: string
+        deprecated:
+          description: 'Not yet supported by business logic'
+          type: boolean
+    Request-read:
+      type: object
+      description: 'A request (or verzoek in dutch) to an organisations (usually govenmental) to do ''something'' on behave of a citicen'
+      properties:
+        id:
+          readOnly: true
+          type: integer
+        request_type:
+          $ref: '#/components/schemas/RequestType-read'
+        rsin:
+          type: string
+        submitter:
+          type: string
+        submitter_person:
+          type: boolean
+        properties:
+          type: array
+          items:
+            type: string
+        cases:
+          type: array
+          items:
+            type: string
+    Request-write:
+      type: object
+      description: 'A request (or verzoek in dutch) to an organisations (usually govenmental) to do ''something'' on behave of a citicen'
+      properties:
+        request_type:
+          $ref: '#/components/schemas/RequestType-write'
+        rsin:
+          type: string
+        submitter:
+          type: string
+        submitter_person:
+          type: boolean
+        properties:
+          type: array
+          items:
+            type: string
+        cases:
+          type: array
+          items:
+            type: string
+    RequestType-read:
+      type: object
+      description: ''
+      properties:
+        rsin:
+          type: string
+        name:
+          type: string
+        properties:
+          type: array
+          items:
+            $ref: '#/components/schemas/Property-read'
+    RequestType-write:
+      type: object
+      description: ''
+      properties:
+        rsin:
+          type: string
+        name:
+          type: string
+        properties:
+          type: array
+          items:
+            $ref: '#/components/schemas/Property-write'
+        extends:
+          $ref: '#/components/schemas/RequestType-write'
