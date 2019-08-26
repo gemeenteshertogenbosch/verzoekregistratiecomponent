@@ -944,10 +944,11 @@ components:
         https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.0.md#specificationExtensions
         https://tools.ietf.org/html/draft-wright-json-schema-validation-00
         http://json-schema.org/
+      required:
+        - title
+        - type
+        - format
       properties:
-        id:
-          readOnly: true
-          type: integer
         title:
           type: string
         type:
@@ -1045,10 +1046,6 @@ components:
         deprecated:
           description: 'Not yet supported by business logic'
           type: boolean
-      required:
-        - title
-        - type
-        - format
     Property-write:
       type: object
       description: |
@@ -1162,9 +1159,6 @@ components:
       type: object
       description: 'A request (or verzoek in dutch) to an organisations (usually govenmental) to do ''something'' on behave of a citicen'
       properties:
-        id:
-          readOnly: true
-          type: integer
         request_type:
           $ref: '#/components/schemas/RequestType-read'
         rsin:

@@ -12,8 +12,8 @@ php:
   replicaCount: 1
   mercure:
     jwtSecret: ""
-  env: dev
-  debug: '1'
+  env: prod
+  debug: '0'
   secret: ""
   corsAllowOrigin: ['*']
   trustedHosts: ['^(.+\.)?zaakonline\.nl$','^example\.com$','^206.189.243.5']
@@ -40,7 +40,7 @@ postgresql:
   enabled: false
   imageTag: 10-alpine
   # If bringing your own PostgreSQL, the full uri to use
-  url: mysql://requests-demo:r6me71149o1j1rnj@common-ground-demo-and-dev-do-user-4716261-0.db.ondigitalocean.com:25060/requests-demo?ssl-mode=REQUIRED
+  url: postgres://requests-demo:owjrblxv35fg610a@den-bosh-postgresql-ams3-03414-do-user-4716261-0.db.ondigitalocean.com:25060/requests-demo?sslmode=require
   postgresqlUsername: "example"
   postgresqlPassword: "!ChangeMe!"
   postgresqlDatabase: "api"

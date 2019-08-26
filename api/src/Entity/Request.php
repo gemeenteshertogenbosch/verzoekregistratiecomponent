@@ -20,10 +20,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Request
 {
     /**
-     * @Groups("read")
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @var \Ramsey\Uuid\UuidInterface
+     *
+     * @ORM\Id
+     * @ORM\Column(type="uuid", unique=true)
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class="Ramsey\Uuid\Doctrine\UuidGenerator")
      */
     private $id;
 
@@ -70,11 +72,11 @@ class Request
     private $proces;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $submittedAt;
 
-    public function getId(): ?int
+    public function getId()
     {
         return $this->id;
     }
