@@ -27,8 +27,10 @@ if [ "$1" = 'php-fpm' ] || [ "$1" = 'php' ] || [ "$1" = 'bin/console' ]; then
 	done
 
 	if [ "$APP_ENV" != 'prod' ]; then
-		echo "Updating the database"
-		bin/console doctrine:schema:update --force --no-interaction
+		bin/console doctrine:schema:update --force --no-interaction		
+		
+		# Let update the docs to show the latest chages
+		bin/console api:swagger:export --output=/srv/api/public/schema/openapi.yaml --yaml --spec-version=3
 	fi
 fi
 
