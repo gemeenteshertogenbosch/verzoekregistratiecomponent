@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -21,6 +23,18 @@ class Request
 {
     /**
      * @var \Ramsey\Uuid\UuidInterface
+     *	 
+     * @ApiProperty(
+     * 	   identifier=true,
+     *     attributes={
+     *         "swagger_context"={
+	 *         	   "description" = "The UUID identifier of this object",
+     *             "type"="string",
+     *             "format"="uuid",
+     *             "example"="e2984465-190a-4562-829e-a8cca81aa35d"
+     *         }
+     *     }
+     * )
      *
      * @ORM\Id
      * @ORM\Column(type="uuid", unique=true)
@@ -33,12 +47,27 @@ class Request
      * @Groups({"read", "write"})
      * @ORM\ManyToOne(targetEntity="App\Entity\RequestType", inversedBy="requests")
      * @ORM\JoinColumn(nullable=false)
+     * @ApiFilter(SearchFilter::class, properties={"requestType.id": "exact"})
      */
     private $requestType;
 
     /**
+     * @param string The RSIN of the organisation that ownes this proces
+     * 
+     * @ApiProperty(
+     *     attributes={
+     *         "swagger_context"={
+ 	 *         	   "description" = "The RSIN of the organisation that ownes this proces",
+     *             "type"="string",
+     *             "example"="002851234",
+ 	*              "maxLength"="255"
+     *         }
+     *     }
+     * )
+     * 
      * @Groups({"read", "write"})
      * @ORM\Column(type="string", length=255)
+     * @ApiFilter(SearchFilter::class, strategy="exact")
      */
     private $rsin;
 

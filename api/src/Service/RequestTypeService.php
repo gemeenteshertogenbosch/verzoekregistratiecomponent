@@ -26,14 +26,14 @@ class RequestTypeService
 	
 	public function extendRequestType(RequestType $requestType)
 	{
-		$requestTypesProcessed = [$requestType->getId()];
+		$requestTypesProcessed = [(string) $requestType->getId()];
 		$extendedRequest = $requestType->getExtends();
 		$propertiesTitles = [];
 		// Let loop this for as long as we can extend requests
 		while($extendedRequest){
 			// But kill it the moment we spot an invinate loop
 			if(in_array((string) $extendedRequest->getId(), $requestTypesProcessed)){
-				throw new \Exception('Request type '.$extendedRequest->getName().'(id:'.$extendedRequest->getId().') has been referenced more then once in this extention, posible loop detected');
+				throw new \Exception('Request type '.$extendedRequest->getName().'(id:'.(string) $extendedRequest->getId().') has been referenced more then once in this extention, posible loop detected');
 			}
 			
 			// lets add the id to the check array, so that we can prefend loops

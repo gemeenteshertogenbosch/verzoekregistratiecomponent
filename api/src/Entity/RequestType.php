@@ -5,6 +5,8 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -28,7 +30,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *                          "name" = "extend",
  *                          "in" = "query",
  *                          "description" = "Add the properties of the requestType that this requetType extends",
- *                          "required" = "false",
+ *                          "required" = false,
  *                          "type" : "boolean"
  *                      }
  *                  }
@@ -44,6 +46,18 @@ class RequestType
 {
     /**
      * @var \Ramsey\Uuid\UuidInterface
+     *	 
+     * @ApiProperty(
+     * 	   identifier=true,
+     *     attributes={
+     *         "swagger_context"={
+	 *         	   "description" = "The UUID identifier of this object",
+     *             "type"="string",
+     *             "format"="uuid",
+     *             "example"="e2984465-190a-4562-829e-a8cca81aa35d"
+     *         }
+     *     }
+     * )
      *
      * @ORM\Id
      * @ORM\Column(type="uuid", unique=true)
@@ -53,8 +67,22 @@ class RequestType
     private $id;
 
     /**
+     * @param string The RSIN of the organisation that ownes this proces
+     * 
+     * @ApiProperty(
+     *     attributes={
+     *         "swagger_context"={
+ 	 *         	   "description" = "The RSIN of the organisation that ownes this proces",
+     *             "type"="string",
+     *             "example"="002851234",
+ 	*              "maxLength"="255"
+     *         }
+     *     }
+     * )
+     * 
      * @Groups({"read", "write"})
      * @ORM\Column(type="string", length=255)
+     * @ApiFilter(SearchFilter::class, strategy="exact")
      */
     private $rsin;
 
@@ -65,6 +93,7 @@ class RequestType
     private $name;
 
     /**
+     * @Groups({"read", "write"})
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
@@ -105,8 +134,8 @@ class RequestType
     public function __construct()
     {
     	$this->properties= new ArrayCollection();
-     $this->extendedBy = new ArrayCollection();
-     $this->requests = new ArrayCollection();
+     	$this->extendedBy = new ArrayCollection();
+     	$this->requests = new ArrayCollection();
     }
 
     public function getId()
