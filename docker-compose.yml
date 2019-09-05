@@ -81,7 +81,7 @@ services:
       - DEMO=1
     ports:
       - "1337:80"
-
+  
   client:
     # Use a static website hosting service in production
     # See https://facebook.github.io/create-react-app/docs/deployment
@@ -119,6 +119,7 @@ services:
       cache_from:
         - ${CONTAINER_REGISTRY_BASE}/${CONTAINER_PROJECT_NAME}-h2-proxy
     depends_on:
+      - db
       - client
       - admin
       - verzoeken-api

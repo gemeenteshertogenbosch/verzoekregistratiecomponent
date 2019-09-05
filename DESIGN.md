@@ -2,8 +2,15 @@
 
 
 
+__solution__
+geldigOp is suported as a backup for validOn, but only validOn us documented.
 
 
+It is precievable that in future iterations we would like to use indexd array in situations where the index of the array can't be assumed on basis of url notation, when indexes arn't numirical, when we dont want an index to start at 0 or when indexes are purpusly missing (comma notation of id,name,description would always refert to te equvalant of fields: [
+  0 => id,
+  1 => name,
+  2 => description
+]
 
 
 ### Duration
