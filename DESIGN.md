@@ -1,5 +1,6 @@
 #Design Considerations
 
+This component was designd inline with the [NL API Strategie](https://docs.geostandaarden.nl/api/API-Strategie) and [https://www.noraonline.nl/wiki/Standaarden](NORA).
 
 
 __solution__
