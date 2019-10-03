@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Request;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * @method Request|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,11 +14,20 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class RequestRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Request::class);
     }
 
+    
+    /**
+    * @param string $rsin Returns an array of Request objects
+    * @return integer the referenceId that should be used for the next refenceId
+    */
+    public function getNextReferenceId($rsin)
+    {
+    	return 1;
+    }
     // /**
     //  * @return Request[] Returns an array of Request objects
     //  */

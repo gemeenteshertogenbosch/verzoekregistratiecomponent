@@ -6,7 +6,7 @@ docker:
   containerProjectName: verzoeken
 
 php:
-  repository: docker.io/conduction/verzoeken-php
+  repository: docker.io/conduction/vrc-php
   tag: latest
   pullPolicy: Always
   replicaCount: 1
@@ -23,15 +23,15 @@ php:
     - 192.168.0.0/16
 
 nginx:
-  repository: docker.io/conduction/verzoeken-nginx
+  repository: docker.io/conduction/vrc-nginx
   tag: latest
   pullPolicy: Always
   replicaCount: 1
 
 varnish:
   enabled: true
-  #url: https://zaakonline.nl
-  repository: docker.io/conduction/verzoeken-varnish
+  url: vrc-varnish
+  repository: docker.io/conduction/vrc-varnish
   tag: latest
   pullPolicy: Always
   replicaCount: 1

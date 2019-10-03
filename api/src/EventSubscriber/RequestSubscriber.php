@@ -32,7 +32,7 @@ class RequestSubscriber implements EventSubscriberInterface
 	public static function getSubscribedEvents()
 	{
 		return [
-				KernelEvents::VIEW => ['postRequest', EventPriorities::PRE_VALIDATE],
+				//KernelEvents::VIEW => ['postRequest', EventPriorities::PRE_VALIDATE],
 		];
 		
 	}	
