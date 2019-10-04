@@ -10,6 +10,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 /**
  * A request (or verzoek in dutch) to an organisations (usually govenmental) to do 'something' on behave of a citicen
@@ -48,7 +49,8 @@ class Request
 	private $id;
 	
 	/**
-	 * @param string $reference The human readable reference for this request, build as {gemeentecode}-{year}-{referenceId}. Where gemeentecode is a four digit number for gemeenten and a four letter abriviation for other organisations 
+	 * @var string $reference The human readable reference for this request, build as {gemeentecode}-{year}-{referenceId}. Where gemeentecode is a four digit number for gemeenten and a four letter abriviation for other organisations 
+	 * @example 6666-2019-0000000012
 	 *
 	 * @ApiProperty(
 	 *     attributes={
@@ -68,14 +70,14 @@ class Request
 	private $reference;
 	
 	/**
-	 * @param string $referenceId The autoincrementing id part of the reference, unique on a organisation-year-id basis
+	 * @var string $referenceId The autoincrementing id part of the reference, unique on a organisation-year-id basis
 	 *	 
 	 * @ORM\Column(type="integer", length=11, nullable=true)
 	 */
 	private $referenceId;
 	
 	/**
-	 * @param string $status The status of this request. e.g submitted
+	 * @var string $status The status of this request. e.g submitted
 	 *
 	 * @ApiProperty(
 	 *     attributes={
@@ -282,6 +284,13 @@ class Request
 		return $this->id;
 	}
 	
+	public function setId($id): self
+	{
+	    $this->id = $id;
+	    
+	    return $this;
+	}
+	
 	public function getReference(): ?string
 	{
 		return $this->reference;
@@ -296,7 +305,7 @@ class Request
 	
 	public function getReferenceId(): ?int
 	{
-		return $this->reference;
+		return $this->referenceId;
 	}
 	
 	public function setReferenceId(int $referenceId): self
