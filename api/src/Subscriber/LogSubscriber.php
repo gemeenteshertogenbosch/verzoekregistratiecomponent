@@ -35,7 +35,7 @@ class LogSubscriber implements EventSubscriberInterface
 	public static function getSubscribedEvents()
 	{
 		return [
-				KernelEvents::VIEW => ['Log', EventPriorities::PRE_SERIALIZE],
+				//KernelEvents::VIEW => ['Log', EventPriorities::PRE_SERIALIZE],
 		];
 		
 	}
@@ -47,8 +47,10 @@ class LogSubscriber implements EventSubscriberInterface
 		
 		// Lets see if this class has a Loggableannotation
 		$loggable = false;
+		/* @todo dit gooit een error als de class reeds verwijderd is */
 		$reflClass = new \ReflectionClass($result); 
 		$annotations = $this->annotationReader->getClassAnnotations($reflClass);
+		
 		
 		foreach($annotations as $annotation ){
 			if(get_class($annotation) == "Gedmo\Mapping\Annotation\Loggable"){

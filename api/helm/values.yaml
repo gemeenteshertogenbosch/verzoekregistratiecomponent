@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 docker:
   containerRegistryBase: docker.io/conduction/
-  containerProjectName: verzoeken
+  containerProjectName: vrc
 
 php:
   repository: docker.io/conduction/vrc-php
@@ -16,7 +16,7 @@ php:
   debug: '0'
   secret: ""
   corsAllowOrigin: ['*']
-  trustedHosts: '^(.+\.)?common-ground\.dev$|^(.+\.)?zaakonline\.nl$|^example\.com$|^206.189.243.5|localhost'
+  trustedHosts: '^(.+\.)?common-ground\.dev$|^(.+\.)?zaakonline\.nl$|^(.+\.)?conduction\.nl$|^example\.com$|^206.189.243.5|localhost'
   trustedProxies:
     - 10.0.0.0/8
     - 172.16.0.0/12

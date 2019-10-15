@@ -6,6 +6,42 @@ info:
                           
     
 paths:
+  '/open_cases/{id}':
+    get:
+      tags:
+        - OpenCase
+      operationId: getOpenCaseItem
+      summary: 'Retrieves a OpenCase resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: 'OpenCase resource response'
+        404:
+          description: 'Resource not found'
+  '/organisations/{id}':
+    get:
+      tags:
+        - Organisation
+      operationId: getOrganisationItem
+      summary: 'Retrieves a Organisation resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: 'Organisation resource response'
+        404:
+          description: 'Resource not found'
   /requests:
     get:
       tags:
@@ -58,6 +94,22 @@ paths:
                   $ref: '#/components/schemas/Request-read'
       parameters:
         -
+          name: submitter
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: 'submitter[]'
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+        -
           name: reference
           in: query
           required: false
@@ -106,13 +158,13 @@ paths:
           style: form
           explode: true
         -
-          name: rsin
+          name: processType
           in: query
           required: false
           schema:
             type: string
         -
-          name: 'rsin[]'
+          name: 'processType[]'
           in: query
           required: false
           schema:
@@ -122,13 +174,13 @@ paths:
           style: form
           explode: true
         -
-          name: submitter
+          name: organisations.rsin
           in: query
           required: false
           schema:
             type: string
         -
-          name: 'submitter[]'
+          name: 'organisations.rsin[]'
           in: query
           required: false
           schema:
@@ -138,13 +190,61 @@ paths:
           style: form
           explode: true
         -
-          name: process
+          name: organisations.status
           in: query
           required: false
           schema:
             type: string
         -
-          name: 'process[]'
+          name: 'organisations.status[]'
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+        -
+          name: submitters.organisation
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: 'submitters.organisation[]'
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+        -
+          name: submitters.person
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: 'submitters.person[]'
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+        -
+          name: submitters.contact
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: 'submitters.contact[]'
           in: query
           required: false
           schema:
@@ -432,27 +532,111 @@ paths:
             schema:
               $ref: '#/components/schemas/Request-write'
         description: 'The updated Request resource'
+  '/submitters/{id}':
+    get:
+      tags:
+        - Submitter
+      operationId: getSubmitterItem
+      summary: 'Retrieves a Submitter resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: 'Submitter resource response'
+        404:
+          description: 'Resource not found'
 components:
   schemas:
+    OpenCase-read:
+      type: object
+      description: 'An opencase atached to a request'
+      properties:
+        id:
+          readOnly: true
+          description: 'The UUID identifier of this object'
+          type: string
+        open_case:
+          description: 'The OpenCase that is handling or supposed to handle this request'
+          type: string
+        request:
+          description: 'The request that this case is handling'
+          $ref: '#/components/schemas/Request-read'
+    OpenCase-write:
+      type: object
+      description: 'An opencase atached to a request'
+      properties:
+        open_case:
+          description: 'The OpenCase that is handling or supposed to handle this request'
+          type: string
+        request:
+          description: 'The request that this case is handling'
+          $ref: '#/components/schemas/Request-write'
+    Organisation-read:
+      type: object
+      description: 'An organisation handling a request'
+      properties:
+        id:
+          readOnly: true
+          description: 'The UUID identifier of this object'
+          type: string
+        rsin:
+          description: 'The RSIN of a organization that is handling or supposed to handle this request'
+          type: string
+        status:
+          type: string
+        request:
+          description: 'The request that this organsisation is handling'
+          $ref: '#/components/schemas/Request-read'
+      required:
+        - rsin
+        - status
+    Organisation-write:
+      type: object
+      description: 'An organisation handling a request'
+      required:
+        - rsin
+        - status
+      properties:
+        rsin:
+          description: 'The RSIN of a organization that is handling or supposed to handle this request'
+          type: string
+        status:
+          type: string
+        request:
+          description: 'The request that this organsisation is handling'
+          $ref: '#/components/schemas/Request-write'
     Request-read:
       type: object
-      description: 'A request (or verzoek in dutch) to an organisations (usually govenmental) to do ''something'' on behave of a citicen'
+      description: 'A request (or verzoek in dutch) to an organizations (usually govenmental) to do ''something'' on behave of a citicen or other organisation'
       properties:
+        id:
+          readOnly: true
+          description: 'The UUID identifier of this object'
+          type: string
         reference:
           readOnly: true
           type: string
         status:
-          readOnly: true
           type: string
         request_type:
           description: 'The request type agains wich this request should be validated'
           type: string
-        rsin:
-          description: 'The RSIN of the organisation that ownes this proces'
+        target_organization:
+          description: 'The RSIN of the organization that should handle this request'
           type: string
         submitter:
-          description: 'The BSN (if person) or RSIN (if organisation) that submited this request'
+          description: 'The BSN (if person) or RSIN (if organization) that is the primary submiter this request'
           type: string
+        submitters:
+          description: 'The submitters of this request'
+          type: array
+          items:
+            $ref: '#/components/schemas/Submitter-read'
         submitter_person:
           description: 'True if the submitters is a person'
           type: boolean
@@ -461,14 +645,6 @@ components:
           type: array
           items:
             type: string
-        cases:
-          readOnly: true
-          type: array
-          items:
-            type: string
-        process:
-          description: 'The proces type that made this request'
-          type: string
         created_at:
           readOnly: true
           description: 'The moment this request was created by the submitter'
@@ -479,27 +655,38 @@ components:
           description: 'The moment this request was submitted by the submitter'
           type: string
           format: date-time
+        organisations:
+          description: 'Organisations that are handling this request'
+          type: array
+          items:
+            $ref: '#/components/schemas/Organisation-read'
+        open_cases:
+          description: 'Any open cases currently atached to this request'
+          type: array
+          items:
+            $ref: '#/components/schemas/OpenCase-read'
       required:
         - request_type
-        - rsin
-        - submitter
     Request-write:
       type: object
-      description: 'A request (or verzoek in dutch) to an organisations (usually govenmental) to do ''something'' on behave of a citicen'
-      required:
-        - request_type
-        - rsin
-        - submitter
+      description: 'A request (or verzoek in dutch) to an organizations (usually govenmental) to do ''something'' on behave of a citicen or other organisation'
       properties:
+        status:
+          type: string
         request_type:
           description: 'The request type agains wich this request should be validated'
           type: string
-        rsin:
-          description: 'The RSIN of the organisation that ownes this proces'
+        target_organization:
+          description: 'The RSIN of the organization that should handle this request'
           type: string
         submitter:
-          description: 'The BSN (if person) or RSIN (if organisation) that submited this request'
+          description: 'The BSN (if person) or RSIN (if organization) that is the primary submiter this request'
           type: string
+        submitters:
+          description: 'The submitters of this request'
+          type: array
+          items:
+            $ref: '#/components/schemas/Submitter-write'
         submitter_person:
           description: 'True if the submitters is a person'
           type: boolean
@@ -508,9 +695,55 @@ components:
           type: array
           items:
             type: string
-        process:
-          description: 'The proces type that made this request'
+        organisations:
+          description: 'Organisations that are handling this request'
+          type: array
+          items:
+            $ref: '#/components/schemas/Organisation-write'
+        open_cases:
+          description: 'Any open cases currently atached to this request'
+          type: array
+          items:
+            $ref: '#/components/schemas/OpenCase-write'
+      required:
+        - request_type
+    Submitter-read:
+      type: object
+      description: 'The submitters of a request'
+      properties:
+        id:
+          readOnly: true
+          description: 'The UUID identifier of this object'
           type: string
+        assent:
+          description: 'The Assent that is ussued to check if this submitter given assent to this request'
+          type: string
+        person:
+          description: 'The BSN of the person that submitted this request'
+          type: string
+        organisation:
+          description: 'The RSIN of the organization that submitted this request'
+          type: string
+        request:
+          description: 'The request that this submitter subitted'
+          $ref: '#/components/schemas/Request-read'
+    Submitter-write:
+      type: object
+      description: 'The submitters of a request'
+      properties:
+        assent:
+          description: 'The Assent that is ussued to check if this submitter given assent to this request'
+          type: string
+        person:
+          description: 'The BSN of the person that submitted this request'
+          type: string
+        organisation:
+          description: 'The RSIN of the organization that submitted this request'
+          type: string
+        request:
+          description: 'The request that this submitter subitted'
+          $ref: '#/components/schemas/Request-write'
+host: vrc.zaakonline.nl
 servers:
   -
     description: 'Demo Omgeving'

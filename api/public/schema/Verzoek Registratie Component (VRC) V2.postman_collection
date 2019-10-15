@@ -1,0 +1,673 @@
+{
+	"info": {
+		"_postman_id": "3e8926a4-2606-5660-e5d3-ce4972c8566d",
+		"name": "Verzoek Registratie Component (VRC)",
+		"description": "                      \n",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "requests",
+			"item": [
+				{
+					"name": "Retrieves the collection of Request resources.",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4ba6537b-a3ca-4446-bc2b-2a25d645e004",
+								"exec": [
+									"// example using pm.response.to.have\r",
+									"pm.test(\"response is ok\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// example using response assertions\r",
+									"pm.test(\"response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");\r",
+									"});\r",
+									"\r",
+									"// example using pm.response.to.be*\r",
+									"pm.test(\"response must be valid and have a body\", function () {\r",
+									"     // assert that the status code is 200\r",
+									"     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants\r",
+									"     // assert that the response has a valid JSON body\r",
+									"     pm.response.to.be.withBody;\r",
+									"     pm.response.to.be.json; // this assertion also checks if a body  exists, so the above check is not needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/hal+json, application/ld+json, application/vnd.api+json, application/json, application/xml, application/x-yaml, text/csv, text/html"
+							}
+						],
+						"url": {
+							"raw": "http://vrc.zaakonline.nl/requests",
+							"protocol": "http",
+							"host": [
+								"vrc",
+								"zaakonline",
+								"nl"
+							],
+							"path": [
+								"requests"
+							],
+							"query": [
+								{
+									"key": "submitter",
+									"value": "{{submitter}}"
+								},
+								{
+									"key": "submitter[]",
+									"value": "{{submitter[]}}"
+								},
+								{
+									"key": "reference",
+									"value": "{{reference}}"
+								},
+								{
+									"key": "reference[]",
+									"value": "{{reference[]}}"
+								},
+								{
+									"key": "status",
+									"value": "{{status}}"
+								},
+								{
+									"key": "status[]",
+									"value": "{{status[]}}"
+								},
+								{
+									"key": "requestType",
+									"value": "{{requestType}}"
+								},
+								{
+									"key": "requestType[]",
+									"value": "{{requestType[]}}"
+								},
+								{
+									"key": "processType",
+									"value": "{{processType}}"
+								},
+								{
+									"key": "processType[]",
+									"value": "{{processType[]}}"
+								},
+								{
+									"key": "organisations.rsin",
+									"value": "{{organisations.rsin}}"
+								},
+								{
+									"key": "organisations.rsin[]",
+									"value": "{{organisations.rsin[]}}"
+								},
+								{
+									"key": "organisations.status",
+									"value": "{{organisations.status}}"
+								},
+								{
+									"key": "organisations.status[]",
+									"value": "{{organisations.status[]}}"
+								},
+								{
+									"key": "submitters.organisation",
+									"value": "{{submitters.organisation}}"
+								},
+								{
+									"key": "submitters.organisation[]",
+									"value": "{{submitters.organisation[]}}"
+								},
+								{
+									"key": "submitters.person",
+									"value": "{{submitters.person}}"
+								},
+								{
+									"key": "submitters.person[]",
+									"value": "{{submitters.person[]}}"
+								},
+								{
+									"key": "submitters.contact",
+									"value": "{{submitters.contact}}"
+								},
+								{
+									"key": "submitters.contact[]",
+									"value": "{{submitters.contact[]}}"
+								},
+								{
+									"key": "page",
+									"value": "{{page}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Creates a Request resource.",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4883c4ec-f9e6-45a3-9cb5-cced9f90cb88",
+								"exec": [
+									"// example using pm.response.to.have\r",
+									"pm.test(\"response is ok\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"// example using response assertions\r",
+									"pm.test(\"response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");\r",
+									"});\r",
+									"\r",
+									"// example using pm.response.to.be*\r",
+									"pm.test(\"response must be valid and have a body\", function () {\r",
+									"     // assert that the status code is 200\r",
+									"     // pm.response.to.be.created; // info, success, redirection, clientError,  serverError, are other variants\r",
+									"     // assert that the response has a valid JSON body\r",
+									"     pm.response.to.be.withBody;\r",
+									"     pm.response.to.be.json; // this assertion also checks if a body  exists, so the above check is not needed\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Set ID\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    console.log(jsonData);\r",
+									"    //var payloadData = JSON.parse(jsonData.Payload); //parsed payload\r",
+									"\r",
+									"    //console.log(payloadData.Id);\r",
+									"\r",
+									"    pm.environment.set(\"id\", jsonData.id);\r",
+									"    pm.environment.set(\"organisation_id\", jsonData._embedded.submitters[0].id);\r",
+									"    pm.environment.set(\"submitter_id\", jsonData._embedded.organisations[0].id);\r",
+									"    pm.environment.set(\"opencase_id\", jsonData._embedded.open_cases[0].id);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/hal+json, application/ld+json, application/vnd.api+json, application/json, application/xml, application/x-yaml, text/csv, text/html"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/ld+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"status\": \"incomplete\",\r\n\t\"request_type\": \"http://vtc.zaakonline.nl/9bd169ef-bc8c-4422-86ce-a0e7679ab67a\",\r\n\t\"target_organization\": \"002851234\",\r\n\t\"submitter\": \"002851234\",\r\n\t\"submitters\": [\r\n\t\t{\r\n\t\t\t\"assent\": \"irc.zaakonline.nl/assent/e2984465-190a-4562-829e-a8cca81aa35d\",\r\n\t\t\t\"person\": \"999993653\",\r\n\t\t\t\"organisation\": \"002851234\"\r\n\t\t}\r\n\t],\r\n\t\"submitter_person\": true,\r\n\t\"properties\": [ ],\r\n\t\"organisations\": [\r\n\t\t{\r\n\t\t\t\"rsin\": \"002851234\",\r\n\t\t\t\"status\": \"none\"\r\n\t\t}\r\n\t],\r\n\t\"open_cases\": [\r\n\t\t{\r\n\t\t\t\"open_case\": \"zrc.gemeente.nl/case/e2984465-190a-4562-829e-a8cca81aa35d\"\r\n\t\t}\r\n\t]\r\n}"
+						},
+						"url": {
+							"raw": "http://vrc.zaakonline.nl/requests",
+							"protocol": "http",
+							"host": [
+								"vrc",
+								"zaakonline",
+								"nl"
+							],
+							"path": [
+								"requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieves a Request resource.",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "27d0fdc7-5d5e-4270-8716-4dccaa3cc80d",
+								"exec": [
+									"// example using pm.response.to.have\r",
+									"pm.test(\"response is ok\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// example using response assertions\r",
+									"pm.test(\"response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");\r",
+									"});\r",
+									"\r",
+									"// example using pm.response.to.be*\r",
+									"pm.test(\"response must be valid and have a body\", function () {\r",
+									"     // assert that the status code is 200\r",
+									"     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants\r",
+									"     // assert that the response has a valid JSON body\r",
+									"     pm.response.to.be.withBody;\r",
+									"     pm.response.to.be.json; // this assertion also checks if a body  exists, so the above check is not needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/hal+json, application/ld+json, application/vnd.api+json, application/json, application/xml, application/x-yaml, text/csv, text/html"
+							}
+						],
+						"url": {
+							"raw": "http://vrc.zaakonline.nl/requests/{{id}}",
+							"protocol": "http",
+							"host": [
+								"vrc",
+								"zaakonline",
+								"nl"
+							],
+							"path": [
+								"requests",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Replaces the Request resource.",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "331fda8d-9f70-4b58-9fa1-68d9f07b89e9",
+								"exec": [
+									"// example using pm.response.to.have\r",
+									"pm.test(\"response is ok\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// example using response assertions\r",
+									"pm.test(\"response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");\r",
+									"});\r",
+									"\r",
+									"// example using pm.response.to.be*\r",
+									"pm.test(\"response must be valid and have a body\", function () {\r",
+									"     // assert that the status code is 200\r",
+									"     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants\r",
+									"     // assert that the response has a valid JSON body\r",
+									"     pm.response.to.be.withBody;\r",
+									"     pm.response.to.be.json; // this assertion also checks if a body  exists, so the above check is not needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/hal+json, application/ld+json, application/vnd.api+json, application/json, application/xml, application/x-yaml, text/csv, text/html"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/ld+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"status\": \"incomplete\",\r\n\t\"request_type\": \"http://vtc.zaakonline.nl/9bd169ef-bc8c-4422-86ce-a0e7679ab67a\",\r\n\t\"target_organization\": \"002851234\",\r\n\t\"submitter\": \"002851234\",\r\n\t\"submitters\": [\r\n\t\t{\r\n\t\t\t\"assent\": \"irc.zaakonline.nl/assent/e2984465-190a-4562-829e-a8cca81aa35d\",\r\n\t\t\t\"person\": \"999993653\",\r\n\t\t\t\"organisation\": \"002851234\"\r\n\t\t}\r\n\t],\r\n\t\"submitter_person\": true,\r\n\t\"properties\": [ ],\r\n\t\"organisations\": [\r\n\t\t{\r\n\t\t\t\"rsin\": \"002851234\",\r\n\t\t\t\"status\": \"none\"\r\n\t\t}\r\n\t],\r\n\t\"open_cases\": [\r\n\t\t{\r\n\t\t\t\"open_case\": \"zrc.gemeente.nl/case/e2984465-190a-4562-829e-a8cca81aa35d\"\r\n\t\t}\r\n\t]\r\n}"
+						},
+						"url": {
+							"raw": "http://vrc.zaakonline.nl/requests/{{id}}",
+							"protocol": "http",
+							"host": [
+								"vrc",
+								"zaakonline",
+								"nl"
+							],
+							"path": [
+								"requests",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Updates the Request resource.",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d97aaff7-7993-418b-9a7a-305b4566ad89",
+								"exec": [
+									"// example using pm.response.to.have\r",
+									"pm.test(\"response is ok\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// example using response assertions\r",
+									"pm.test(\"response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");\r",
+									"});\r",
+									"\r",
+									"// example using pm.response.to.be*\r",
+									"pm.test(\"response must be valid and have a body\", function () {\r",
+									"     // assert that the status code is 200\r",
+									"     pm.response.to.be.ok; // info, success, redirection, clientError,  serverError, are other variants\r",
+									"     // assert that the response has a valid JSON body\r",
+									"     pm.response.to.be.withBody;\r",
+									"     pm.response.to.be.json; // this assertion also checks if a body  exists, so the above check is not needed\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/hal+json, application/ld+json, application/vnd.api+json, application/json, application/xml, application/x-yaml, text/csv, text/html"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/ld+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"status\": \"incomplete\",\r\n\t\"request_type\": \"http://vtc.zaakonline.nl/9bd169ef-bc8c-4422-86ce-a0e7679ab67a\",\r\n\t\"target_organization\": \"002851234\",\r\n\t\"submitter\": \"002851234\",\r\n\t\"submitters\": [\r\n\t\t{\r\n\t\t\t\"assent\": \"irc.zaakonline.nl/assent/e2984465-190a-4562-829e-a8cca81aa35d\",\r\n\t\t\t\"person\": \"999993653\",\r\n\t\t\t\"organisation\": \"002851234\"\r\n\t\t}\r\n\t],\r\n\t\"submitter_person\": true,\r\n\t\"properties\": [ ],\r\n\t\"organisations\": [\r\n\t\t{\r\n\t\t\t\"rsin\": \"002851234\",\r\n\t\t\t\"status\": \"none\"\r\n\t\t}\r\n\t],\r\n\t\"open_cases\": [\r\n\t\t{\r\n\t\t\t\"open_case\": \"zrc.gemeente.nl/case/e2984465-190a-4562-829e-a8cca81aa35d\"\r\n\t\t}\r\n\t]\r\n}"
+						},
+						"url": {
+							"raw": "http://vrc.zaakonline.nl/requests/{{id}}",
+							"protocol": "http",
+							"host": [
+								"vrc",
+								"zaakonline",
+								"nl"
+							],
+							"path": [
+								"requests",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Folder for requests",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "open_cases",
+			"item": [
+				{
+					"name": "Retrieves a OpenCase resource.",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b16d6867-3802-4643-babd-394f8a6f160c",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/hal+json, application/ld+json, application/vnd.api+json, application/json, application/xml, application/x-yaml, text/csv, text/html"
+							}
+						],
+						"url": {
+							"raw": "http://vrc.zaakonline.nl/open_cases/{{opencase_id}}",
+							"protocol": "http",
+							"host": [
+								"vrc",
+								"zaakonline",
+								"nl"
+							],
+							"path": [
+								"open_cases",
+								"{{opencase_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Folder for open_cases",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "organisations",
+			"item": [
+				{
+					"name": "Retrieves a Organisation resource.",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0965df6c-c72b-4930-91a9-dc8aee2f2748",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/hal+json, application/ld+json, application/vnd.api+json, application/json, application/xml, application/x-yaml, text/csv, text/html"
+							}
+						],
+						"url": {
+							"raw": "http://vrc.zaakonline.nl/organisations/{{organisation_id}}",
+							"protocol": "http",
+							"host": [
+								"vrc",
+								"zaakonline",
+								"nl"
+							],
+							"path": [
+								"organisations",
+								"{{organisation_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Folder for organisations",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "submitters",
+			"item": [
+				{
+					"name": "Retrieves a Submitter resource.",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "33d46b4a-ce25-402f-b0b5-a339dc90e671",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/hal+json, application/ld+json, application/vnd.api+json, application/json, application/xml, application/x-yaml, text/csv, text/html"
+							}
+						],
+						"url": {
+							"raw": "http://vrc.zaakonline.nl/submitters/{{submitter_id}}",
+							"protocol": "http",
+							"host": [
+								"vrc",
+								"zaakonline",
+								"nl"
+							],
+							"path": [
+								"submitters",
+								"{{submitter_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Folder for submitters",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Clean Up",
+			"item": [
+				{
+					"name": "Removes the Request resource.",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6a2ea558-ffd4-4a0e-860a-bb13386cd26d",
+								"exec": [
+									"// example using pm.response.to.have\r",
+									"pm.test(\"response is ok\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									"\r",
+									"// example using response assertions\r",
+									"pm.test(\"response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://vrc.zaakonline.nl/requests/{{id}}",
+							"protocol": "http",
+							"host": [
+								"vrc",
+								"zaakonline",
+								"nl"
+							],
+							"path": [
+								"requests",
+								"{{id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "1cdcadb1-6e56-4281-8515-f82b946b4cbf",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "bdd66d41-18b7-4e38-9089-90908f59f75c",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "b5438e15-db33-458d-a6cb-a2ba0a4cbe54",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "94721e51-c1a0-43e4-8cf3-5124d7aa45c1",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "d3f4bd83-da87-4155-a4bf-968d963e87bb",
+			"key": "organization_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "65229525-0f37-43ca-ad6b-fea6156089ff",
+			"key": "submitter_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"id": "e862bbb8-22de-4d94-ae9a-bb5e8044fc81",
+			"key": "opencase_id",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}

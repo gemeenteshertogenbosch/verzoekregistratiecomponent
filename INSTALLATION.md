@@ -45,3 +45,17 @@ As a developer you might be intrested to know how your application documentation
 Have you seen our sweet support-chat on the documentation page? We didn't build that ourselves ;) We use a Hubspot chat for that, just head over to Hubspot, create an account and enter your Hubspot embed code in het .env file (replacing the default) under HUBSPOT_EMBED_CODE.
 
 Would you like to use a different analytics or chat-tool? Just shoot us a [feature request](https://github.com/ConductionNL/commonground-component/issues/new?assignees=&labels=&template=feature_request.md&title=New Analytics or Chat provider)  
+
+## Setting up NLX
+Let first check if we have a propper nlx root certidicate
+
+```
+docker-compose exec vrc-php openssl x509 -in nlx-setup/root.crt -text | grep Subject:
+```
+
+```
+docker-compose exec vrc-php openssl req -utf8 -nodes -sha256 -newkey rsa:4096 -keyout nlx-setup/org.key -out nlx-setup/org.csr
+```
+You should now see the content of a certificate
+
+See also [this](https://docs.nlx.io/get-started/)

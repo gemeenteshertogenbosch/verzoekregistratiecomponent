@@ -35,7 +35,7 @@ class ValidOnSubscriber implements EventSubscriberInterface
 	public static function getSubscribedEvents()
 	{
 		return [
-				KernelEvents::VIEW => ['validOn', EventPriorities::PRE_SERIALIZE],
+			//KernelEvents::VIEW => ['validOn', EventPriorities::PRE_SERIALIZE],
 		];
 		
 	}	
@@ -50,6 +50,7 @@ class ValidOnSubscriber implements EventSubscriberInterface
 		
 		// Lets see if this class has a Loggableannotation
 		$loggable = false;
+		/* @todo dit gooit een error als de class reeds verwijderd is */
 		$reflClass = new \ReflectionClass($result);
 		$annotations = $this->annotationReader->getClassAnnotations($reflClass);
 		

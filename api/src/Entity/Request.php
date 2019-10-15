@@ -6,13 +6,16 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 /**
- * A request (or verzoek in dutch) to an organisations (usually govenmental) to do 'something' on behave of a citicen
+ * A request (or verzoek in dutch) to an organizations (usually govenmental) to do 'something' on behave of a citicen or other organisation
  *
  * @ApiResource(
  *     normalizationContext={"groups"={"read"}, "enable_max_depth"=true},
@@ -20,6 +23,21 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  * @ORM\Entity(repositoryClass="App\Repository\RequestRepository")
  * @ORM\HasLifecycleCallbacks 
+ * @ApiFilter(SearchFilter::class, properties={
+ * 		"submitter":"exact",
+ * 		"reference":"exact",
+ * 		"reference":"exact",
+ * 		"status":"exact",
+ * 		"requestType":"exact",
+ * 		"processType":"exact",
+ * 		"organisations.rsin": "exact",
+ * 		"organisations.status": "exact",
+ * 		"submitters.organisation": "exact", 
+ * 		"submitters.person": "exact", 
+ * 		"submitters.contact": "exact", 
+ * 		"opencase.open_case": "exact"
+ * })
+
  */
 class Request
 {
@@ -40,6 +58,7 @@ class Request
 	 * )
 	 *
 	 * @Assert\Uuid
+	 * @Groups({"read"})
 	 * @ORM\Id
 	 * @ORM\Column(type="uuid", unique=true)
 	 * @ORM\GeneratedValue(strategy="CUSTOM")
@@ -48,7 +67,7 @@ class Request
 	private $id;
 	
 	/**
-	 * @param string $reference The human readable reference for this request, build as {gemeentecode}-{year}-{referenceId}. Where gemeentecode is a four digit number for gemeenten and a four letter abriviation for other organisations 
+	 * @param string $reference The human readable reference for this request, build as {gemeentecode}-{year}-{referenceId}. Where gemeentecode is a four digit number for gemeenten and a four letter abriviation for other organizations 
 	 *
 	 * @ApiProperty(
 	 *     attributes={
@@ -61,44 +80,51 @@ class Request
 	 *     }
 	 * )	 
 	 *
+	 * @Assert\Length(
+	 *      max = 255
+	 * )
 	 * @Groups({"read"})
 	 * @ORM\Column(type="string", length=255, nullable=true) //, unique=true
-	 * @ApiFilter(SearchFilter::class, strategy="exact")
 	 */
 	private $reference;
 	
 	/**
-	 * @param string $referenceId The autoincrementing id part of the reference, unique on a organisation-year-id basis
+	 * @param string $referenceId The autoincrementing id part of the reference, unique on a organization-year-id basis
 	 *	 
+	 * @Assert\Positive
+	 * @Assert\Length(
+	 *      max = 11
+	 * )
 	 * @ORM\Column(type="integer", length=11, nullable=true)
 	 */
 	private $referenceId;
 	
 	/**
 	 * @param string $status The status of this request. e.g submitted
+	 * @example incomplete
 	 *
 	 * @ApiProperty(
 	 *     attributes={
 	 *         "swagger_context"={
 	 *         	   "description" = "The status of this request.",
 	 *             "type"="string",
-	 *             "example"="submitted",
+	 *             "example"="incomplete",
 	 *             "maxLength"="255",
-	 *             "enum"={"incomplete", "complete", "submitted", "processed"}
+	 *             "enum"={"incomplete", "complete", "submitted", "processed"},
+	 *             "default"="incomplete"
 	 *         }
 	 *     }
-	 * )	 *
+	 * )	 
 	 *
      * @Assert\Choice({"incomplete", "complete", "submitted", "processed"})
-	 * @Assert\NotNull
 	 * @Assert\Length(
 	 *      max = 255
 	 * )
-	 * @Groups({"read"})
+	 * 
+	 * @Groups({"read","write"})
 	 * @ORM\Column(type="string", length=255)
-	 * @ApiFilter(SearchFilter::class, strategy="exact")
 	 */
-	private $status = "submitted";
+	private $status = "incomplete";
 	
 	/**
 	 * @var string $requestType The request type agains wich this request should be validated
@@ -118,65 +144,72 @@ class Request
 	 * )
 	 *
 	 * @Assert\NotNull
-	 * //@Assert\Url
+	 * @Assert\Url
 	 * @Assert\Length(
 	 *      max = 255
 	 * )
 	 * @Groups({"read","write"})
 	 * @ORM\Column(type="string", length=255)
-	 * @ApiFilter(SearchFilter::class, strategy="exact")
 	 */
 	private $requestType;
 	
 	/**
-	 * @var string $rsin The RSIN of the organisation that ownes this proces
+	 * @var string $targetOrganization The RSIN of the organization that should handle this request
 	 * @example 002851234
+	 * @deprecated
 	 *
 	 * @ApiProperty(
 	 *     attributes={
 	 *         "swagger_context"={
-	 *         	   "description" = "The RSIN of the organisation that ownes this proces",
+	 *         	   "description" = "The RSIN of the organization that should handle this request",
 	 *             "type"="string",
 	 *             "example"="002851234",
 	 *              "maxLength"="255",
-	 *             "required"=true
+	 *             "deprecated"=true
 	 *         }
 	 *     }
 	 * )
 	 *
-	 * @Assert\NotNull
 	 * @Groups({"read", "write"})
-	 * @ORM\Column(type="string", length=255)
-	 * @ApiFilter(SearchFilter::class, strategy="exact")
+	 * @ORM\Column(type="string", length=255, nullable=true)
 	 */
-	private $rsin;
+	private $targetOrganization;
 	
 	/**
-	 * @var string $submitter The BSN (if person) or RSIN (if organisation) that submited this request
+	 * @var string $submitter The BSN (if person) or RSIN (if organization) that is the primary submiter this request
 	 * @example 002851234
+	 * @deprecated
 	 *
 	 * @ApiProperty(
 	 *     attributes={
 	 *         "swagger_context"={
-	 *         	   "description" = "The BSN (if person) or RSIN (if organisation) that submited this request",
+	 *         	   "description" = "The BSN (if person) or RSIN (if organization) that is the primary submiter this request",
 	 *             "type"="string",
 	 *             "example"="002851234",
 	 *             "maxLength"="255",
-	 *             "required"=true
+	 *             "deprecated"=true
 	 *         }
 	 *     }
 	 * )
 	 *
-	 * @Assert\NotNull
 	 * @Groups({"read", "write"})
-	 * @ORM\Column(type="string", length=255)
-	 * @ApiFilter(SearchFilter::class, strategy="exact")
+	 * @ORM\Column(type="string", length=255, nullable=true)
 	 */
 	private $submitter;
 	
 	/**
+	 * @var string $submitters The submitters of this request
+	 * 
+     * @MaxDepth(1)
+	 * @Groups({"read", "write"})
+	 * @ORM\OneToMany(targetEntity="App\Entity\Submitter", mappedBy="request", orphanRemoval=true, fetch="EAGER", cascade={"persist"})
+	 */
+	private $submitters;
+	
+	/**
 	 * @var boolean $submitterPerson True if the submitters is a person
 	 * @example true
+	 * @deprecated
 	 *
 	 * @ApiProperty(
 	 *     attributes={
@@ -184,13 +217,14 @@ class Request
 	 *         	   "description" = "True if the submitters is a person",
 	 *             "type"="boolean",
 	 *             "example"=true,
-	 *             "default"=true
+	 *             "default"=true,
+	 *             "deprecated"=true
 	 *         }
 	 *     }
 	 * )
 	 *
 	 * @Groups({"read", "write"})
-	 * @ORM\Column(type="boolean")
+	 * @ORM\Column(type="boolean", nullable=true)
 	 */
 	private $submitterPerson = true;
 	
@@ -213,36 +247,17 @@ class Request
 	 * @ORM\Column(type="json_array")
 	 */
 	private $properties;
-	
+		
 	/**
-	 * @var array $cases cases from ZGW that are atached to this request
-	 * @example []
-	 *
-	 * @ApiProperty(
-	 *     attributes={
-	 *         "swagger_context"={
-	 *         	   "description" = "cases from ZGW that are atached to this request",
-	 *             "type"="array",
-	 *             "example"="[]"
-	 *         }
-	 *     }
-	 * )
-	 * @Groups({"read"})
-	 * @ORM\Column(type="array", nullable=true)
-	 */
-	private $cases = [];
-	
-	
-	/**
-	 * @var string $proces The proces type that made this request
+	 * @var string $processType The processType type that made this request
 	 * @example http://ptc.zaakonline.nl/9bd169ef-bc8c-4422-86ce-a0e7679ab67a
 	 *
 	 * @ApiProperty(
 	 *     attributes={
 	 *         "swagger_context"={
-	 *         	   "description" = "The proces type that made this reques",
+	 *         	   "description" = "The processType type that made this reques",
 	 *             "type"="string",
-	 *             "format"="uri",
+	 *             "format"="url",
 	 *             "example"="http://ptc.zaakonline.nl/9bd169ef-bc8c-4422-86ce-a0e7679ab67a",
 	 *             "maxLength"="255"
 	 *         }
@@ -255,14 +270,11 @@ class Request
 	 * )
 	 * @Groups({"read","write"})
 	 * @ORM\Column(type="string", length=255, nullable=true)
-	 * @ApiFilter(SearchFilter::class, strategy="exact")
 	 */
-	private $process;
+	private $processType;
 	
 	/**
 	 * @var Datetime $createdAt The moment this request was created by the submitter
-	 * 
-	 * 
 	 * @Groups({"read"})
      * @Gedmo\Timestampable(on="create")
 	 * @ORM\Column(type="datetime", nullable=true)
@@ -276,34 +288,59 @@ class Request
 	 * @ORM\Column(type="datetime", nullable=true)
 	 */
 	private $submittedAt;
+
+    /**
+	 * @var ArrayCollection $organisations Organisations that are handling this request
+	 * 
+     * @MaxDepth(1)
+	 * @Groups({"read","write"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Organisation", mappedBy="request", orphanRemoval=true, fetch="EAGER", cascade={"persist"})
+     */
+    private $organisations;
+
+    /**
+	 * @var ArrayCollection $openCases Any open cases currently atached to this request
+	 * 
+     * @MaxDepth(1)
+	 * @Groups({"read","write"})
+     * @ORM\OneToMany(targetEntity="App\Entity\OpenCase", mappedBy="request", orphanRemoval=true, fetch="EAGER", cascade={"persist"})
+     */
+    private $openCases;
+
+    public function __construct()
+    {
+        $this->submitters = new ArrayCollection();
+        $this->organisations = new ArrayCollection();
+        $this->openCases = new ArrayCollection();
+    }
 	
 	public function getId()
-	{
-		return $this->id;
-	}
+                                                      	{
+                                                      		return $this->id;
+                                                      	}
 	
 	public function getReference(): ?string
-	{
-		return $this->reference;
-	}
+                                                      	{
+                                                      		return $this->reference;
+                                                      	}
 	
 	public function setReference(string $reference): self
-	{
-		$this->reference = $reference;
-		
-		return $this;
-	}
+                                                      	{
+                                                      		$this->reference = $reference;
+                                                      		
+                                                      		return $this;
+                                                      	}
 	
 	public function getReferenceId(): ?int
-	{
-		return $this->reference;
-	}
+                                                      	{
+                                                      		return $this->reference;
+                                                      	}
 	
 	public function setReferenceId(int $referenceId): self
-	{
-		$this->referenceId = $referenceId;
-		
-		return $this;
+                                                      	{
+                                                      		$this->referenceId = $referenceId;
+                                                      		
+                                                      		return $this;
 	}
 	
 	public function getStatus(): ?string
@@ -318,111 +355,193 @@ class Request
 		return $this;
 	}
 	
+	
 	public function getRequestType(): ?string
-	{
-		return $this->requestType;
-	}
+                                                      	{
+                                                      		return $this->requestType;
+                                                      	}
 	
 	public function setRequestType(string $requestType): self
-	{
-		$this->requestType = $requestType;
-		
-		return $this;
-	}
+                                                      	{
+                                                      		$this->requestType = $requestType;
+                                                      		
+                                                      		return $this;
+                                                      	}
 	
-	public function getRsin(): ?string
-	{
-		return $this->rsin;
-	}
+	public function getTargetOrganization(): ?string
+                                                      	{
+                                                      		return $this->targetOrganization;
+                                                      	}
 	
-	public function setRsin(string $rsin): self
-	{
-		$this->rsin = $rsin;
-		
-		return $this;
-	}
+	public function setTargetOrganization(string $targetOrganization): self
+                                                      	{
+                                                      		$this->targetOrganization= $targetOrganization;
+                                                      		
+                                                      		return $this;
+                                                      	}
 	
 	public function getSubmitter(): ?string
-	{
-		return $this->submitter;
-	}
+                                                      	{
+                                                      		return $this->submitter;
+                                                      	}
 	
 	public function setSubmitter(string $submitter): self
-	{
-		$this->submitter = $submitter;
-		
-		return $this;
-	}
+                                                      	{
+                                                      		$this->submitter = $submitter;
+                                                      		
+                                                      		return $this;
+                                                      	}
 	
 	public function getSubmitterPerson(): ?bool
-	{
-		return $this->submitterPerson;
-	}
+                                                      	{
+                                                      		return $this->submitterPerson;
+                                                      	}
 	
 	public function setSubmitterPerson(bool $submitterPerson): self
-	{
-		$this->submitterPerson = $submitterPerson;
-		
-		return $this;
-	}
+                                                      	{
+                                                      		$this->submitterPerson = $submitterPerson;
+                                                      		
+                                                      		return $this;
+                                                      	}
 	
 	public function getProperties()
-	{
-		return $this->properties;
-	}
+                                                      	{
+                                                      		return $this->properties;
+                                                      	}
 	
 	public function setProperties($properties): self
-	{
-		$this->properties = $properties;
-		
-		return $this;
-	}
-	
-	public function getCases(): ?array
-	{
-		return $this->cases;
-	}
-	
-	public function setCases(?array $cases): self
-	{
-		$this->cases = $cases;
-		
-		return $this;
-	}
+                                                      	{
+                                                      		$this->properties = $properties;
+                                                      		
+                                                      		return $this;
+                                                      	}
 	
 	public function getProcess(): ?string
-	{
-		return $this->process;
-	}
+                                                      	{
+                                                      		return $this->process;
+                                                      	}
 	
 	public function setProcess(?string $process): self
-	{
-		$this->process = $process;
-		
-		return $this;
-	}
+                                                      	{
+                                                      		$this->process = $process;
+                                                      		
+                                                      		return $this;
+                                                      	}
 	
 	public function getCreatedAt(): ?\DateTimeInterface
-	{
-		return $this->createdAt;
-	}
+                                                      	{
+                                                      		return $this->createdAt;
+                                                      	}
 	
 	public function setCreatedAt(\DateTimeInterface $createdAt): self
-	{
-		$this->createdAt = $createdAt;
-		
-		return $this;
-	}
+                                                      	{
+                                                      		$this->createdAt = $createdAt;
+                                                      		
+                                                      		return $this;
+                                                      	}
 	
 	public function getSubmittedAt(): ?\DateTimeInterface
-	{
-		return $this->submittedAt;
-	}
+                                                      	{
+                                                      		return $this->submittedAt;
+                                                      	}
 	
 	public function setSubmittedAt(\DateTimeInterface $submittedAt): self
-	{
-		$this->submittedAt = $submittedAt;
-		
-		return $this;
-	}
+                                                      	{
+                                                      		$this->submittedAt = $submittedAt;
+                                                      		
+                                                      		return $this;
+                                                      	}
+
+    /**
+     * @return Collection|Submitter[]
+     */
+    public function getSubmitters(): Collection
+    {
+        return $this->submitters;
+    }
+
+    public function addSubmitter(Submitter $submitter): self
+    {
+        if (!$this->submitters->contains($submitter)) {
+            $this->submitters[] = $submitter;
+            $submitter->setRequest($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubmitter(Submitter $submitter): self
+    {
+        if ($this->submitters->contains($submitter)) {
+            $this->submitters->removeElement($submitter);
+            // set the owning side to null (unless already changed)
+            if ($submitter->getRequest() === $this) {
+                $submitter->setRequest(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Organisation[]
+     */
+    public function getOrganisations(): Collection
+    {
+        return $this->organisations;
+    }
+
+    public function addOrganisation(Organisation $organisation): self
+    {
+        if (!$this->organisations->contains($organisation)) {
+            $this->organisations[] = $organisation;
+            $organisation->setRequest($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrganisation(Organisation $organisation): self
+    {
+        if ($this->organisations->contains($organisation)) {
+            $this->organisations->removeElement($organisation);
+            // set the owning side to null (unless already changed)
+            if ($organisation->getRequest() === $this) {
+                $organisation->setRequest(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|OpenCase[]
+     */
+    public function getOpenCases(): Collection
+    {
+        return $this->openCases;
+    }
+
+    public function addOpenCase(OpenCase $openCase): self
+    {
+        if (!$this->openCases->contains($openCase)) {
+            $this->openCases[] = $openCase;
+            $openCase->setRequest($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOpenCase(OpenCase $openCase): self
+    {
+        if ($this->openCases->contains($openCase)) {
+            $this->openCases->removeElement($openCase);
+            // set the owning side to null (unless already changed)
+            if ($openCase->getRequest() === $this) {
+                $openCase->setRequest(null);
+            }
+        }
+
+        return $this;
+    }
 }
