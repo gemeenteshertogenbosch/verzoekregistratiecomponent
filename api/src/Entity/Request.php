@@ -67,7 +67,8 @@ class Request
 	private $id;
 	
 	/**
-	 * @param string $reference The human readable reference for this request, build as {gemeentecode}-{year}-{referenceId}. Where gemeentecode is a four digit number for gemeenten and a four letter abriviation for other organizations 
+	 * @var string $reference The human readable reference for this request, build as {gemeentecode}-{year}-{referenceId}. Where gemeentecode is a four digit number for gemeenten and a four letter abriviation for other organisations 
+	 * @example 6666-2019-0000000012
 	 *
 	 * @ApiProperty(
 	 *     attributes={
@@ -89,7 +90,7 @@ class Request
 	private $reference;
 	
 	/**
-	 * @param string $referenceId The autoincrementing id part of the reference, unique on a organization-year-id basis
+	 * @var string $referenceId The autoincrementing id part of the reference, unique on a organisation-year-id basis
 	 *	 
 	 * @Assert\Positive
 	 * @Assert\Length(
@@ -100,8 +101,7 @@ class Request
 	private $referenceId;
 	
 	/**
-	 * @param string $status The status of this request. e.g submitted
-	 * @example incomplete
+	 * @var string $status The status of this request. e.g submitted
 	 *
 	 * @ApiProperty(
 	 *     attributes={
@@ -319,6 +319,13 @@ class Request
                                                       		return $this->id;
                                                       	}
 	
+	public function setId($id): self
+	{
+	    $this->id = $id;
+	    
+	    return $this;
+	}
+	
 	public function getReference(): ?string
                                                       	{
                                                       		return $this->reference;
@@ -332,9 +339,9 @@ class Request
                                                       	}
 	
 	public function getReferenceId(): ?int
-                                                      	{
-                                                      		return $this->reference;
-                                                      	}
+	{
+		return $this->referenceId;
+	}
 	
 	public function setReferenceId(int $referenceId): self
                                                       	{
