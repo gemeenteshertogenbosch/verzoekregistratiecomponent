@@ -15,15 +15,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 /**
- * An opencase atached to a request
+ * An organization handling a request
  * 
  * @ApiResource(
  *     normalizationContext={"groups"={"read"}, "enable_max_depth"=true},
  *     denormalizationContext={"groups"={"write"}, "enable_max_depth"=true}
  * )
- * @ORM\Entity(repositoryClass="App\Repository\OpenCaseRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\OrganizationRepository")
  */
-class OpenCase
+class Organization
 {
 	/**
 	 * @var \Ramsey\Uuid\UuidInterface $id The UUID identifier of this object
@@ -51,43 +51,68 @@ class OpenCase
 	private $id;
 
     /**
-	 * @var string $openCase The OpenCase that is handling or supposed to handle this request
-	 * @example zrc.gemeente.nl/case/e2984465-190a-4562-829e-a8cca81aa35d
+	 * @var string $rsin The RSIN of a organization that is handling or supposed to handle this request
+	 * @example 002851234
 	 *
 	 * @ApiProperty(
 	 *     attributes={
 	 *         "swagger_context"={
-	 *         	   "description" = "The OpenCase that is handling or supposed to handle this request",
+	 *         	   "description" = "The RSIN of a organization that is handling or supposed to handle this request",
 	 *             "type"="string",
-	 *             "format"="url",
-	 *             "example"="zrc.gemeente.nl/case/e2984465-190a-4562-829e-a8cca81aa35d",
-	 *             "maxLength"="255",
+	 *             "example"="002851234",
+	 *              "maxLength"="255",
 	 *             "required"=true
 	 *         }
 	 *     }
 	 * )
 	 * 
-	 * @Assert\Url
-	 * @Assert\Length(
-	 *      max = 255
-	 * )
-     * @Groups({"read","write"})
+	 * @Assert\NotNull
+	 * @Groups({"read", "write"})
      * @ORM\Column(type="string", length=255)
      */
-    private $openCase;
-
+    private $rsin;
+    
     /**
-     * @var Object $request The request that this case is handling
+     * @param string $status The status of this request in the organization
+	 * @example none
+     *
+     * @ApiProperty(
+     *     attributes={
+     *         "swagger_context"={
+     *         	   "description" = "The status of this request in the organization",
+     *             "type"="string",
+     *             "example"="none",
+     *             "maxLength"="255",
+     *             "enum"={"none","accepted","processing","complete","rejected"},
+     *             "default"="none",
+     *         }
+     *     }
+     * )	 
+     *
+     * @Assert\Choice({"none","accepted","processing","complete","rejected"})
+     * @Assert\NotNull
+     * @Assert\Length(
+     *      max = 255
+     * )
+     * @Groups({"read","write"})
+     * @ORM\Column(type="string", length=255)
+     * @ApiFilter(SearchFilter::class, strategy="exact")
+     */
+    private $status = "none";
+    
+    /**
+     * @var Object $request The request that this organsisation is handling
      * 
      * @MaxDepth(1)
      * @Groups({"read","write"})
-     * @ORM\ManyToOne(targetEntity="App\Entity\Request", inversedBy="openCases")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Request", inversedBy="organizations")
      * @ORM\JoinColumn(nullable=false)
      */
     private $request;
     
     /**
-     * @var Datetime $createdAt  The moment this opencase was added to the request
+     * @var Datetime $createdAt The moment this submitter was added to the request
+     * 
      * @Groups({"read"})
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", nullable=true)
@@ -99,16 +124,28 @@ class OpenCase
         return $this->id;
     }
 
-    public function getOpenCase(): ?string
+    public function getRsin(): ?string
     {
-        return $this->openCase;
+        return $this->rsin;
     }
 
-    public function setOpenCase(string $openCase): self
+    public function setRsin(string $rsin): self
     {
-        $this->openCase = $openCase;
+        $this->rsin = $rsin;
 
         return $this;
+    }    
+    
+    public function getStatus(): ?string
+    {
+    	return $this->status;
+    }
+    
+    public function setStatus(string $status): self
+    {
+    	$this->status = $status;
+    	
+    	return $this;
     }
 
     public function getRequest(): ?Request

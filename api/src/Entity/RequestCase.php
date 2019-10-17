@@ -15,15 +15,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 /**
- * An organisation handling a request
+ * An case atached to a request
  * 
  * @ApiResource(
  *     normalizationContext={"groups"={"read"}, "enable_max_depth"=true},
  *     denormalizationContext={"groups"={"write"}, "enable_max_depth"=true}
  * )
- * @ORM\Entity(repositoryClass="App\Repository\OrganisationRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\RequestCaseRepository")
  */
-class Organisation
+class RequestCase
 {
 	/**
 	 * @var \Ramsey\Uuid\UuidInterface $id The UUID identifier of this object
@@ -51,101 +51,87 @@ class Organisation
 	private $id;
 
     /**
-	 * @var string $rsin The RSIN of a organization that is handling or supposed to handle this request
-	 * @example 002851234
+	 * @var string $requestCase The OpenCase that is handling or supposed to handle this request
+	 * @example zrc.gemeente.nl/case/e2984465-190a-4562-829e-a8cca81aa35d
 	 *
 	 * @ApiProperty(
 	 *     attributes={
 	 *         "swagger_context"={
-	 *         	   "description" = "The RSIN of a organization that is handling or supposed to handle this request",
+	 *         	   "description" = "The OpenCase that is handling or supposed to handle this request",
 	 *             "type"="string",
-	 *             "example"="002851234",
-	 *              "maxLength"="255",
+	 *             "format"="url",
+	 *             "example"="zrc.gemeente.nl/case/e2984465-190a-4562-829e-a8cca81aa35d",
+	 *             "maxLength"="255",
 	 *             "required"=true
 	 *         }
 	 *     }
 	 * )
 	 * 
-	 * @Assert\NotNull
-	 * @Groups({"read", "write"})
-     * @ORM\Column(type="string", length=255)
-     */
-    private $rsin;
-    
-    /**
-     * @param string $status The status of this request in the organisation
-	 * @example none
-     *
-     * @ApiProperty(
-     *     attributes={
-     *         "swagger_context"={
-     *         	   "description" = "The status of this request in the organisation",
-     *             "type"="string",
-     *             "example"="none",
-     *             "maxLength"="255",
-     *             "enum"={"none","accepted","processing","complete","rejected"},
-     *             "default"="none",
-     *         }
-     *     }
-     * )	 
-     *
-     * @Assert\Choice({"none","accepted","processing","complete","rejected"})
-     * @Assert\NotNull
-     * @Assert\Length(
-     *      max = 255
-     * )
+	 * @Assert\Url
+	 * @Assert\Length(
+	 *      max = 255
+	 * )
      * @Groups({"read","write"})
      * @ORM\Column(type="string", length=255)
-     * @ApiFilter(SearchFilter::class, strategy="exact")
      */
-    private $status = "none";
-    
+    private $requestCase;
+
     /**
-     * @var Object $request The request that this organsisation is handling
+     * @var Object $request The request that this case is handling
      * 
      * @MaxDepth(1)
      * @Groups({"read","write"})
-     * @ORM\ManyToOne(targetEntity="App\Entity\Request", inversedBy="organisations")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Request", inversedBy="requestCases")
      * @ORM\JoinColumn(nullable=false)
      */
     private $request;
     
     /**
-     * @var Datetime $createdAt The moment this submitter was added to the request
-     * 
+     * @var Datetime $createdAt  The moment this case was added to the request
      * @Groups({"read"})
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $createdAt;
 
+    /**
+	 * @var string $caseNumber The number of an case
+	 * @example 12345
+	 *
+	 * @ApiProperty(
+	 *     attributes={
+	 *         "swagger_context"={
+	 *         	   "description" = "The number of an case",
+	 *             "type"="string",
+	 *             "example"="12345",
+	 *             "maxLength"="255"
+	 *         }
+	 *     }
+	 * )
+	 * 
+	 * @Assert\Length(
+	 *      max = 255
+	 * )
+     * @Groups({"read","write"})
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $caseNumber;
+
     public function getId()
     {
         return $this->id;
     }
 
-    public function getRsin(): ?string
+    public function getRequestCase(): ?string
     {
-        return $this->rsin;
+    	return $this->requestCase;
     }
 
-    public function setRsin(string $rsin): self
+    public function setRequestCase(string $requestCase): self
     {
-        $this->rsin = $rsin;
+    	$this->requestCase = $requestCase;
 
         return $this;
-    }    
-    
-    public function getStatus(): ?string
-    {
-    	return $this->status;
-    }
-    
-    public function setStatus(string $status): self
-    {
-    	$this->status = $status;
-    	
-    	return $this;
     }
 
     public function getRequest(): ?Request
@@ -156,6 +142,18 @@ class Organisation
     public function setRequest(?Request $request): self
     {
         $this->request = $request;
+
+        return $this;
+    }
+
+    public function getCaseNumber(): ?string
+    {
+        return $this->caseNumber;
+    }
+
+    public function setCaseNumber(?string $caseNumber): self
+    {
+        $this->caseNumber = $caseNumber;
 
         return $this;
     }

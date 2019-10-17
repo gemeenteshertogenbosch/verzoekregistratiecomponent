@@ -131,7 +131,7 @@ class Submitter
 	 * @ApiProperty(
 	 *     attributes={
 	 *         "swagger_context"={
-	 *         	   "description" = "The RSIN of the organisation that submitted this request",
+	 *         	   "description" = "The RSIN of the organization that submitted this request",
 	 *             "type"="string",
 	 *             "format"="rsin",
 	 *             "example"="002851234",
@@ -146,7 +146,7 @@ class Submitter
 	 * @Groups({"read", "write"})
      * @ORM\Column(type="string", length=10, nullable=true)
      */
-    private $organisation;
+    private $organization;
 
     /**
      * @var Object $request The request that this submitter subitted
@@ -166,6 +166,33 @@ class Submitter
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $createdAt;
+
+    /**
+	 * @param string $role The role a party has on this request
+	 * @example initiator
+	 *
+	 * @ApiProperty(
+	 *     attributes={
+	 *         "swagger_context"={
+	 *         	   "description" = "The role a party has on this request",
+	 *             "type"="string",
+	 *             "example"="initiator",
+	 *             "maxLength"="255",
+	 *             "enum"={"advisor","practitioner","interested_party","interested_party","initiator","customer_care","coordinator","co_initiator"},
+	 *             "default"="initiator"
+	 *         }
+	 *     }
+	 * )	 
+	 *
+     * @Assert\Choice({"advisor","practitioner","interested_party","interested_party","initiator","customer_care","coordinator","co_initiator"})
+	 * @Assert\Length(
+	 *      max = 255
+	 * )
+	 * 
+	 * @Groups({"read","write"})
+     * @ORM\Column(type="string", length=255)
+     */
+    private $role = "initiator";
 
     public function getId()
     {
@@ -208,14 +235,14 @@ class Submitter
         return $this;
     }
 
-    public function getOrganisation(): ?string
+    public function getOrganization(): ?string
     {
-        return $this->organisation;
+        return $this->organization;
     }
 
-    public function setOrganisation(?string $organisation): self
+    public function setOrganization(?string $organization): self
     {
-        $this->organisation = $organisation;
+        $this->organization = $organization;
 
         return $this;
     }
@@ -228,6 +255,18 @@ class Submitter
     public function setRequest(?Request $request): self
     {
         $this->request = $request;
+
+        return $this;
+    }
+
+    public function getRole(): ?string
+    {
+        return $this->role;
+    }
+
+    public function setRole(string $role): self
+    {
+        $this->role = $role;
 
         return $this;
     }

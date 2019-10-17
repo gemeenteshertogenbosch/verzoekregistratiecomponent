@@ -6,12 +6,156 @@ info:
                           
     
 paths:
-  '/open_cases/{id}':
+  /organizations:
     get:
       tags:
-        - OpenCase
-      operationId: getOpenCaseItem
-      summary: 'Retrieves a OpenCase resource.'
+        - Organization
+      operationId: getOrganizationCollection
+      summary: 'Retrieves the collection of Organization resources.'
+      responses:
+        200:
+          description: 'Organization collection response'
+          content:
+            application/hal+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Organization-read'
+            application/ld+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Organization-read'
+            application/vnd.api+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Organization-read'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Organization-read'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Organization-read'
+            application/x-yaml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Organization-read'
+            text/csv:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Organization-read'
+            text/html:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Organization-read'
+      parameters:
+        -
+          name: status
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: 'status[]'
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+        -
+          name: page
+          in: query
+          required: false
+          description: 'The collection page number'
+          schema:
+            type: integer
+    post:
+      tags:
+        - Organization
+      operationId: postOrganizationCollection
+      summary: 'Creates a Organization resource.'
+      responses:
+        201:
+          description: 'Organization resource created'
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/Organization-read'
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Organization-read'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Organization-read'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization-read'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Organization-read'
+            application/x-yaml:
+              schema:
+                $ref: '#/components/schemas/Organization-read'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/Organization-read'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/Organization-read'
+          links:
+            GetOrganizationItem:
+              parameters:
+                id: '$response.body#/id'
+              operationId: getOrganizationItem
+              description: 'The `id` value returned in the response can be used as the `id` parameter in `GET /organizations/{id}`.'
+        400:
+          description: 'Invalid input'
+        404:
+          description: 'Resource not found'
+      requestBody:
+        content:
+          application/hal+json:
+            schema:
+              $ref: '#/components/schemas/Organization-write'
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/Organization-write'
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/Organization-write'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Organization-write'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Organization-write'
+          application/x-yaml:
+            schema:
+              $ref: '#/components/schemas/Organization-write'
+          text/csv:
+            schema:
+              $ref: '#/components/schemas/Organization-write'
+          text/html:
+            schema:
+              $ref: '#/components/schemas/Organization-write'
+        description: 'The new Organization resource'
+  '/organizations/{id}':
+    get:
+      tags:
+        - Organization
+      operationId: getOrganizationItem
+      summary: 'Retrieves a Organization resource.'
       parameters:
         -
           name: id
@@ -20,16 +164,57 @@ paths:
           schema:
             type: string
       responses:
-        204:
-          description: 'OpenCase resource response'
+        200:
+          description: 'Organization resource response'
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/Organization-read'
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Organization-read'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Organization-read'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization-read'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Organization-read'
+            application/x-yaml:
+              schema:
+                $ref: '#/components/schemas/Organization-read'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/Organization-read'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/Organization-read'
         404:
           description: 'Resource not found'
-  '/organisations/{id}':
-    get:
+    delete:
       tags:
-        - Organisation
-      operationId: getOrganisationItem
-      summary: 'Retrieves a Organisation resource.'
+        - Organization
+      operationId: deleteOrganizationItem
+      summary: 'Removes the Organization resource.'
+      responses:
+        204:
+          description: 'Organization resource deleted'
+        404:
+          description: 'Resource not found'
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+    put:
+      tags:
+        - Organization
+      operationId: putOrganizationItem
+      summary: 'Replaces the Organization resource.'
       parameters:
         -
           name: id
@@ -38,10 +223,465 @@ paths:
           schema:
             type: string
       responses:
-        204:
-          description: 'Organisation resource response'
+        200:
+          description: 'Organization resource updated'
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/Organization-read'
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Organization-read'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Organization-read'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization-read'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Organization-read'
+            application/x-yaml:
+              schema:
+                $ref: '#/components/schemas/Organization-read'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/Organization-read'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/Organization-read'
+        400:
+          description: 'Invalid input'
         404:
           description: 'Resource not found'
+      requestBody:
+        content:
+          application/hal+json:
+            schema:
+              $ref: '#/components/schemas/Organization-write'
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/Organization-write'
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/Organization-write'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Organization-write'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Organization-write'
+          application/x-yaml:
+            schema:
+              $ref: '#/components/schemas/Organization-write'
+          text/csv:
+            schema:
+              $ref: '#/components/schemas/Organization-write'
+          text/html:
+            schema:
+              $ref: '#/components/schemas/Organization-write'
+        description: 'The updated Organization resource'
+    patch:
+      tags:
+        - Organization
+      operationId: patchOrganizationItem
+      summary: 'Updates the Organization resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: 'Organization resource updated'
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/Organization-read'
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Organization-read'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Organization-read'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization-read'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Organization-read'
+            application/x-yaml:
+              schema:
+                $ref: '#/components/schemas/Organization-read'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/Organization-read'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/Organization-read'
+        400:
+          description: 'Invalid input'
+        404:
+          description: 'Resource not found'
+      requestBody:
+        content:
+          application/hal+json:
+            schema:
+              $ref: '#/components/schemas/Organization-write'
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/Organization-write'
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/Organization-write'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Organization-write'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Organization-write'
+          application/x-yaml:
+            schema:
+              $ref: '#/components/schemas/Organization-write'
+          text/csv:
+            schema:
+              $ref: '#/components/schemas/Organization-write'
+          text/html:
+            schema:
+              $ref: '#/components/schemas/Organization-write'
+        description: 'The updated Organization resource'
+  /request_cases:
+    get:
+      tags:
+        - RequestCase
+      operationId: getRequestCaseCollection
+      summary: 'Retrieves the collection of RequestCase resources.'
+      responses:
+        200:
+          description: 'RequestCase collection response'
+          content:
+            application/hal+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RequestCase-read'
+            application/ld+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RequestCase-read'
+            application/vnd.api+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RequestCase-read'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RequestCase-read'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RequestCase-read'
+            application/x-yaml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RequestCase-read'
+            text/csv:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RequestCase-read'
+            text/html:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RequestCase-read'
+      parameters:
+        -
+          name: page
+          in: query
+          required: false
+          description: 'The collection page number'
+          schema:
+            type: integer
+    post:
+      tags:
+        - RequestCase
+      operationId: postRequestCaseCollection
+      summary: 'Creates a RequestCase resource.'
+      responses:
+        201:
+          description: 'RequestCase resource created'
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/RequestCase-read'
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/RequestCase-read'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/RequestCase-read'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestCase-read'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestCase-read'
+            application/x-yaml:
+              schema:
+                $ref: '#/components/schemas/RequestCase-read'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/RequestCase-read'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/RequestCase-read'
+          links:
+            GetRequestCaseItem:
+              parameters:
+                id: '$response.body#/id'
+              operationId: getRequestCaseItem
+              description: 'The `id` value returned in the response can be used as the `id` parameter in `GET /request_cases/{id}`.'
+        400:
+          description: 'Invalid input'
+        404:
+          description: 'Resource not found'
+      requestBody:
+        content:
+          application/hal+json:
+            schema:
+              $ref: '#/components/schemas/RequestCase-write'
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/RequestCase-write'
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/RequestCase-write'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestCase-write'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/RequestCase-write'
+          application/x-yaml:
+            schema:
+              $ref: '#/components/schemas/RequestCase-write'
+          text/csv:
+            schema:
+              $ref: '#/components/schemas/RequestCase-write'
+          text/html:
+            schema:
+              $ref: '#/components/schemas/RequestCase-write'
+        description: 'The new RequestCase resource'
+  '/request_cases/{id}':
+    get:
+      tags:
+        - RequestCase
+      operationId: getRequestCaseItem
+      summary: 'Retrieves a RequestCase resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: 'RequestCase resource response'
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/RequestCase-read'
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/RequestCase-read'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/RequestCase-read'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestCase-read'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestCase-read'
+            application/x-yaml:
+              schema:
+                $ref: '#/components/schemas/RequestCase-read'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/RequestCase-read'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/RequestCase-read'
+        404:
+          description: 'Resource not found'
+    delete:
+      tags:
+        - RequestCase
+      operationId: deleteRequestCaseItem
+      summary: 'Removes the RequestCase resource.'
+      responses:
+        204:
+          description: 'RequestCase resource deleted'
+        404:
+          description: 'Resource not found'
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+    put:
+      tags:
+        - RequestCase
+      operationId: putRequestCaseItem
+      summary: 'Replaces the RequestCase resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: 'RequestCase resource updated'
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/RequestCase-read'
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/RequestCase-read'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/RequestCase-read'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestCase-read'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestCase-read'
+            application/x-yaml:
+              schema:
+                $ref: '#/components/schemas/RequestCase-read'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/RequestCase-read'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/RequestCase-read'
+        400:
+          description: 'Invalid input'
+        404:
+          description: 'Resource not found'
+      requestBody:
+        content:
+          application/hal+json:
+            schema:
+              $ref: '#/components/schemas/RequestCase-write'
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/RequestCase-write'
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/RequestCase-write'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestCase-write'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/RequestCase-write'
+          application/x-yaml:
+            schema:
+              $ref: '#/components/schemas/RequestCase-write'
+          text/csv:
+            schema:
+              $ref: '#/components/schemas/RequestCase-write'
+          text/html:
+            schema:
+              $ref: '#/components/schemas/RequestCase-write'
+        description: 'The updated RequestCase resource'
+    patch:
+      tags:
+        - RequestCase
+      operationId: patchRequestCaseItem
+      summary: 'Updates the RequestCase resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: 'RequestCase resource updated'
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/RequestCase-read'
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/RequestCase-read'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/RequestCase-read'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestCase-read'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RequestCase-read'
+            application/x-yaml:
+              schema:
+                $ref: '#/components/schemas/RequestCase-read'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/RequestCase-read'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/RequestCase-read'
+        400:
+          description: 'Invalid input'
+        404:
+          description: 'Resource not found'
+      requestBody:
+        content:
+          application/hal+json:
+            schema:
+              $ref: '#/components/schemas/RequestCase-write'
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/RequestCase-write'
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/RequestCase-write'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestCase-write'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/RequestCase-write'
+          application/x-yaml:
+            schema:
+              $ref: '#/components/schemas/RequestCase-write'
+          text/csv:
+            schema:
+              $ref: '#/components/schemas/RequestCase-write'
+          text/html:
+            schema:
+              $ref: '#/components/schemas/RequestCase-write'
+        description: 'The updated RequestCase resource'
   /requests:
     get:
       tags:
@@ -174,13 +814,13 @@ paths:
           style: form
           explode: true
         -
-          name: organisations.rsin
+          name: organizations.rsin
           in: query
           required: false
           schema:
             type: string
         -
-          name: 'organisations.rsin[]'
+          name: 'organizations.rsin[]'
           in: query
           required: false
           schema:
@@ -190,13 +830,13 @@ paths:
           style: form
           explode: true
         -
-          name: organisations.status
+          name: organizations.status
           in: query
           required: false
           schema:
             type: string
         -
-          name: 'organisations.status[]'
+          name: 'organizations.status[]'
           in: query
           required: false
           schema:
@@ -206,13 +846,13 @@ paths:
           style: form
           explode: true
         -
-          name: submitters.organisation
+          name: submitters.organization
           in: query
           required: false
           schema:
             type: string
         -
-          name: 'submitters.organisation[]'
+          name: 'submitters.organization[]'
           in: query
           required: false
           schema:
@@ -532,6 +1172,134 @@ paths:
             schema:
               $ref: '#/components/schemas/Request-write'
         description: 'The updated Request resource'
+  /submitters:
+    get:
+      tags:
+        - Submitter
+      operationId: getSubmitterCollection
+      summary: 'Retrieves the collection of Submitter resources.'
+      responses:
+        200:
+          description: 'Submitter collection response'
+          content:
+            application/hal+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Submitter-read'
+            application/ld+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Submitter-read'
+            application/vnd.api+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Submitter-read'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Submitter-read'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Submitter-read'
+            application/x-yaml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Submitter-read'
+            text/csv:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Submitter-read'
+            text/html:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Submitter-read'
+      parameters:
+        -
+          name: page
+          in: query
+          required: false
+          description: 'The collection page number'
+          schema:
+            type: integer
+    post:
+      tags:
+        - Submitter
+      operationId: postSubmitterCollection
+      summary: 'Creates a Submitter resource.'
+      responses:
+        201:
+          description: 'Submitter resource created'
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/Submitter-read'
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Submitter-read'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Submitter-read'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Submitter-read'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Submitter-read'
+            application/x-yaml:
+              schema:
+                $ref: '#/components/schemas/Submitter-read'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/Submitter-read'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/Submitter-read'
+          links:
+            GetSubmitterItem:
+              parameters:
+                id: '$response.body#/id'
+              operationId: getSubmitterItem
+              description: 'The `id` value returned in the response can be used as the `id` parameter in `GET /submitters/{id}`.'
+        400:
+          description: 'Invalid input'
+        404:
+          description: 'Resource not found'
+      requestBody:
+        content:
+          application/hal+json:
+            schema:
+              $ref: '#/components/schemas/Submitter-write'
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/Submitter-write'
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/Submitter-write'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Submitter-write'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Submitter-write'
+          application/x-yaml:
+            schema:
+              $ref: '#/components/schemas/Submitter-write'
+          text/csv:
+            schema:
+              $ref: '#/components/schemas/Submitter-write'
+          text/html:
+            schema:
+              $ref: '#/components/schemas/Submitter-write'
+        description: 'The new Submitter resource'
   '/submitters/{id}':
     get:
       tags:
@@ -546,39 +1314,199 @@ paths:
           schema:
             type: string
       responses:
-        204:
+        200:
           description: 'Submitter resource response'
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/Submitter-read'
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Submitter-read'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Submitter-read'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Submitter-read'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Submitter-read'
+            application/x-yaml:
+              schema:
+                $ref: '#/components/schemas/Submitter-read'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/Submitter-read'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/Submitter-read'
         404:
           description: 'Resource not found'
+    delete:
+      tags:
+        - Submitter
+      operationId: deleteSubmitterItem
+      summary: 'Removes the Submitter resource.'
+      responses:
+        204:
+          description: 'Submitter resource deleted'
+        404:
+          description: 'Resource not found'
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+    put:
+      tags:
+        - Submitter
+      operationId: putSubmitterItem
+      summary: 'Replaces the Submitter resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: 'Submitter resource updated'
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/Submitter-read'
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Submitter-read'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Submitter-read'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Submitter-read'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Submitter-read'
+            application/x-yaml:
+              schema:
+                $ref: '#/components/schemas/Submitter-read'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/Submitter-read'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/Submitter-read'
+        400:
+          description: 'Invalid input'
+        404:
+          description: 'Resource not found'
+      requestBody:
+        content:
+          application/hal+json:
+            schema:
+              $ref: '#/components/schemas/Submitter-write'
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/Submitter-write'
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/Submitter-write'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Submitter-write'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Submitter-write'
+          application/x-yaml:
+            schema:
+              $ref: '#/components/schemas/Submitter-write'
+          text/csv:
+            schema:
+              $ref: '#/components/schemas/Submitter-write'
+          text/html:
+            schema:
+              $ref: '#/components/schemas/Submitter-write'
+        description: 'The updated Submitter resource'
+    patch:
+      tags:
+        - Submitter
+      operationId: patchSubmitterItem
+      summary: 'Updates the Submitter resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: 'Submitter resource updated'
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/Submitter-read'
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Submitter-read'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Submitter-read'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Submitter-read'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Submitter-read'
+            application/x-yaml:
+              schema:
+                $ref: '#/components/schemas/Submitter-read'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/Submitter-read'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/Submitter-read'
+        400:
+          description: 'Invalid input'
+        404:
+          description: 'Resource not found'
+      requestBody:
+        content:
+          application/hal+json:
+            schema:
+              $ref: '#/components/schemas/Submitter-write'
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/Submitter-write'
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/Submitter-write'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Submitter-write'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Submitter-write'
+          application/x-yaml:
+            schema:
+              $ref: '#/components/schemas/Submitter-write'
+          text/csv:
+            schema:
+              $ref: '#/components/schemas/Submitter-write'
+          text/html:
+            schema:
+              $ref: '#/components/schemas/Submitter-write'
+        description: 'The updated Submitter resource'
 components:
   schemas:
-    OpenCase-read:
+    Organization-read:
       type: object
-      description: 'An opencase atached to a request'
-      properties:
-        id:
-          readOnly: true
-          description: 'The UUID identifier of this object'
-          type: string
-        open_case:
-          description: 'The OpenCase that is handling or supposed to handle this request'
-          type: string
-        request:
-          description: 'The request that this case is handling'
-          $ref: '#/components/schemas/Request-read'
-    OpenCase-write:
-      type: object
-      description: 'An opencase atached to a request'
-      properties:
-        open_case:
-          description: 'The OpenCase that is handling or supposed to handle this request'
-          type: string
-        request:
-          description: 'The request that this case is handling'
-          $ref: '#/components/schemas/Request-write'
-    Organisation-read:
-      type: object
-      description: 'An organisation handling a request'
+      description: 'An organization handling a request'
       properties:
         id:
           readOnly: true
@@ -595,9 +1523,9 @@ components:
       required:
         - rsin
         - status
-    Organisation-write:
+    Organization-write:
       type: object
-      description: 'An organisation handling a request'
+      description: 'An organization handling a request'
       required:
         - rsin
         - status
@@ -612,7 +1540,7 @@ components:
           $ref: '#/components/schemas/Request-write'
     Request-read:
       type: object
-      description: 'A request (or verzoek in dutch) to an organizations (usually govenmental) to do ''something'' on behave of a citicen or other organisation'
+      description: 'A request (or verzoek in dutch) to an organizations (usually govenmental) to do ''something'' on behave of a citicen or other organization'
       properties:
         id:
           readOnly: true
@@ -655,21 +1583,29 @@ components:
           description: 'The moment this request was submitted by the submitter'
           type: string
           format: date-time
-        organisations:
-          description: 'Organisations that are handling this request'
+        organizations:
+          description: 'Organizations that are handling this request, the use of this under disucion since it would mean giving an organization all request info there where it might need less. Forcing AVG issues upon parties. The sollotion for this might be found in goal binding.'
           type: array
           items:
-            $ref: '#/components/schemas/Organisation-read'
-        open_cases:
-          description: 'Any open cases currently atached to this request'
+            $ref: '#/components/schemas/Organization-read'
+        request_cases:
+          description: 'Any or all cases currently atached to this request'
           type: array
           items:
-            $ref: '#/components/schemas/OpenCase-read'
+            $ref: '#/components/schemas/RequestCase-read'
+        parent:
+          description: 'The request that this request was based on'
+          $ref: '#/components/schemas/Request-read'
+        children:
+          description: 'The requests that are bassed on this request'
+          type: array
+          items:
+            $ref: '#/components/schemas/Request-read'
       required:
         - request_type
     Request-write:
       type: object
-      description: 'A request (or verzoek in dutch) to an organizations (usually govenmental) to do ''something'' on behave of a citicen or other organisation'
+      description: 'A request (or verzoek in dutch) to an organizations (usually govenmental) to do ''something'' on behave of a citicen or other organization'
       properties:
         status:
           type: string
@@ -695,18 +1631,56 @@ components:
           type: array
           items:
             type: string
-        organisations:
-          description: 'Organisations that are handling this request'
+        organizations:
+          description: 'Organizations that are handling this request, the use of this under disucion since it would mean giving an organization all request info there where it might need less. Forcing AVG issues upon parties. The sollotion for this might be found in goal binding.'
           type: array
           items:
-            $ref: '#/components/schemas/Organisation-write'
-        open_cases:
-          description: 'Any open cases currently atached to this request'
+            $ref: '#/components/schemas/Organization-write'
+        request_cases:
+          description: 'Any or all cases currently atached to this request'
           type: array
           items:
-            $ref: '#/components/schemas/OpenCase-write'
+            $ref: '#/components/schemas/RequestCase-write'
+        parent:
+          description: 'The request that this request was based on'
+          $ref: '#/components/schemas/Request-write'
+        children:
+          description: 'The requests that are bassed on this request'
+          type: array
+          items:
+            $ref: '#/components/schemas/Request-write'
       required:
         - request_type
+    RequestCase-read:
+      type: object
+      description: 'An case atached to a request'
+      properties:
+        id:
+          readOnly: true
+          description: 'The UUID identifier of this object'
+          type: string
+        request_case:
+          description: 'The OpenCase that is handling or supposed to handle this request'
+          type: string
+        request:
+          description: 'The request that this case is handling'
+          $ref: '#/components/schemas/Request-read'
+        case_number:
+          description: 'The number of an case'
+          type: string
+    RequestCase-write:
+      type: object
+      description: 'An case atached to a request'
+      properties:
+        request_case:
+          description: 'The OpenCase that is handling or supposed to handle this request'
+          type: string
+        request:
+          description: 'The request that this case is handling'
+          $ref: '#/components/schemas/Request-write'
+        case_number:
+          description: 'The number of an case'
+          type: string
     Submitter-read:
       type: object
       description: 'The submitters of a request'
@@ -721,12 +1695,14 @@ components:
         person:
           description: 'The BSN of the person that submitted this request'
           type: string
-        organisation:
+        organization:
           description: 'The RSIN of the organization that submitted this request'
           type: string
         request:
           description: 'The request that this submitter subitted'
           $ref: '#/components/schemas/Request-read'
+        role:
+          type: string
     Submitter-write:
       type: object
       description: 'The submitters of a request'
@@ -737,12 +1713,14 @@ components:
         person:
           description: 'The BSN of the person that submitted this request'
           type: string
-        organisation:
+        organization:
           description: 'The RSIN of the organization that submitted this request'
           type: string
         request:
           description: 'The request that this submitter subitted'
           $ref: '#/components/schemas/Request-write'
+        role:
+          type: string
 host: vrc.zaakonline.nl
 servers:
   -

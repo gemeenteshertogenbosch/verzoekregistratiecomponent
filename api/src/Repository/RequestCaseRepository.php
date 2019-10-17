@@ -2,21 +2,21 @@
 
 namespace App\Repository;
 
-use App\Entity\OpenCase;
+use App\Entity\RequestCase;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
- * @method OpenCase|null find($id, $lockMode = null, $lockVersion = null)
- * @method OpenCase|null findOneBy(array $criteria, array $orderBy = null)
- * @method OpenCase[]    findAll()
- * @method OpenCase[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method RequestCase|null find($id, $lockMode = null, $lockVersion = null)
+ * @method RequestCase|null findOneBy(array $criteria, array $orderBy = null)
+ * @method RequestCase[]    findAll()
+ * @method RequestCase[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class OpenCaseRepository extends ServiceEntityRepository
+class RequestCaseRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, OpenCase::class);
+    	parent::__construct($registry, RequestCase::class);
     }
 
     // /**
