@@ -51,13 +51,13 @@ class Submitter
 	private $id;
 
     /**
-     * @var string $assent The Assent that is ussued to check if this submitter given assent to this request
+     * @var string $assent The Assent that is used to check if this submitter given assent to this request
 	 * @example irc.zaakonline.nl/assent/e2984465-190a-4562-829e-a8cca81aa35d
 	 *
 	 * @ApiProperty(
 	 *     attributes={
 	 *         "swagger_context"={
-	 *         	   "description" = "The Assent that is ussued to check if this submitter given assent to this request",
+	 *         	   "description" = "The Assent that is used to check if this submitter given assent to this request",
 	 *             "type"="string",
 	 *             "format"="url",
 	 *             "example"="irc.zaakonline.nl/assent/e2984465-190a-4562-829e-a8cca81aa35d",
@@ -76,13 +76,13 @@ class Submitter
 	private $assent;
 	
 	/**
-     * @var string $contact The person that is ussued for contact information if no BSN or identification of subitter is required
+     * @var string $contact The person that is used for contact information if no BSN or identification of the subitter is required
 	 * @example crc.zaakonline.nl/person/e2984465-190a-4562-829e-a8cca81aa35d
 	 *
 	 * @ApiProperty(
 	 *     attributes={
 	 *         "swagger_context"={
-	 *         	   "description" = "The person that is ussued for contact information if no BSN or identification of subitter is required",
+	 *         	   "description" = "The person that is used for contact information if no BSN or identification of the subitter is required",
 	 *             "type"="string",
 	 *             "format"="url",
 	 *             "example"="crc.zaakonline.nl/person/e2984465-190a-4562-829e-a8cca81aa35d",
@@ -149,7 +149,7 @@ class Submitter
     private $organization;
 
     /**
-     * @var Object $request The request that this submitter subitted
+     * @var Object $request The request that this submitter submitted
      * 
      * @MaxDepth(1)
 	 * @Groups({"read", "write"})
@@ -168,13 +168,13 @@ class Submitter
     private $createdAt;
 
     /**
-	 * @param string $role The role a party has on this request
+	 * @param string $role The role that a party has on this request
 	 * @example initiator
 	 *
 	 * @ApiProperty(
 	 *     attributes={
 	 *         "swagger_context"={
-	 *         	   "description" = "The role a party has on this request",
+	 *         	   "description" = "The role that a party has on this request",
 	 *             "type"="string",
 	 *             "example"="initiator",
 	 *             "maxLength"="255",
