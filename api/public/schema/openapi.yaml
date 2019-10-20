@@ -1540,7 +1540,7 @@ components:
           $ref: '#/components/schemas/Request-write'
     Request-read:
       type: object
-      description: 'A request (or verzoek in dutch) to an organizations (usually govenmental) to do ''something'' on behave of a citicen or other organization'
+      description: 'A request (or verzoek in dutch) to an organization (usually governmental) to do ''something'' on behalf of a citizen or another organization'
       properties:
         id:
           readOnly: true
@@ -1552,13 +1552,13 @@ components:
         status:
           type: string
         request_type:
-          description: 'The request type agains wich this request should be validated'
+          description: 'The type of request against which this request should be validated'
           type: string
         target_organization:
           description: 'The RSIN of the organization that should handle this request'
           type: string
         submitter:
-          description: 'The BSN (if person) or RSIN (if organization) that is the primary submiter this request'
+          description: 'The BSN (if its a person) or RSIN (if its an organization) that is the primary submiter of this request'
           type: string
         submitters:
           description: 'The submitters of this request'
@@ -1566,7 +1566,7 @@ components:
           items:
             $ref: '#/components/schemas/Submitter-read'
         submitter_person:
-          description: 'True if the submitters is a person'
+          description: 'True if the submitter is a person'
           type: boolean
         properties:
           description: 'The actual properties of the request'
@@ -1584,12 +1584,12 @@ components:
           type: string
           format: date-time
         organizations:
-          description: 'Organizations that are handling this request, the use of this under disucion since it would mean giving an organization all request info there where it might need less. Forcing AVG issues upon parties. The sollotion for this might be found in goal binding.'
+          description: 'Organizations that are handling this request, the use of this under discussion since it would mean giving an organization all request info there where it might need less. Forcing AVG issues upon the parties. The sollotion for this might be found in goal binding.'
           type: array
           items:
             $ref: '#/components/schemas/Organization-read'
         request_cases:
-          description: 'Any or all cases currently atached to this request'
+          description: 'Any or all cases currently attached to this request'
           type: array
           items:
             $ref: '#/components/schemas/RequestCase-read'
@@ -1605,18 +1605,18 @@ components:
         - request_type
     Request-write:
       type: object
-      description: 'A request (or verzoek in dutch) to an organizations (usually govenmental) to do ''something'' on behave of a citicen or other organization'
+      description: 'A request (or verzoek in dutch) to an organization (usually governmental) to do ''something'' on behalf of a citizen or another organization'
       properties:
         status:
           type: string
         request_type:
-          description: 'The request type agains wich this request should be validated'
+          description: 'The type of request against which this request should be validated'
           type: string
         target_organization:
           description: 'The RSIN of the organization that should handle this request'
           type: string
         submitter:
-          description: 'The BSN (if person) or RSIN (if organization) that is the primary submiter this request'
+          description: 'The BSN (if its a person) or RSIN (if its an organization) that is the primary submiter of this request'
           type: string
         submitters:
           description: 'The submitters of this request'
@@ -1624,7 +1624,7 @@ components:
           items:
             $ref: '#/components/schemas/Submitter-write'
         submitter_person:
-          description: 'True if the submitters is a person'
+          description: 'True if the submitter is a person'
           type: boolean
         properties:
           description: 'The actual properties of the request'
@@ -1632,12 +1632,12 @@ components:
           items:
             type: string
         organizations:
-          description: 'Organizations that are handling this request, the use of this under disucion since it would mean giving an organization all request info there where it might need less. Forcing AVG issues upon parties. The sollotion for this might be found in goal binding.'
+          description: 'Organizations that are handling this request, the use of this under discussion since it would mean giving an organization all request info there where it might need less. Forcing AVG issues upon the parties. The sollotion for this might be found in goal binding.'
           type: array
           items:
             $ref: '#/components/schemas/Organization-write'
         request_cases:
-          description: 'Any or all cases currently atached to this request'
+          description: 'Any or all cases currently attached to this request'
           type: array
           items:
             $ref: '#/components/schemas/RequestCase-write'
@@ -1660,7 +1660,7 @@ components:
           description: 'The UUID identifier of this object'
           type: string
         request_case:
-          description: 'The OpenCase that is handling or supposed to handle this request'
+          description: 'The OpenCase that is handling this request or supposed to handle this request'
           type: string
         request:
           description: 'The request that this case is handling'
@@ -1673,7 +1673,7 @@ components:
       description: 'An case atached to a request'
       properties:
         request_case:
-          description: 'The OpenCase that is handling or supposed to handle this request'
+          description: 'The OpenCase that is handling this request or supposed to handle this request'
           type: string
         request:
           description: 'The request that this case is handling'
@@ -1690,7 +1690,7 @@ components:
           description: 'The UUID identifier of this object'
           type: string
         assent:
-          description: 'The Assent that is ussued to check if this submitter given assent to this request'
+          description: 'The Assent that is used to check if this submitter given assent to this request'
           type: string
         person:
           description: 'The BSN of the person that submitted this request'
@@ -1699,7 +1699,7 @@ components:
           description: 'The RSIN of the organization that submitted this request'
           type: string
         request:
-          description: 'The request that this submitter subitted'
+          description: 'The request that this submitter submitted'
           $ref: '#/components/schemas/Request-read'
         role:
           type: string
@@ -1708,7 +1708,7 @@ components:
       description: 'The submitters of a request'
       properties:
         assent:
-          description: 'The Assent that is ussued to check if this submitter given assent to this request'
+          description: 'The Assent that is used to check if this submitter given assent to this request'
           type: string
         person:
           description: 'The BSN of the person that submitted this request'
@@ -1717,7 +1717,7 @@ components:
           description: 'The RSIN of the organization that submitted this request'
           type: string
         request:
-          description: 'The request that this submitter subitted'
+          description: 'The request that this submitter submitted'
           $ref: '#/components/schemas/Request-write'
         role:
           type: string
