@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 /**
- * A request (or verzoek in dutch) to an organizations (usually govenmental) to do 'something' on behave of a citicen or other organization
+ * A request (or verzoek in dutch) to an organization (usually governmental) to do 'something' on behalf of a citizen or another organization
  *
  * @ApiResource(
  *     normalizationContext={"groups"={"read"}, "enable_max_depth"=true},
@@ -67,12 +67,12 @@ class Request
 	private $id;
 	
 	/**
-	 * @param string $reference The human readable reference for this request, build as {gemeentecode}-{year}-{referenceId}. Where gemeentecode is a four digit number for gemeenten and a four letter abriviation for other organizations 
+	 * @param string $reference The human readable reference of this request, build as {gemeentecode}-{year}-{referenceId}. Where gemeentecode is a four digit number for gemeenten and a four letter abriviation for other organizations 
 	 *
 	 * @ApiProperty(
 	 *     attributes={
 	 *         "swagger_context"={
-	 *         	   "description" = "The human readable reference for this request",
+	 *         	   "description" = "The human readable reference of this request",
 	 *             "type"="string",
 	 *             "example"="6666-2019-0000000012",
 	 *             "maxLength"="255"
@@ -89,7 +89,7 @@ class Request
 	private $reference;
 	
 	/**
-	 * @param string $referenceId The autoincrementing id part of the reference, unique on a organization-year-id basis
+	 * @param string $referenceId The autoincrementing id part of the reference, unique on an organization-year-id basis
 	 *	 
 	 * @Assert\Positive
 	 * @Assert\Length(
@@ -106,7 +106,7 @@ class Request
 	 * @ApiProperty(
 	 *     attributes={
 	 *         "swagger_context"={
-	 *         	   "description" = "The status of this request. Where *incomplete* is un infinished request, *complete* means that a request has been posted by the submitter, *submitted* means that an organization has started handling he request and *processed* means that any or all casses atached to a request have been handled ",
+	 *         	   "description" = "The status of this request. Where *incomplete* is unfinished request, *complete* means that a request has been posted by the submitter, *submitted* means that an organization has started handling the request and *processed* means that any or all cases attached to a request have been handled ",
 	 *             "type"="string",
 	 *             "example"="incomplete",
 	 *             "maxLength"="255",
@@ -127,13 +127,13 @@ class Request
 	private $status = "incomplete";
 	
 	/**
-	 * @var string $requestType The request type agains wich this request should be validated
+	 * @var string $requestType The type of request against which this request should be validated
 	 * @example http://vtc.zaakonline.nl/9bd169ef-bc8c-4422-86ce-a0e7679ab67a
 	 *
 	 * @ApiProperty(
 	 *     attributes={
 	 *         "swagger_context"={
-	 *         	   "description" = "The request type agains wich this request should be validated",
+	 *         	   "description" = "The type of request against which this request should be validated",
 	 *             "type"="string",
 	 *             "format"="uri",
 	 *             "example"="http://vtc.zaakonline.nl/9bd169ef-bc8c-4422-86ce-a0e7679ab67a",
@@ -176,14 +176,14 @@ class Request
 	private $targetOrganization;
 	
 	/**
-	 * @var string $submitter The BSN (if person) or RSIN (if organization) that is the primary submiter this request
+	 * @var string $submitter The BSN (if its a person) or RSIN (if its an organization) that is the primary submiter of this request
 	 * @example 002851234
 	 * @deprecated
 	 *
 	 * @ApiProperty(
 	 *     attributes={
 	 *         "swagger_context"={
-	 *         	   "description" = "The BSN (if person) or RSIN (if organization) that is the primary submiter this request",
+	 *         	   "description" = "The BSN (if its a person) or RSIN (if its an organization) that is the primary submiter of this request",
 	 *             "type"="string",
 	 *             "example"="002851234",
 	 *             "maxLength"="255",
@@ -207,14 +207,14 @@ class Request
 	private $submitters;
 	
 	/**
-	 * @var boolean $submitterPerson True if the submitters is a person
+	 * @var boolean $submitterPerson True if the submitter is a person
 	 * @example true
 	 * @deprecated
 	 *
 	 * @ApiProperty(
 	 *     attributes={
 	 *         "swagger_context"={
-	 *         	   "description" = "True if the submitters is a person",
+	 *         	   "description" = "True if the submitter is a person",
 	 *             "type"="boolean",
 	 *             "example"=true,
 	 *             "default"=true,
@@ -249,13 +249,13 @@ class Request
 	private $properties;
 		
 	/**
-	 * @var string $processType The processType type that made this request
+	 * @var string $processType The processType that made this request
 	 * @example http://ptc.zaakonline.nl/9bd169ef-bc8c-4422-86ce-a0e7679ab67a
 	 *
 	 * @ApiProperty(
 	 *     attributes={
 	 *         "swagger_context"={
-	 *         	   "description" = "The processType type that made this reques",
+	 *         	   "description" = "The processType that made this request",
 	 *             "type"="string",
 	 *             "format"="url",
 	 *             "example"="http://ptc.zaakonline.nl/9bd169ef-bc8c-4422-86ce-a0e7679ab67a",
@@ -290,7 +290,7 @@ class Request
 	private $submittedAt;
 
     /**
-	 * @var ArrayCollection $organizations Organizations that are handling this request, the use of this under disucion since it would mean giving an organization all request info there where it might need less. Forcing AVG issues upon parties. The sollotion for this might be found in goal binding.
+	 * @var ArrayCollection $organizations Organizations that are handling this request, the use of this under discussion since it would mean giving an organization all request info there where it might need less. Forcing AVG issues upon the parties. The sollotion for this might be found in goal binding.
 	 * 
      * @MaxDepth(1)
 	 * @Groups({"read","write"})
@@ -299,7 +299,7 @@ class Request
     private $organizations;
 
     /**
-	 * @var ArrayCollection $requestCases Any or all cases currently atached to this request
+	 * @var ArrayCollection $requestCases Any or all cases currently attached to this request
 	 * 
      * @MaxDepth(1)
 	 * @Groups({"read","write"})

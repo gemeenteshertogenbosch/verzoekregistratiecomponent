@@ -51,13 +51,13 @@ class RequestCase
 	private $id;
 
     /**
-	 * @var string $requestCase The OpenCase that is handling or supposed to handle this request
+	 * @var string $requestCase The OpenCase that is handling this request or supposed to handle this request
 	 * @example zrc.gemeente.nl/case/e2984465-190a-4562-829e-a8cca81aa35d
 	 *
 	 * @ApiProperty(
 	 *     attributes={
 	 *         "swagger_context"={
-	 *         	   "description" = "The OpenCase that is handling or supposed to handle this request",
+	 *         	   "description" = "The OpenCase that is handling this request or supposed to handle this request",
 	 *             "type"="string",
 	 *             "format"="url",
 	 *             "example"="zrc.gemeente.nl/case/e2984465-190a-4562-829e-a8cca81aa35d",
