@@ -80,6 +80,39 @@ paths:
           description: 'The collection page number'
           schema:
             type: integer
+        -
+          name: API-Version
+          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Request-User-Id
+          description: 'The id of the user performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Application-Id
+          description: 'The id of the application performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Subject-Identifier
+          description: 'An subject identifier for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678,kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
     post:
       tags:
         - Organization
@@ -150,6 +183,40 @@ paths:
             schema:
               $ref: '#/components/schemas/Organization-write'
         description: 'The new Organization resource'
+      parameters:
+        -
+          name: API-Version
+          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Request-User-Id
+          description: 'The id of the user performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Application-Id
+          description: 'The id of the application performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Subject-Identifier
+          description: 'An subject identifier for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678,kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
   '/organizations/{id}':
     get:
       tags:
@@ -163,6 +230,39 @@ paths:
           required: true
           schema:
             type: string
+        -
+          name: API-Version
+          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Request-User-Id
+          description: 'The id of the user performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Application-Id
+          description: 'The id of the application performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Subject-Identifier
+          description: 'An subject identifier for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678,kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
       responses:
         200:
           description: 'Organization resource response'
@@ -210,6 +310,39 @@ paths:
           required: true
           schema:
             type: string
+        -
+          name: API-Version
+          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Request-User-Id
+          description: 'The id of the user performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Application-Id
+          description: 'The id of the application performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Subject-Identifier
+          description: 'An subject identifier for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678,kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
     put:
       tags:
         - Organization
@@ -222,6 +355,39 @@ paths:
           required: true
           schema:
             type: string
+        -
+          name: API-Version
+          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Request-User-Id
+          description: 'The id of the user performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Application-Id
+          description: 'The id of the application performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Subject-Identifier
+          description: 'An subject identifier for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678,kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
       responses:
         200:
           description: 'Organization resource updated'
@@ -293,6 +459,39 @@ paths:
           required: true
           schema:
             type: string
+        -
+          name: API-Version
+          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Request-User-Id
+          description: 'The id of the user performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Application-Id
+          description: 'The id of the application performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Subject-Identifier
+          description: 'An subject identifier for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678,kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
       responses:
         200:
           description: 'Organization resource updated'
@@ -410,6 +609,39 @@ paths:
           description: 'The collection page number'
           schema:
             type: integer
+        -
+          name: API-Version
+          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Request-User-Id
+          description: 'The id of the user performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Application-Id
+          description: 'The id of the application performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Subject-Identifier
+          description: 'An subject identifier for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678,kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
     post:
       tags:
         - RequestCase
@@ -480,6 +712,40 @@ paths:
             schema:
               $ref: '#/components/schemas/RequestCase-write'
         description: 'The new RequestCase resource'
+      parameters:
+        -
+          name: API-Version
+          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Request-User-Id
+          description: 'The id of the user performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Application-Id
+          description: 'The id of the application performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Subject-Identifier
+          description: 'An subject identifier for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678,kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
   '/request_cases/{id}':
     get:
       tags:
@@ -493,6 +759,39 @@ paths:
           required: true
           schema:
             type: string
+        -
+          name: API-Version
+          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Request-User-Id
+          description: 'The id of the user performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Application-Id
+          description: 'The id of the application performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Subject-Identifier
+          description: 'An subject identifier for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678,kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
       responses:
         200:
           description: 'RequestCase resource response'
@@ -540,6 +839,39 @@ paths:
           required: true
           schema:
             type: string
+        -
+          name: API-Version
+          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Request-User-Id
+          description: 'The id of the user performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Application-Id
+          description: 'The id of the application performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Subject-Identifier
+          description: 'An subject identifier for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678,kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
     put:
       tags:
         - RequestCase
@@ -552,6 +884,39 @@ paths:
           required: true
           schema:
             type: string
+        -
+          name: API-Version
+          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Request-User-Id
+          description: 'The id of the user performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Application-Id
+          description: 'The id of the application performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Subject-Identifier
+          description: 'An subject identifier for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678,kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
       responses:
         200:
           description: 'RequestCase resource updated'
@@ -623,6 +988,39 @@ paths:
           required: true
           schema:
             type: string
+        -
+          name: API-Version
+          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Request-User-Id
+          description: 'The id of the user performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Application-Id
+          description: 'The id of the application performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Subject-Identifier
+          description: 'An subject identifier for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678,kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
       responses:
         200:
           description: 'RequestCase resource updated'
@@ -900,6 +1298,39 @@ paths:
           description: 'The collection page number'
           schema:
             type: integer
+        -
+          name: API-Version
+          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Request-User-Id
+          description: 'The id of the user performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Application-Id
+          description: 'The id of the application performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Subject-Identifier
+          description: 'An subject identifier for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678,kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
     post:
       tags:
         - Request
@@ -970,6 +1401,40 @@ paths:
             schema:
               $ref: '#/components/schemas/Request-write'
         description: 'The new Request resource'
+      parameters:
+        -
+          name: API-Version
+          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Request-User-Id
+          description: 'The id of the user performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Application-Id
+          description: 'The id of the application performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Subject-Identifier
+          description: 'An subject identifier for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678,kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
   '/requests/{id}':
     get:
       tags:
@@ -983,6 +1448,39 @@ paths:
           required: true
           schema:
             type: string
+        -
+          name: API-Version
+          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Request-User-Id
+          description: 'The id of the user performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Application-Id
+          description: 'The id of the application performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Subject-Identifier
+          description: 'An subject identifier for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678,kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
       responses:
         200:
           description: 'Request resource response'
@@ -1030,6 +1528,39 @@ paths:
           required: true
           schema:
             type: string
+        -
+          name: API-Version
+          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Request-User-Id
+          description: 'The id of the user performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Application-Id
+          description: 'The id of the application performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Subject-Identifier
+          description: 'An subject identifier for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678,kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
     put:
       tags:
         - Request
@@ -1042,6 +1573,39 @@ paths:
           required: true
           schema:
             type: string
+        -
+          name: API-Version
+          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Request-User-Id
+          description: 'The id of the user performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Application-Id
+          description: 'The id of the application performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Subject-Identifier
+          description: 'An subject identifier for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678,kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
       responses:
         200:
           description: 'Request resource updated'
@@ -1113,6 +1677,39 @@ paths:
           required: true
           schema:
             type: string
+        -
+          name: API-Version
+          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Request-User-Id
+          description: 'The id of the user performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Application-Id
+          description: 'The id of the application performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Subject-Identifier
+          description: 'An subject identifier for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678,kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
       responses:
         200:
           description: 'Request resource updated'
@@ -1230,6 +1827,39 @@ paths:
           description: 'The collection page number'
           schema:
             type: integer
+        -
+          name: API-Version
+          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Request-User-Id
+          description: 'The id of the user performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Application-Id
+          description: 'The id of the application performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Subject-Identifier
+          description: 'An subject identifier for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678,kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
     post:
       tags:
         - Submitter
@@ -1300,6 +1930,40 @@ paths:
             schema:
               $ref: '#/components/schemas/Submitter-write'
         description: 'The new Submitter resource'
+      parameters:
+        -
+          name: API-Version
+          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Request-User-Id
+          description: 'The id of the user performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Application-Id
+          description: 'The id of the application performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Subject-Identifier
+          description: 'An subject identifier for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678,kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
   '/submitters/{id}':
     get:
       tags:
@@ -1313,6 +1977,39 @@ paths:
           required: true
           schema:
             type: string
+        -
+          name: API-Version
+          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Request-User-Id
+          description: 'The id of the user performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Application-Id
+          description: 'The id of the application performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Subject-Identifier
+          description: 'An subject identifier for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678,kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
       responses:
         200:
           description: 'Submitter resource response'
@@ -1360,6 +2057,39 @@ paths:
           required: true
           schema:
             type: string
+        -
+          name: API-Version
+          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Request-User-Id
+          description: 'The id of the user performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Application-Id
+          description: 'The id of the application performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Subject-Identifier
+          description: 'An subject identifier for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678,kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
     put:
       tags:
         - Submitter
@@ -1372,6 +2102,39 @@ paths:
           required: true
           schema:
             type: string
+        -
+          name: API-Version
+          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Request-User-Id
+          description: 'The id of the user performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Application-Id
+          description: 'The id of the application performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Subject-Identifier
+          description: 'An subject identifier for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678,kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
       responses:
         200:
           description: 'Submitter resource updated'
@@ -1443,6 +2206,39 @@ paths:
           required: true
           schema:
             type: string
+        -
+          name: API-Version
+          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Request-User-Id
+          description: 'The id of the user performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Application-Id
+          description: 'The id of the application performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Subject-Identifier
+          description: 'An subject identifier for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678,kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
       responses:
         200:
           description: 'Submitter resource updated'
@@ -1540,7 +2336,7 @@ components:
           $ref: '#/components/schemas/Request-write'
     Request-read:
       type: object
-      description: 'A request (or verzoek in dutch) to an organizations (usually govenmental) to do ''something'' on behave of a citicen or other organization'
+      description: 'A request (or verzoek in dutch) to an organization (usually governmental) to do ''something'' on behalf of a citizen or another organization'
       properties:
         id:
           readOnly: true
@@ -1552,13 +2348,13 @@ components:
         status:
           type: string
         request_type:
-          description: 'The request type agains wich this request should be validated'
+          description: 'The type of request against which this request should be validated'
           type: string
         target_organization:
           description: 'The RSIN of the organization that should handle this request'
           type: string
         submitter:
-          description: 'The BSN (if person) or RSIN (if organization) that is the primary submiter this request'
+          description: 'The BSN (if its a person) or RSIN (if its an organization) that is the primary submiter of this request'
           type: string
         submitters:
           description: 'The submitters of this request'
@@ -1566,7 +2362,7 @@ components:
           items:
             $ref: '#/components/schemas/Submitter-read'
         submitter_person:
-          description: 'True if the submitters is a person'
+          description: 'True if the submitter is a person'
           type: boolean
         properties:
           description: 'The actual properties of the request'
@@ -1584,12 +2380,12 @@ components:
           type: string
           format: date-time
         organizations:
-          description: 'Organizations that are handling this request, the use of this under disucion since it would mean giving an organization all request info there where it might need less. Forcing AVG issues upon parties. The sollotion for this might be found in goal binding.'
+          description: 'Organizations that are handling this request, the use of this under discussion since it would mean giving an organization all request info there where it might need less. Forcing AVG issues upon the parties. The sollotion for this might be found in goal binding.'
           type: array
           items:
             $ref: '#/components/schemas/Organization-read'
         request_cases:
-          description: 'Any or all cases currently atached to this request'
+          description: 'Any or all cases currently attached to this request'
           type: array
           items:
             $ref: '#/components/schemas/RequestCase-read'
@@ -1605,18 +2401,18 @@ components:
         - request_type
     Request-write:
       type: object
-      description: 'A request (or verzoek in dutch) to an organizations (usually govenmental) to do ''something'' on behave of a citicen or other organization'
+      description: 'A request (or verzoek in dutch) to an organization (usually governmental) to do ''something'' on behalf of a citizen or another organization'
       properties:
         status:
           type: string
         request_type:
-          description: 'The request type agains wich this request should be validated'
+          description: 'The type of request against which this request should be validated'
           type: string
         target_organization:
           description: 'The RSIN of the organization that should handle this request'
           type: string
         submitter:
-          description: 'The BSN (if person) or RSIN (if organization) that is the primary submiter this request'
+          description: 'The BSN (if its a person) or RSIN (if its an organization) that is the primary submiter of this request'
           type: string
         submitters:
           description: 'The submitters of this request'
@@ -1624,7 +2420,7 @@ components:
           items:
             $ref: '#/components/schemas/Submitter-write'
         submitter_person:
-          description: 'True if the submitters is a person'
+          description: 'True if the submitter is a person'
           type: boolean
         properties:
           description: 'The actual properties of the request'
@@ -1632,12 +2428,12 @@ components:
           items:
             type: string
         organizations:
-          description: 'Organizations that are handling this request, the use of this under disucion since it would mean giving an organization all request info there where it might need less. Forcing AVG issues upon parties. The sollotion for this might be found in goal binding.'
+          description: 'Organizations that are handling this request, the use of this under discussion since it would mean giving an organization all request info there where it might need less. Forcing AVG issues upon the parties. The sollotion for this might be found in goal binding.'
           type: array
           items:
             $ref: '#/components/schemas/Organization-write'
         request_cases:
-          description: 'Any or all cases currently atached to this request'
+          description: 'Any or all cases currently attached to this request'
           type: array
           items:
             $ref: '#/components/schemas/RequestCase-write'
@@ -1660,7 +2456,7 @@ components:
           description: 'The UUID identifier of this object'
           type: string
         request_case:
-          description: 'The OpenCase that is handling or supposed to handle this request'
+          description: 'The OpenCase that is handling this request or supposed to handle this request'
           type: string
         request:
           description: 'The request that this case is handling'
@@ -1673,7 +2469,7 @@ components:
       description: 'An case atached to a request'
       properties:
         request_case:
-          description: 'The OpenCase that is handling or supposed to handle this request'
+          description: 'The OpenCase that is handling this request or supposed to handle this request'
           type: string
         request:
           description: 'The request that this case is handling'
@@ -1690,7 +2486,7 @@ components:
           description: 'The UUID identifier of this object'
           type: string
         assent:
-          description: 'The Assent that is ussued to check if this submitter given assent to this request'
+          description: 'The Assent that is used to check if this submitter given assent to this request'
           type: string
         person:
           description: 'The BSN of the person that submitted this request'
@@ -1699,7 +2495,7 @@ components:
           description: 'The RSIN of the organization that submitted this request'
           type: string
         request:
-          description: 'The request that this submitter subitted'
+          description: 'The request that this submitter submitted'
           $ref: '#/components/schemas/Request-read'
         role:
           type: string
@@ -1708,7 +2504,7 @@ components:
       description: 'The submitters of a request'
       properties:
         assent:
-          description: 'The Assent that is ussued to check if this submitter given assent to this request'
+          description: 'The Assent that is used to check if this submitter given assent to this request'
           type: string
         person:
           description: 'The BSN of the person that submitted this request'
@@ -1717,7 +2513,7 @@ components:
           description: 'The RSIN of the organization that submitted this request'
           type: string
         request:
-          description: 'The request that this submitter subitted'
+          description: 'The request that this submitter submitted'
           $ref: '#/components/schemas/Request-write'
         role:
           type: string
