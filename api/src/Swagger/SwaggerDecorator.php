@@ -61,6 +61,119 @@ final class SwaggerDecorator implements NormalizerInterface
 		foreach($this->params->get('common_ground.oas.builds') as $key => $value){
 			$docs['x-commonground']['builds'][$key] = $value; 
 		}
+				
+		/*todo a loop within a lopo is butt ugly */
+		foreach($docs['paths'] as $path => $calls){
+						
+			foreach($calls as $method => $call){
+				
+				// NLX loging headers
+				$call['parameters'][] = [
+						'name' => 'API-Version',
+						'description' => 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)',
+						'example'=>'1.0.1',
+						'in' => 'header',
+				];
+				// NLX loging headers
+				$call['parameters'][] = [
+						'name' => 'X-NLX-Request-User-Id',
+						'description' => 'The id of the user performing the request',
+						'in' => 'header',
+				];
+				// NLX loging headers
+				$call['parameters'][] = [
+						'name' => 'X-NLX-Request-Application-Id',
+						'description' => 'The id of the application performing the request',
+						'in' => 'header',
+				];
+				// NLX loging headers
+				$call['parameters'][] = [
+						'name' => 'X-NLX-Request-Subject-Identifier',
+						'description' => 'An subject identifier for purpose registration (doelbinding)',
+						'in' => 'header',
+				];
+				// NLX loging headers
+				$call['parameters'][] = [
+						'name' => 'X-NLX-Request-Process-Id',
+						'description' => 'A process id for purpose registration (doelbinding)',
+						'in' => 'header',
+				];
+				// NLX loging headers
+				$call['parameters'][] = [
+						'name' => 'X-NLX-Request-Data-Elements',
+						'description' => 'A list of requested data elements',
+						'in' => 'header',
+				];
+				// NLX loging headers
+				$call['parameters'][] = [
+						'name' => 'X-NLX-Request-Data-Subject',
+						'description' => 'A key-value list of data subjects related to this request. e.g. `bsn=12345678,kenteken=ab-12-fg`',
+						'in' => 'header',
+				]; ;
+				
+				// NLX loging headers
+				$call['parameters'][] = [
+						'name' => 'X-Audit-Clarification',
+						'description' => 'A clarification as to why a request has been made  (doelbinding)',
+						'in' => 'header',
+				]; 
+				
+				
+				if($method == "GET"){
+					// Lets add the extend functionality
+					$call['parameters'][] = [
+							'name' => 'extend[]',
+							'description' => 'An array of nested objects to include in the return object',
+							'in' => 'header',
+					];
+					// Lets add the fields functionality
+					$call['parameters'][] = [
+							'name' => 'fields[]',
+							'description' => 'An array of fields to return in output, wil return all fields is not supplied',
+							'in' => 'header',
+					];
+					// Lets add some time travel
+					$call['parameters'][] = [
+							'name' => 'validOn',
+							'description' => 'Returns object as valid on a given date time',
+							'type' => 'string',
+							'format' => 'date-time',
+							'in' => 'query',
+					];
+					$call['parameters'][] = [
+							'name' => 'validFrom',
+							'description' => 'Returns objects valid from a given date time',
+							'type' => 'string',
+							'format' => 'date-time',
+							'in' => 'query',
+					];
+					$call['parameters'][] = [
+							'name' => 'validUntil',
+							'description' => 'Returns objects valid until a given date time',
+							'type' => 'string',
+							'format' => 'date-time',
+							'in' => 'query',
+					];
+					$call['parameters'][] = [
+							'name' => 'showLogs',
+							'description' => 'Returns a changes made to an resoure',
+							'type' => 'boolean',
+					];	
+				}
+						
+			}
+			
+			
+						
+	    }
+		// Lets add the NLX logging headers
+				
+		
+		
+		// Lets add a call to view an objects logs
+				
+		
+		
 		/*
 		$customDefinition = [
 				'name' => 'fields',
