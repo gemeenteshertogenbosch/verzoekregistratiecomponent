@@ -252,13 +252,13 @@ class Request
 	private $submitterPerson = true;
 	
 	/**
-	 * @var array $properties The actual properties of the request
+	 * @var array $properties The actual properties of the request, as described by the request type in the [vtc](http://vrc.zaakonline.nl/).
 	 * @example {}
 	 *
 	 * @ApiProperty(
 	 *     attributes={
 	 *         "swagger_context"={
-	 *         	   "description" = "The actual properties of the request",
+	 *         	   "description" = "The actual properties of the request, as described by the request type in the [vtc](http://vrc.zaakonline.nl/)",
 	 *             "type"="array",
 	 *             "format"="json",
 	 *             "example"={}
@@ -297,7 +297,8 @@ class Request
 	private $processType;
 	
 	/**
-	 * @var Datetime $createdAt The moment this request was created by the submitter
+	 * @var Datetime $createdAt The moment this request was created by the submitter 
+	 * 
 	 * @Groups({"read"})
      * @Gedmo\Timestampable(on="create")
 	 * @ORM\Column(type="datetime", nullable=true)

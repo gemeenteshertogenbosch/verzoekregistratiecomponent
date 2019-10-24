@@ -3,9 +3,544 @@ info:
   title: 'Verzoek Registratie Component (VRC)'
   version: 0.0.1
   description: |2
-                          
+         
+    
+    Requests signify a request that has been either made by a person/organization to an specific organization or an request that is being formulated by a person/organization but has not yet been submitted to an organization. As such an requests can be stateless, and is by definition without consequence until it is submitted. In that they represent an a form free option for anything that is not an case and an handling route for information that will never become an case.
+    
+    Technically requests are designed to align with both [DSO]( https://redocly.github.io/redoc/?url=https://pre.omgevingswet.overheid.nl/knooppunt/apistore/api-docs/Rijkswaterstaat/Gebruikerstoepassingen-IndienenVerzoek/v1) and the case api [zaak-api]( https://zaken-api.vng.cloud/api/v1/schema), but primely serve to support a [process]( http://ptc.zaakonline.nl). As such, small design interpretation might differ.  They can be found in the [design considerations]( https://github.com/gemeenteshertogenbosch/verzoekregistratiecomponent/blob/master/DESIGN.md).
+          
+    Request cannot be seen as an standalone entity as they take their definition from [request types]( http://vtc.zaakonline.nl/) where the actual rules that a request should adhere to are defined. Requests on them self only serve to store the in between and end results of processes.                
     
 paths:
+  /archives:
+    get:
+      tags:
+        - Archive
+      operationId: getArchiveCollection
+      summary: 'Retrieves the collection of Archive resources.'
+      responses:
+        200:
+          description: 'Archive collection response'
+          content:
+            application/hal+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Archive-read'
+            application/ld+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Archive-read'
+            application/vnd.api+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Archive-read'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Archive-read'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Archive-read'
+            application/x-yaml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Archive-read'
+            text/csv:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Archive-read'
+            text/html:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Archive-read'
+      parameters:
+        -
+          name: page
+          in: query
+          required: false
+          description: 'The collection page number'
+          schema:
+            type: integer
+        -
+          name: API-Version
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Request-User-Id
+          description: 'The id of the user performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Application-Id
+          description: 'The id of the application performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Subject-Identifier
+          description: 'An subject identifier for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678,kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
+    post:
+      tags:
+        - Archive
+      operationId: postArchiveCollection
+      summary: 'Creates a Archive resource.'
+      responses:
+        201:
+          description: 'Archive resource created'
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/Archive-read'
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Archive-read'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Archive-read'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Archive-read'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Archive-read'
+            application/x-yaml:
+              schema:
+                $ref: '#/components/schemas/Archive-read'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/Archive-read'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/Archive-read'
+          links:
+            GetArchiveItem:
+              parameters:
+                id: '$response.body#/id'
+              operationId: getArchiveItem
+              description: 'The `id` value returned in the response can be used as the `id` parameter in `GET /archives/{id}`.'
+        400:
+          description: 'Invalid input'
+        404:
+          description: 'Resource not found'
+      requestBody:
+        content:
+          application/hal+json:
+            schema:
+              $ref: '#/components/schemas/Archive-write'
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/Archive-write'
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/Archive-write'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Archive-write'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Archive-write'
+          application/x-yaml:
+            schema:
+              $ref: '#/components/schemas/Archive-write'
+          text/csv:
+            schema:
+              $ref: '#/components/schemas/Archive-write'
+          text/html:
+            schema:
+              $ref: '#/components/schemas/Archive-write'
+        description: 'The new Archive resource'
+      parameters:
+        -
+          name: API-Version
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Request-User-Id
+          description: 'The id of the user performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Application-Id
+          description: 'The id of the application performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Subject-Identifier
+          description: 'An subject identifier for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678,kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
+  '/archives/{id}':
+    get:
+      tags:
+        - Archive
+      operationId: getArchiveItem
+      summary: 'Retrieves a Archive resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        -
+          name: API-Version
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Request-User-Id
+          description: 'The id of the user performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Application-Id
+          description: 'The id of the application performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Subject-Identifier
+          description: 'An subject identifier for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678,kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
+      responses:
+        200:
+          description: 'Archive resource response'
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/Archive-read'
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Archive-read'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Archive-read'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Archive-read'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Archive-read'
+            application/x-yaml:
+              schema:
+                $ref: '#/components/schemas/Archive-read'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/Archive-read'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/Archive-read'
+        404:
+          description: 'Resource not found'
+    delete:
+      tags:
+        - Archive
+      operationId: deleteArchiveItem
+      summary: 'Removes the Archive resource.'
+      responses:
+        204:
+          description: 'Archive resource deleted'
+        404:
+          description: 'Resource not found'
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        -
+          name: API-Version
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Request-User-Id
+          description: 'The id of the user performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Application-Id
+          description: 'The id of the application performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Subject-Identifier
+          description: 'An subject identifier for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678,kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
+    put:
+      tags:
+        - Archive
+      operationId: putArchiveItem
+      summary: 'Replaces the Archive resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        -
+          name: API-Version
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Request-User-Id
+          description: 'The id of the user performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Application-Id
+          description: 'The id of the application performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Subject-Identifier
+          description: 'An subject identifier for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678,kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
+      responses:
+        200:
+          description: 'Archive resource updated'
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/Archive-read'
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Archive-read'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Archive-read'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Archive-read'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Archive-read'
+            application/x-yaml:
+              schema:
+                $ref: '#/components/schemas/Archive-read'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/Archive-read'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/Archive-read'
+        400:
+          description: 'Invalid input'
+        404:
+          description: 'Resource not found'
+      requestBody:
+        content:
+          application/hal+json:
+            schema:
+              $ref: '#/components/schemas/Archive-write'
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/Archive-write'
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/Archive-write'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Archive-write'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Archive-write'
+          application/x-yaml:
+            schema:
+              $ref: '#/components/schemas/Archive-write'
+          text/csv:
+            schema:
+              $ref: '#/components/schemas/Archive-write'
+          text/html:
+            schema:
+              $ref: '#/components/schemas/Archive-write'
+        description: 'The updated Archive resource'
+    patch:
+      tags:
+        - Archive
+      operationId: patchArchiveItem
+      summary: 'Updates the Archive resource.'
+      parameters:
+        -
+          name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        -
+          name: API-Version
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          example: 1.0.1
+          in: header
+        -
+          name: X-NLX-Request-User-Id
+          description: 'The id of the user performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Application-Id
+          description: 'The id of the application performing the request'
+          in: header
+        -
+          name: X-NLX-Request-Subject-Identifier
+          description: 'An subject identifier for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Process-Id
+          description: 'A process id for purpose registration (doelbinding)'
+          in: header
+        -
+          name: X-NLX-Request-Data-Elements
+          description: 'A list of requested data elements'
+          in: header
+        -
+          name: X-NLX-Request-Data-Subject
+          description: 'A key-value list of data subjects related to this request. e.g. `bsn=12345678,kenteken=ab-12-fg`'
+          in: header
+        -
+          name: X-Audit-Clarification
+          description: 'A clarification as to why a request has been made  (doelbinding)'
+          in: header
+      responses:
+        200:
+          description: 'Archive resource updated'
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/Archive-read'
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Archive-read'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Archive-read'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Archive-read'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Archive-read'
+            application/x-yaml:
+              schema:
+                $ref: '#/components/schemas/Archive-read'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/Archive-read'
+            text/html:
+              schema:
+                $ref: '#/components/schemas/Archive-read'
+        400:
+          description: 'Invalid input'
+        404:
+          description: 'Resource not found'
+      requestBody:
+        content:
+          application/hal+json:
+            schema:
+              $ref: '#/components/schemas/Archive-write'
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/Archive-write'
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/Archive-write'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Archive-write'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Archive-write'
+          application/x-yaml:
+            schema:
+              $ref: '#/components/schemas/Archive-write'
+          text/csv:
+            schema:
+              $ref: '#/components/schemas/Archive-write'
+          text/html:
+            schema:
+              $ref: '#/components/schemas/Archive-write'
+        description: 'The updated Archive resource'
   /organizations:
     get:
       tags:
@@ -82,7 +617,7 @@ paths:
             type: integer
         -
           name: API-Version
-          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
           example: 1.0.1
           in: header
         -
@@ -186,7 +721,7 @@ paths:
       parameters:
         -
           name: API-Version
-          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
           example: 1.0.1
           in: header
         -
@@ -232,7 +767,7 @@ paths:
             type: string
         -
           name: API-Version
-          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
           example: 1.0.1
           in: header
         -
@@ -312,7 +847,7 @@ paths:
             type: string
         -
           name: API-Version
-          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
           example: 1.0.1
           in: header
         -
@@ -357,7 +892,7 @@ paths:
             type: string
         -
           name: API-Version
-          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
           example: 1.0.1
           in: header
         -
@@ -461,7 +996,7 @@ paths:
             type: string
         -
           name: API-Version
-          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
           example: 1.0.1
           in: header
         -
@@ -611,7 +1146,7 @@ paths:
             type: integer
         -
           name: API-Version
-          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
           example: 1.0.1
           in: header
         -
@@ -715,7 +1250,7 @@ paths:
       parameters:
         -
           name: API-Version
-          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
           example: 1.0.1
           in: header
         -
@@ -761,7 +1296,7 @@ paths:
             type: string
         -
           name: API-Version
-          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
           example: 1.0.1
           in: header
         -
@@ -841,7 +1376,7 @@ paths:
             type: string
         -
           name: API-Version
-          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
           example: 1.0.1
           in: header
         -
@@ -886,7 +1421,7 @@ paths:
             type: string
         -
           name: API-Version
-          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
           example: 1.0.1
           in: header
         -
@@ -990,7 +1525,7 @@ paths:
             type: string
         -
           name: API-Version
-          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
           example: 1.0.1
           in: header
         -
@@ -1292,6 +1827,138 @@ paths:
           style: form
           explode: true
         -
+          name: 'createdAt[before]'
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: 'createdAt[strictly_before]'
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: 'createdAt[after]'
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: 'createdAt[strictly_after]'
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: 'submittedAt[before]'
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: 'submittedAt[strictly_before]'
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: 'submittedAt[after]'
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: 'submittedAt[strictly_after]'
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: 'order[submitter]'
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: 'order[reference]'
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: 'order[status]'
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: 'order[requestType]'
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: 'order[processType]'
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: 'order[organizations.rsin]'
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: 'order[organizations.status]'
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: 'order[submitters.organization]'
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: 'order[submitters.person]'
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: 'order[submitters.contact]'
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: 'order[archive.nomination]'
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: 'order[archive.status]'
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: 'order[createdAt]'
+          in: query
+          required: false
+          schema:
+            type: string
+        -
+          name: 'order[submittedAt]'
+          in: query
+          required: false
+          schema:
+            type: string
+        -
           name: page
           in: query
           required: false
@@ -1300,7 +1967,7 @@ paths:
             type: integer
         -
           name: API-Version
-          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
           example: 1.0.1
           in: header
         -
@@ -1404,7 +2071,7 @@ paths:
       parameters:
         -
           name: API-Version
-          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
           example: 1.0.1
           in: header
         -
@@ -1450,7 +2117,7 @@ paths:
             type: string
         -
           name: API-Version
-          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
           example: 1.0.1
           in: header
         -
@@ -1530,7 +2197,7 @@ paths:
             type: string
         -
           name: API-Version
-          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
           example: 1.0.1
           in: header
         -
@@ -1575,7 +2242,7 @@ paths:
             type: string
         -
           name: API-Version
-          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
           example: 1.0.1
           in: header
         -
@@ -1679,7 +2346,7 @@ paths:
             type: string
         -
           name: API-Version
-          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
           example: 1.0.1
           in: header
         -
@@ -1829,7 +2496,7 @@ paths:
             type: integer
         -
           name: API-Version
-          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
           example: 1.0.1
           in: header
         -
@@ -1933,7 +2600,7 @@ paths:
       parameters:
         -
           name: API-Version
-          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
           example: 1.0.1
           in: header
         -
@@ -1979,7 +2646,7 @@ paths:
             type: string
         -
           name: API-Version
-          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
           example: 1.0.1
           in: header
         -
@@ -2059,7 +2726,7 @@ paths:
             type: string
         -
           name: API-Version
-          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
           example: 1.0.1
           in: header
         -
@@ -2104,7 +2771,7 @@ paths:
             type: string
         -
           name: API-Version
-          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
           example: 1.0.1
           in: header
         -
@@ -2208,7 +2875,7 @@ paths:
             type: string
         -
           name: API-Version
-          description: 'The version of the API conform[Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
+          description: 'The version of the API conform [Landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning)'
           example: 1.0.1
           in: header
         -
@@ -2300,6 +2967,38 @@ paths:
         description: 'The updated Submitter resource'
 components:
   schemas:
+    Archive-read:
+      type: object
+      description: ''
+      properties:
+        id:
+          readOnly: true
+          description: 'The UUID identifier of this resource'
+          type: string
+        nomination:
+          description: 'The archive nomination of the resource'
+          type: string
+        action_date:
+          description: 'A "Y-m-d H:i:s" formatted value stating when an archive action should be made on the resource'
+          type: string
+          format: date-time
+        status:
+          description: 'Indication whether the resource must be permanently stored or destroyed after a certain period.'
+          type: string
+    Archive-write:
+      type: object
+      description: ''
+      properties:
+        nomination:
+          description: 'The archive nomination of the resource'
+          type: string
+        action_date:
+          description: 'A "Y-m-d H:i:s" formatted value stating when an archive action should be made on the resource'
+          type: string
+          format: date-time
+        status:
+          description: 'Indication whether the resource must be permanently stored or destroyed after a certain period.'
+          type: string
     Organization-read:
       type: object
       description: 'An organization handling a request'
@@ -2340,12 +3039,14 @@ components:
       properties:
         id:
           readOnly: true
-          description: 'The UUID identifier of this object'
+          description: 'The UUID identifier of this resource'
           type: string
         reference:
           readOnly: true
+          description: 'The human readable reference of this request, build as {gemeentecode}-{year}-{referenceId}. Where gemeentecode is a four digit number for gemeenten and a four letter abriviation for other organizations'
           type: string
         status:
+          description: 'The status of this request. e.g submitted'
           type: string
         request_type:
           description: 'The type of request against which this request should be validated'
@@ -2365,7 +3066,7 @@ components:
           description: 'True if the submitter is a person'
           type: boolean
         properties:
-          description: 'The actual properties of the request'
+          description: 'The actual properties of the request, as described by the request type in the [vtc](http://vrc.zaakonline.nl/).'
           type: array
           items:
             type: string
@@ -2397,6 +3098,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Request-read'
+        confidential:
+          description: 'Whether or not this request is considered confidential'
+          type: boolean
+        archive:
+          description: 'Archivation rules of this resource'
+          $ref: '#/components/schemas/Archive-read'
       required:
         - request_type
     Request-write:
@@ -2404,6 +3111,7 @@ components:
       description: 'A request (or verzoek in dutch) to an organization (usually governmental) to do ''something'' on behalf of a citizen or another organization'
       properties:
         status:
+          description: 'The status of this request. e.g submitted'
           type: string
         request_type:
           description: 'The type of request against which this request should be validated'
@@ -2423,7 +3131,7 @@ components:
           description: 'True if the submitter is a person'
           type: boolean
         properties:
-          description: 'The actual properties of the request'
+          description: 'The actual properties of the request, as described by the request type in the [vtc](http://vrc.zaakonline.nl/).'
           type: array
           items:
             type: string
@@ -2445,6 +3153,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Request-write'
+        confidential:
+          description: 'Whether or not this request is considered confidential'
+          type: boolean
+        archive:
+          description: 'Archivation rules of this resource'
+          $ref: '#/components/schemas/Archive-write'
       required:
         - request_type
     RequestCase-read:

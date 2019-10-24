@@ -18,8 +18,14 @@ api_platform:
     # The basic API data
     title: '%env(APP_TITLE)%'
     description: |
-        %env(APP_DESCRIPTION)%                      
-    
+        %env(APP_DESCRIPTION)%     
+        
+        Requests signify a request that has been either made by a person/organization to an specific organization or an request that is being formulated by a person/organization but has not yet been submitted to an organization. As such an requests can be stateless, and is by definition without consequence until it is submitted. In that they represent an a form free option for anything that is not an case and an handling route for information that will never become an case.
+
+        Technically requests are designed to align with both [DSO]( https://redocly.github.io/redoc/?url=https://pre.omgevingswet.overheid.nl/knooppunt/apistore/api-docs/Rijkswaterstaat/Gebruikerstoepassingen-IndienenVerzoek/v1) and the case api [zaak-api]( https://zaken-api.vng.cloud/api/v1/schema), but primarily serve to support a [process]( http://ptc.zaakonline.nl). As such, small design interpretation might differ.  They can be found in the [design considerations]( https://github.com/gemeenteshertogenbosch/verzoekregistratiecomponent/blob/master/DESIGN.md).
+              
+        Request cannot be seen as an standalone entity as they take their definition from [request types]( http://vtc.zaakonline.nl/) where the actual rules that a request should adhere to are defined. Requests on them self only serve to store the in between and end results of processes.                
+        
     version: '%env(APP_VERSION)%'  
     
     # Lets configure the api platform bundle to display the docs in confrmation with common ground standards 
