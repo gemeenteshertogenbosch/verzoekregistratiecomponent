@@ -22,7 +22,7 @@ spec:
       containers:
         - name: {{ include "name" . }}-{{ .Values.settings.env }}-nginx
           image: "{{ .Values.settings.registryBase }}/{{ .Values.settings.projectName }}-api:{{ .Values.settings.env }}"
-          imagePullPolicy: {{ .Values.container.pullPolicy }}
+          imagePullPolicy: {{ .Values.settings.pullPolicy }}
           ports:
             - containerPort: 80
           resources:
