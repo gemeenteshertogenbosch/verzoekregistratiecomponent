@@ -6,7 +6,7 @@ docker:
   containerProjectName: vrc
 
 php:
-  repository: docker.io/conduction/vrc-php
+  repository: docker.io/conduction/protocomponent-php
   tag: latest
   pullPolicy: Always
   replicaCount: 1
@@ -16,22 +16,22 @@ php:
   debug: '0'
   secret: ""
   corsAllowOrigin: ['*']
-  trustedHosts: '^(.+\.)?common-ground\.dev$|^(.+\.)?zaakonline\.nl$|^(.+\.)?conduction\.nl$|^example\.com$|^206.189.243.5|localhost'
+  trustedHosts: '^(.+\.)?common-ground\.dev$|^(.+\.)?zaakonline\.nl$|^(.+\.)?conduction\.nl$|^example\.com$|^(.+\.)?178.128.142.152$|178.128.142.152|localhost'
   trustedProxies:
     - 10.0.0.0/8
     - 172.16.0.0/12
     - 192.168.0.0/16
 
 nginx:
-  repository: docker.io/conduction/vrc-nginx
+  repository: docker.io/conduction/protocomponent-nginx
   tag: latest
   pullPolicy: Always
   replicaCount: 1
 
 varnish:
   enabled: true
-  url: vrc-varnish
-  repository: docker.io/conduction/vrc-varnish
+  #url: https://example.com
+  repository: docker.io/conduction/protocomponent-varnish
   tag: latest
   pullPolicy: Always
   replicaCount: 1

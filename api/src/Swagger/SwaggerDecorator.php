@@ -32,14 +32,14 @@ final class SwaggerDecorator implements NormalizerInterface
 		// Lets set the servers
 		if(array_key_exists ('servers',$docs)){$docs['servers']=[];}
 		foreach($this->params->get('common_ground.oas.servers') as $key => $value){
-			$docs['servers'][$key] = $value; 
+			$docs['servers'][$key] = $value;
 			
 		}
 		
 		// Lets set the external documentation
 		if(array_key_exists ('externalDocs',$docs)){$docs['externalDocs']=[];}
 		foreach($this->params->get('common_ground.oas.externalDocs') as $key => $value){
-			$docs['externalDocs'][$key] = $value; 
+			$docs['externalDocs'][$key] = $value;
 			
 		}
 		
@@ -52,19 +52,19 @@ final class SwaggerDecorator implements NormalizerInterface
 		// Lets set the devolopers
 		if(array_key_exists ('developers',$docs['x-commonground'])){$docs['developers']=[];}
 		foreach($this->params->get('common_ground.oas.developers') as $key => $value){
-			$docs['x-commonground']['developers'][$key] = $value; 
+			$docs['x-commonground']['developers'][$key] = $value;
 			
 		}
 		
 		// Lets set the build checks
-		if(array_key_exists ('builds',$docs['x-commonground'])){$docs['builds']=[];} 
+		if(array_key_exists ('builds',$docs['x-commonground'])){$docs['builds']=[];}
 		foreach($this->params->get('common_ground.oas.builds') as $key => $value){
-			$docs['x-commonground']['builds'][$key] = $value; 
+			$docs['x-commonground']['builds'][$key] = $value;
 		}
-				
+		
 		/*todo a loop within a lopo is butt ugly */
 		foreach($docs['paths'] as $path => $calls){
-						
+			
 			foreach($calls as $method => $call){
 				
 				// NLX loging headers
@@ -116,7 +116,7 @@ final class SwaggerDecorator implements NormalizerInterface
 						'name' => 'X-Audit-Clarification',
 						'description' => 'A clarification as to why a request has been made  (doelbinding)',
 						'in' => 'header',
-				]; 
+				];
 				
 				
 				if($method == "GET"){
@@ -158,44 +158,14 @@ final class SwaggerDecorator implements NormalizerInterface
 							'name' => 'showLogs',
 							'description' => 'Returns a changes made to an resoure',
 							'type' => 'boolean',
-					];	
+					];
 				}
-						
+				
 			}
 			
 			
-						
-	    }
-		// Lets add the NLX logging headers
-				
-		
-		
-		// Lets add a call to view an objects logs
-				
-		
-		
-		/*
-		$customDefinition = [
-				'name' => 'fields',
-				'description' => 'Fields to remove of the output',
-				'default' => 'id',
-				'in' => 'query',
-		];
-		
-		
-		// e.g. add a custom parameter
-		$docs['paths']['/foos']['get']['parameters'][] = $customDefinition;
-		
-		// e.g. remove an existing parameter
-		$docs['paths']['/foos']['get']['parameters'] = array_values(array_filter($docs['paths']['/foos']['get']['parameters'], function ($param){
-			return $param['name'] !== 'bar';
-		}));
 			
-			// Override title
-			$docs['info']['title'] = 'My Api Foo';
-			
-			return $docs;
-		*/
+		}
 		return $docs;
 	}
 	

@@ -18,14 +18,21 @@ api_platform:
     # The basic API data
     title: '%env(APP_TITLE)%'
     description: |
-        %env(APP_DESCRIPTION)%     
+        API Details
+        - Component: %env(APP_TITLE)%
+        - Reference: %env(APP_NAME)%
+        - Enviroment: %env(APP_ENV)%
+        - Version: %env(APP_VERSION)%
+        - Repository: [%env(APP_REPRO)%](%env(APP_REPRO)%) / [zip](%env(APP_REPRO)%/archive/master.zip)
+        - Datamodel: [postman](/schema/openapi.postman_collection) / [oas](/schema/openapi.yaml) / [pdf](/schema/datamodel.pdf) / [mwb](/schema/datamodel.mwb) 
         
-        Requests signify a request that has been either made by a person/organization to an specific organization or an request that is being formulated by a person/organization but has not yet been submitted to an organization. As such an requests can be stateless, and is by definition without consequence until it is submitted. In that they represent an a form free option for anything that is not an case and an handling route for information that will never become an case.
-
-        Technically requests are designed to align with both [DSO]( https://redocly.github.io/redoc/?url=https://pre.omgevingswet.overheid.nl/knooppunt/apistore/api-docs/Rijkswaterstaat/Gebruikerstoepassingen-IndienenVerzoek/v1) and the case api [zaak-api]( https://zaken-api.vng.cloud/api/v1/schema), but primarily serve to support a [process]( http://ptc.zaakonline.nl). As such, small design interpretation might differ.  They can be found in the [design considerations]( https://github.com/gemeenteshertogenbosch/verzoekregistratiecomponent/blob/master/DESIGN.md).
-              
-        Request cannot be seen as an standalone entity as they take their definition from [request types]( http://vtc.zaakonline.nl/) where the actual rules that a request should adhere to are defined. Requests on them self only serve to store the in between and end results of processes.                
+        %env(APP_DESCRIPTION)% 
+                                 
+        Voor het gebruik van deze applicatie is een JWT Token nodig, deze hangt altijd vast aan een applicatie, ofwel user. Geldige JWT Tokens worden aangemaakt bij het registreren van een applicatie en kennen een beperkte houdbaarheid. 
+        JWT Tokens kunnen zowel worden verlengd, als opnieuw worden aangevraagd, dit aan de hand van de applicatie id en sleutel.
+        Let er bij het meegeven van JWT tokens op dat deze moet worden voorafgegaan door een Bearer en een spatie, onder de header Authorization. De volledig naam wordt daarmee: 'Authorization: Bearer [TOKEN]'.
         
+    
     version: '%env(APP_VERSION)%'  
     
     # Lets configure the api platform bundle to display the docs in confrmation with common ground standards 
