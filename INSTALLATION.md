@@ -5,7 +5,7 @@
 ## Setting up helm
 
 ## Setting up Kubernetes Dashboard
-Nadat we helm hebben geïnstalleerd, kunnen we helm ook meteen gebruiken om gemakkelijke kubernetes dashboard te downloaden
+Nadat we helm hebben geinstalleerd, kunnen we helm ook meteen gebruiken om gemakkelijke kubernetes dashboard te downloaden
 helm install stable/kubernetes-dashboard --name dashboard --kubeconfig="kubernetes/kubeconfig.yaml" --namespace="kube-system"
 
 Maar voordat we op het dashboard kunnen inloggen hebben we eerste een token nodig, die kunnen we ophalen via de secrets 
@@ -24,16 +24,25 @@ http://localhost:8001/api/v1/namespaces/kube-system/services/https:dashboard-kub
 First we always need to update our dependencys
 $ helm dependency update ./api/helm
 
-If you want to create a new instance
-$ helm install ./api/helm --name vrc --kubeconfig="api/helm/kubeconfig.yaml"
+If you want to create a new instance you can do so from the command line, dont forget to add the --set variables (otherwise the enviroment is going to default to dev)
+
+```CLI
+$ helm install ./api/helm --name vrc-dev --kubeconfig="api/helm/kubeconfig.yaml"   --set settings.env=dev,settings.debug=1
+$ helm install ./api/helm --name vrc-stag --kubeconfig="api/helm/kubeconfig.yaml"  --set settings.env=stag,settings.debug=0
+$ helm install ./api/helm --name vrc-prod --kubeconfig="api/helm/kubeconfig.yaml"  --set settings.env=prod,settings.debug=0
+```
 
 Or update if you want to update an existing one
-$ helm upgrade vrc  ./api/helm --kubeconfig="api/helm/kubeconfig.yaml" 
+```CLI
+$ helm upgrade vrc-dev   ./api/helm --kubeconfig="api/helm/kubeconfig.yaml"  --set settings.env=dev,settings.debug=1
+$ helm upgrade vrc-stag  ./api/helm --kubeconfig="api/helm/kubeconfig.yaml"  --set settings.env=stag,settings.debug=0
+$ helm upgrade vrc-prod  ./api/helm --kubeconfig="api/helm/kubeconfig.yaml"  --set settings.env=prod,settings.debug=0
+```
 
-Or del if you want to delete an existing  one
+Or del if you want to delete an existingone
+```CLI
 $ helm del vrc  --purge --kubeconfig="api/helm/kubeconfig.yaml" 
-
-Note that you can replace commonground with the namespace that you want to use (normally the name of your component).
+```
 
 
 ## Deploying trough common-ground.dev
