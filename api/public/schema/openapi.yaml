@@ -3247,7 +3247,7 @@ externalDocs:
     description: 'OAS Documentatie'
     url: 'http://verzoeken.zaakonline.nl/'
 x-commonground:
-  type: tool
+  type: service
   developers:
     -
       name: Conduction
