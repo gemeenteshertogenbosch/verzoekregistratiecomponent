@@ -7,7 +7,7 @@ docker:
 
 settings:
   registryBase: docker.io/conduction
-  projectName: pc
+  projectName: vrc
   env: dev
   debug: '0'
   replicaCount: 1
