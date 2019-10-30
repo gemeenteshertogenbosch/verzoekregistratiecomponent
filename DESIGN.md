@@ -4,36 +4,36 @@ This component was designed inline with the [NL API Strategie](https://docs.geos
 
 Domain Build-up and routing
 -------
-By convention the component assumes that you follow the common ground domain name build up, meaning {enviroment}.{component}.{rest of domain}. That means that only the first two url parts are used for routin. E.g. a propper domain for the production API of the verzoeken registratie component would be api.vrc.zaakonline.nl
+By convention the component assumes that you follow the common ground domain name build up, meaning {environment}.{component}.{rest of domain}. That means that only the first two url parts are used for routing. A propper domain for the production API of the verzoeken registratie component would be api.vrc.zaakonline.nl
 
-Enviroments
+Environments
 -------
-By default the component assumes that you want to run several enviroments for development purposes, these are provided by the buildin NLX load balancer. The default API enviroments are
+By default the component assumes that you want to run several environments for development purposes, these are provided by the building NLX load balancer. The default API environments are
 - api /prod (Production)
 - acce (Acceptation)
 - stag (Staging)
 - test (Testing)
 - dev (Development)
 
-Besides the API envormiments the component also ships with
+Besides the API environments the component also ships with
 - client (An react client frontend)
 - admin ( An read admin interface)
 
-If no enviroment is supplied to the load balancer then trafic is routed to the client interface.
+If no environment is supplied to the load balancer then traffic is routed to the client interface.
 
 Loging Headers (NLX Audit trail)
 -------
 We inherit a couple of headers from the transaction logging within the [NLX schema](https://docs.nlx.io/further-reading/transaction-logs/), there does however see to be on ongoing discussion on how headers are supposed to be interpreted. The NLX schema states 
-> The outway appends a globally unique `X-NLX-Request-Id` to make a request traceable through the network. All the headers are logged before the request leaves the outway. Then the fields `X-NLX-Request-User-Id`, `X-NLX-Request-Application-Id`, and `X-NLX-Request-Subject-Identifier` are stripped of and the request is forwarded to the inway*
+> The outway appends a globally unique `X-NLX-Request-Id` to make a request traceable through the network. All the headers are logged before the request leaves the outway. Then the fields `X-NLX-Request-User-Id`, `X-NLX-Request-Application-Id`, and `X-NLX-Request-Subject-Identifier` are stripped of and the request is forwarded to the in-way*
 
-This would sugjest that no `X-NLX-Request-User-Id` should be present on an endpoint (since it would have been stripped before getting there) but a `X-NLX-Request-Id` should be present. If we look at the open case API however exactly the opposite has been implemented. Also a new header `X-Audit-Toelichting` has been implemented that seems to be doing what `X-NLX-Request-Process-Id` is doing in the case of a known process
+This would suggest that no `X-NLX-Request-User-Id` should be present on an endpoint (since it would have been stripped before getting there) but a `X-NLX-Request-Id` should be present. If we look at the open case API however exactly the opposite has been implemented. Also a new header `X-Audit-Toelichting` has been implemented that seems to be doing what `X-NLX-Request-Process-Id` is doing in the case of a known process
 
 __solution__
 All X-NLX headers are implemented for logging right now, and `X-Audit-Toelichting` is implemented as `X-Audit-Clarification`
 
 Api versioning
 -------
-As per [landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning) major versions in endpoint minor versions in header, for this the `API-Version` is used (in stead of the api-version header used in haal centraal)
+As per [landelijke API-strategie.](https://geonovum.github.io/KP-APIs/#versioning) major versions in endpoint minor versions in header, for this the `API-Version` is used (in stead of the api-version header used in 'haal centraal')
 
 Fields
 -------
@@ -44,23 +44,23 @@ The fields parameter has been implemented as an array
 
 Extending
 -------
-A part of the [haal centraal](https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-BRP-bevragen/master/api-specificatie/Bevraging-Ingeschreven-Perso on/openapi.yaml) the concept of extending has been introduced, its general purpose being to allow the inclusion of sub resources at an api level thereby preventing unnecessary API calls. In the [NL API Strategie](https://github.com/VNG-Realisatie/Haal-Centraal-BRP-bevragen/blob/master/features/expand.feature) this has been implemented as a parameter consisting of comma separated values. However the normal web standard for optional lists (conform w3c form standards) is an array.
+A part of the [haal_centraal](https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-BRP-bevragen/master/api-specificatie/Bevraging-Ingeschreven-Perso on/openapi.yaml) the concept of extending has been introduced, its general purpose being to allow the inclusion of sub resources at an api level thereby preventing unnecessary API calls. In the [NL API Strategie](https://github.com/VNG-Realisatie/Haal-Centraal-BRP-bevragen/blob/master/features/expand.feature) this has been implemented as a parameter consisting of comma separated values. However the normal web standard for optional lists (conform w3c form standards) is an array.
 
 __solution__
 The extend parameter has been implemented as an array
 
 Archivation
 -------
-In line with the extending and fields principle whereby we only want resources that we need it was deemed, nice to make a sub resource of the archivation properties. This also results in a bid cleaner code.  
+In line with the extending and fields principle whereby we only want resources that we need it was deemed, nice to make a sub resource of the archiving properties. This also results in a bid cleaner code.  
 
 Timetravel
 -------
-A part of the [haal centraal](https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-BRP-bevragen/master/api-specificatie/Bevraging-Ingeschreven-Persoon/openapi.yaml) the concept of timetravel has been introduced, as in getting the version of an object as it was on a given date. For this the `geldigop` [see the docs](file:///C:/Users/ruben/Desktop/doc_gba_historie.html#operation/getBewoningen) header is used. In addition the `geldigvan` and `geldigtot` are introduced as collection filters. 
+A part of the [haal_centraal](https://raw.githubusercontent.com/VNG-Realisatie/Haal-Centraal-BRP-bevragen/master/api-specificatie/Bevraging-Ingeschreven-Persoon/openapi.yaml) the concept of timetravel has been introduced, as in getting the version of an object as it was on a given date. For this the `geldigop` [see the docs](file:///C:/Users/ruben/Desktop/doc_gba_historie.html#operation/getBewoningen) header is used. In addition the `geldigvan` and `geldigtot` are introduced as collection filters. 
 
-The commonground proto componant natively supports time traveling on all entities that are annotaded with the @Gedmo\Loggable, this is done by adding the ?validOn=[date] query to a request, date can either be a datetime or datedatime string. Any value supported by php's [strtotime()](https://www.php.net/manual/en/function.strtotime.php) is supported. Keep in mind that this returns the entity a as it was valid on that time or better put, the last changed version BEFORE that moment. To get a complete list of all changes on a item the ?showLogs=true quarry can be used.
+The commonground proto component natively supports time traveling on all entities that are annotated with the @Gedmo\Loggable, this is done by adding the ?validOn=[date] query to a request, date can either be a datetime or datedatime string. Any value supported by php's [strtotime()](https://www.php.net/manual/en/function.strtotime.php) is supported. Keep in mind that this returns the entity a as it was valid on that time or better put, the last changed version BEFORE that moment. To get a complete list of all changes on a item the ?showLogs=true quarry can be used.
 
 __solution__
-In compliance with [schema.org](https://schema.org/validFrom) `geldigop`,`geldigvan` and `geldigtot` are implemented as `validOn`,`validFrom` and `validUntil`. And can be used a query parameters on colelction operations.
+In compliance with [schema.org](https://schema.org/validFrom) `geldigop`,`geldigvan` and `geldigtot` are implemented as `validOn`,`validFrom` and `validUntil`. And can be used a query parameters on collection operations.
 
 Additionally `validOn` can be used on a single object get request to get the version of that object on a given date, a 404 is returned if no version of that object can be given for that date 
 
@@ -82,7 +82,7 @@ Comma Notation versus Bracket Notation on arrays's
 -------
 The NL API standard uses comma notation on array's in http requests. E.g. fields=id,name,description however common browsers(based on chromium e.g. chrome and edge) use bracket notation for query style array's e.g. fields[]=id&fields[]=name,&fields[]=description. The difference of course is obvious since comma notation doesn't allow you to index arrays. [Interestingly enough there isn't actually a rfc spec for this](https://stackoverflow.com/questions/15854017/what-rfc-defines-arrays-transmitted-over-http). 
 
-It is perceivable that in future iterations we would like to use indexed array in situations where the index of the array can't be assumed on basis of url notation, when indexes aren�t numerical, when we don�t want an index to start at 0 or when indexes are purpusly missing (comma notation of id,name,description would always refert to the equivalent of fields: [
+It is perceivable that in future iterations we would like to use indexed array in situations where the index of the array can't be assumed on basis of url notation, when indexes aren't numerical, when we don�t want an index to start at 0 or when indexes are purposely missing (comma notation of id,name,description would always refert to the equivalent of fields: [
   0 => id,
   1 => name,
   2 => description
@@ -106,7 +106,7 @@ __Regex Exact__
 __Regex Contains__
 
 __Like___
-The like filters is used to search for enities with the traditional sql LIKE operator. If the pattern does not contain percentage signs or underscores, then the pattern only represents the string itself, in this case LIKE acts like the equals operator. An underscore (_) in a pattern stands for (matches) any single character; a percentage sign (%) matches any sequence of zero or more characters.
+The like filters is used to search for entities with the traditional sql LIKE operator. If the pattern does not contain percentage signs or underscores, then the pattern only represents the string itself, in this case LIKE acts like the equals operator. An underscore (_) in a pattern stands for (matches) any single character; a percentage sign (%) matches any sequence of zero or more characters.
 
 Some examples:
 
@@ -121,7 +121,7 @@ To match a literal underscores or percentage signs without matching other charac
 ## Kubernetes
 
 ### Loadbalancers
-We no longer provide a load balancer per component, since this would require a ip per component. Draining ip's on mult component kubernetes clusters. In stead we make componentes available as an interner service
+We no longer provide a load balancer per component, since this would require a ip per component. Thus draining ip's on multiple component kubernetes clusters. Instead we make component's available as an internal service.
 
 ### server naming
 A component is (speaking in kubernetes terms) a service that is available at 

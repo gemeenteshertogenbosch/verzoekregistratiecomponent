@@ -1,5 +1,5 @@
 # Installation
-This document dives a litle bit deeper into installing your component on a kubernetes cluster, looking for information on setting up your component on a lookal maschine? Take a look at the [tutorial](TUTORIAL.md) instead. 
+This document dives a little bit deeper into installing your component on a kubernetes cluster, looking for information on setting up your component on a local machine? Take a look at the [tutorial](TUTORIAL.md) instead. 
 
 ## Setting up helm
 
@@ -31,7 +31,7 @@ The Tiller pod name begins with the prefix tiller-deploy-.
 Now that we�ve installed both Helm components, we�re ready to use helm to install our first application.
 
 ## Setting up Kubernetes Dashboard
-Afhter we installed helm and tiller we can easyallty use both to install kubernets dashboard
+After we installed helm and tiller we can easily use both to install kubernetes dashboard
 ```CLI
 $ helm install stable/kubernetes-dashboard --name dashboard --kubeconfig="api/helm/kubeconfig.yaml" --namespace="kube-system"
 ```
@@ -41,7 +41,7 @@ But before we can login to tille we need a token, we can get one of those trough
 $ kubectl -n kube-system get secret  --kubeconfig="api/helm/kubeconfig.yaml"
 ```
 
-Becouse we just bound tiller to our admin acount and use tiller (trough helm) to manage our code deployment it makes sence to use the tiller token, lets look uo the tilles secret (it should loo something like "tiller-token-XXXXX" and ask for the coresponding token. 
+Because we just bound tiller to our admin account and use tiller (trough helm) to manage our code deployment it makes sense to use the tiller token, lets look at the tilles secret (it should look something like "tiller-token-XXXXX") and ask for the coresponding token. 
 
 ```CLI
 $ kubectl -n kube-system describe secrets tiller-token-5m4tg  --kubeconfig="api/helm/kubeconfig.yaml"
@@ -59,7 +59,7 @@ http://localhost:8001/api/v1/namespaces/kube-system/services/https:dashboard-kub
 ```
 
 ## Deploying trough helm
-First we always need to update our dependencys
+First we always need to update our dependencies
 ```CLI
 $ helm dependency update ./api/helm
 
@@ -87,9 +87,9 @@ $ helm del protocomponent  --purge --kubeconfig="api/helm/kubeconfig.yaml"
 
 
 ## Making your app known on NLX
-The proto component commes with an default NLX setup, if you made your own component however you might want to provide it trough the [NLX](https://www.nlx.io/) service. Furntunatly the proto component commes with an nice setup for NLX integration.
+The proto component comes with an default NLX setup, if you made your own component however you might want to provide it trough the [NLX](https://www.nlx.io/) service. Fortunately the proto component commes with an nice setup for NLX integration.
 
-First of all change the nececery lines in the [.env](.env) file, basiccaly everything under the NLX setup tag. Keep in mind that you wil need to have your component available on an (sub)domain name (a simple IP wont sufice).
+First of all change the necessary lines in the [.env](.env) file, basically everything under the NLX setup tag. Keep in mind that you wil need to have your component available on an (sub)domain name (a simple IP wont suffice).
 
 
 ## Deploying trough common-ground.dev
@@ -103,7 +103,7 @@ Have you seen our sweet support-chat on the documentation page? We didn't build 
 Would you like to use a different analytics or chat-tool? Just shoot us a [feature request](https://github.com/ConductionNL/commonground-component/issues/new?assignees=&labels=&template=feature_request.md&title=New Analytics or Chat provider)  
 
 ## Setting up NLX
-Let first check if we have a propper nlx root certidicate
+Lets first check if we have a propper nlx root certificate
 
 ```
 docker-compose exec vrc-php openssl x509 -in nlx-setup/root.crt -text | grep Subject:

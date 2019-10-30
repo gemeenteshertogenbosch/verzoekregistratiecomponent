@@ -658,7 +658,7 @@ paths:
       tags:
         - Organization
       operationId: postOrganizationCollection
-      summary: 'Creates a Organization resource.'
+      summary: 'Creates an Organization resource.'
       responses:
         201:
           description: 'Organization resource created'
@@ -763,7 +763,7 @@ paths:
       tags:
         - Organization
       operationId: getOrganizationItem
-      summary: 'Retrieves a Organization resource.'
+      summary: 'Retrieves an Organization resource.'
       parameters:
         -
           name: id
