@@ -87,6 +87,7 @@ RUN composer dump-env prod; \
 	rm .env
 
 # copy only specifically what we need
+COPY helm helm/
 COPY bin bin/
 COPY config config/
 COPY public public/
@@ -107,20 +108,40 @@ ENTRYPOINT ["docker-entrypoint"]
 CMD ["php-fpm"]
 
 # Let update the docs to show the latest chages
-RUN bin/console api:swagger:export --output=/srv/api/public/schema/openapi.yaml --yaml --spec-version=3
+# RUN bin/console api:swagger:export --output=/srv/api/public/schema/openapi.yaml --yaml --spec-version=3
 
 # "nginx" stage
-# depends on the "php" stage above
-FROM nginx:${NGINX_VERSION}-alpine AS api_platform_nginx
+# depends on the "php" stage above, and with an litle bit of help from https://github.com/shiphp/nginx-env
+FROM shiphp/nginx-env AS api_platform_nginx
 
-COPY docker/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
+# Set an ENV variable called ENV
+#ENV API=api
+
+COPY docker/nginx/conf.d /etc/nginx/conf.d/
 
 WORKDIR /srv/api
 
-COPY --from=api_platform_php /srv/api/public public/
+COPY public public/
 
 # "varnish" stage
 # does not depend on any of the above stages, but placed here to keep everything in one Dockerfile
 FROM cooptilleuls/varnish:${VARNISH_VERSION}-alpine AS api_platform_varnish
 
-COPY docker/varnish/conf/default.vcl /usr/local/etc/varnish/default.vcl
+COPY docker/varnish/conf /usr/local/etc/varnish/
+
+
+# NLX "outway" stage, used to contact the NLX framework
+FROM nlxio/outway AS api-nlx-outway
+
+COPY nlx-setup/root.crt /certs/root.crt
+#COPY nlx-setup/org.crt /certs/org.crt
+#COPY nlx-setup/org.key /certs/org.key
+
+
+# NLX "inway" stage, provides our service to the NLX framework
+FROM nlxio/inway AS api-nlx-inway
+
+COPY nlx-setup/root.crt /certs/root.crt
+#COPY nlx-setup/org.crt /certs/org.crt
+#COPY nlx-setup/org.key /certs/org.key
+#COPY nlx-setup/service-config.toml /service-config.toml

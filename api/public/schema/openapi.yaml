@@ -1,15 +1,21 @@
 openapi: 3.0.2
 info:
-  title: 'Verzoek Registratie Component (VRC)'
-  version: 0.0.1
-  description: |2
-         
+  title: 'Verzoek Regsitratie Component'
+  version: V.0.1
+  description: |
+    API Details
+    - Component: Verzoek Regsitratie Component
+    - Reference: vrc
+    - Enviroment: dev
+    - Version: V.0.1
+    - Repository: []() / [zip](/archive/master.zip)
+    - Datamodel: [postman](/schema/openapi.postman_collection) / [oas](/schema/openapi.yaml) / [pdf](/schema/datamodel.pdf) / [mwb](/schema/datamodel.mwb) 
     
-    Requests signify a request that has been either made by a person/organization to an specific organization or an request that is being formulated by a person/organization but has not yet been submitted to an organization. As such an requests can be stateless, and is by definition without consequence until it is submitted. In that they represent an a form free option for anything that is not an case and an handling route for information that will never become an case.
-    
-    Technically requests are designed to align with both [DSO]( https://redocly.github.io/redoc/?url=https://pre.omgevingswet.overheid.nl/knooppunt/apistore/api-docs/Rijkswaterstaat/Gebruikerstoepassingen-IndienenVerzoek/v1) and the case api [zaak-api]( https://zaken-api.vng.cloud/api/v1/schema), but primely serve to support a [process]( http://ptc.zaakonline.nl). As such, small design interpretation might differ.  They can be found in the [design considerations]( https://github.com/gemeenteshertogenbosch/verzoekregistratiecomponent/blob/master/DESIGN.md).
-          
-    Request cannot be seen as an standalone entity as they take their definition from [request types]( http://vtc.zaakonline.nl/) where the actual rules that a request should adhere to are defined. Requests on them self only serve to store the in between and end results of processes.                
+    Naast deze JSON rest API is er ook een [graphql](/graphql) interface beschikbaar. 
+                             
+    Voor het gebruik van deze applicatie is een JWT Token nodig, deze hangt altijd vast aan een applicatie, ofwel user. Geldige JWT Tokens worden aangemaakt bij het registreren van een applicatie en kennen een beperkte houdbaarheid. 
+    JWT Tokens kunnen zowel worden verlengd, als opnieuw worden aangevraagd, dit aan de hand van de applicatie id en sleutel.
+    Let er bij het meegeven van JWT tokens op dat deze moet worden voorafgegaan door een Bearer en een spatie, onder de header Authorization. De volledig naam wordt daarmee: 'Authorization: Bearer [TOKEN]'.
     
 paths:
   /archives:
@@ -652,7 +658,7 @@ paths:
       tags:
         - Organization
       operationId: postOrganizationCollection
-      summary: 'Creates a Organization resource.'
+      summary: 'Creates an Organization resource.'
       responses:
         201:
           description: 'Organization resource created'
@@ -757,7 +763,7 @@ paths:
       tags:
         - Organization
       operationId: getOrganizationItem
-      summary: 'Retrieves a Organization resource.'
+      summary: 'Retrieves an Organization resource.'
       parameters:
         -
           name: id
@@ -3241,7 +3247,7 @@ externalDocs:
     description: 'OAS Documentatie'
     url: 'http://verzoeken.zaakonline.nl/'
 x-commonground:
-  type: tool
+  type: service
   developers:
     -
       name: Conduction

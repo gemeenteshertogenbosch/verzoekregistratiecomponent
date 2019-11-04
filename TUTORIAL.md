@@ -39,6 +39,15 @@ Your computer should now start up your local development environment. Don’t wo
 
 Open your browser type <http://localhost/> as address and hit enter, you should now see your common ground component up and running.
 
+### trouble shooting
+When spinning up components we make extensive use of the cashing of docker, and use volumes to reprecent server disks. When running in to unexpected trouble always remmember to clear your local docker vm with the -a command (removing image cash)
+```CLI
+$ docker system prune -a
+```
+```CLI
+$ docker volume prune
+```
+
 **What are we looking at?**
 The Common Ground base component provides a bit more than just a development interface, it also includes an example application and a backend that automatically hooks into your api. For now we're just going to focus on our api, but is good to read up on all the features of the Common Ground base component here.  
 
@@ -66,10 +75,10 @@ There are basically three reasons why you should want to keep your repository up
 
 Best practice is to fetch the Conduction Common Ground component into a local upstream/master branch through Git. So let's first add the original Common Ground component as an remote called upstream, and create a local branch for that remote.  
 
-__Please make sure the you have commited al your changes to your current codebase and pushed a backup copy to your Git repo before continuing__
+__Please make sure the you have committed al your changes to your current codebase and pushed a backup copy to your Git repo before continuing__
 
 ```CLI
-git remote add upstream <https://github.com/ConductionNL/Proto-component-commonground.git>
+git remote add upstream https://github.com/ConductionNL/Proto-component-commonground.git
 git fetch upstream
 git branch upstream upstream/master
 ```
@@ -92,10 +101,186 @@ git merge upstream --allow-unrelated-histories
 
 Keep in mind that you wil need to make sure to stay up to date about changes on the Common Ground component repository.
 
-## Sharing your work 
-A vital part of te common ground community is sharing your work, and telling other people what you are working. This way people can help you wiht problems that you run into. And keep tabs on any (security) updates that you make to you code. Sounds like a lot of work right?
+## Renaming your component
+Right now the name of your component is 'commonground' that's thats fine while running it locally or in its own kubernetes cluster but wil get you in when running it with other components when it without using a name space. So its good practice to name your component distinctively. But besides al of these practical reasons its of course also just cool to name your child before you unless it on the unsuspecting commonground community.
 
-Wel it actually isn't, there is a specific commonground platform over at common-gorund.dev that reads repositorys and updates user. So the only thing we need to do is tell this platform that we have started a new common ground repository. And tell it when we have updates ours. We can do all that by simply adding a webhook to our component. 
+Oke, so before we can make the component we need to come up with a name. There are a couple of conventions here. The first convention is the name, it should tell us what the component does, or is supposed to do with one or two words. We would normally call an component about dogs the DogComponent and one about cats te CatComponent. The second convention is that we don't usually actually name our component 'component' but indicate its position in de commonground architecture. For that we have the following options
+* Catalogus
+* RegistratieComponent
+* Service
+* Application
+* Tool
+
+The we need to touch te following files
+* .env
+* dockercompose.yaml
+* api/.env
+* api/helm/values.yaml
+* api/docker/nginx/
+
+## Adding more openapi documentation
+
+```php
+//...
+	/**
+	 * @ApiProperty(
+	 *     attributes={
+	 *         "openapi_context"={
+	 *         	   "description" = "The name of a organization",
+	 *             "type"="string",
+	 *             "format"="string",
+	 *             "example"="My Organization"
+	 *         }
+	 *     }
+	 * )	 
+	 */
+	private $name;
+//...	
+```
+
+## Setting up security and access (also helps with serialization)
+
+```PHP
+// src/Entity/Organisation.php
+namespace App\Entity;
+
+// ...
+use Symfony\Component\Serializer\Annotation\Groups;
+
+/**
+ * @ApiResource(
+ *     normalizationContext={"groups"={"read"}},
+ *     denormalizationContext={"groups"={"write"}}
+ * )
+ * @ORM\Entity(repositoryClass="App\Repository\OrganisationRepository")
+ */
+class Organisation
+{
+    /**
+     * @Groups({"read","write"})
+     */
+    private $name;
+}
+```
+
+## Using validation
+Right now we are just accepting data and passing them on to the database, and in a mock or poc context this is fine. Most of the calls will end up being get requests anyway. But in case that we actually want our clients to make post to the api it would be wise to add some validation to the fields we are receiving. Luckely for us the component comes pre packed with a validation tool that we can configure from our entity through annotation. If we for example want to make a field required we could do so as follows: 
+
+```PHP
+// src/Entity/Organisation.php
+namespace App\Entity;
+
+// ...
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * @ApiResource()
+ * @ORM\Entity(repositoryClass="App\Repository\OrganisationRepository")
+ */
+class Organisation
+{
+    /**
+     * @Assert\NotBlank
+     */
+    private $name;
+}
+```
+
+Keep in mind that we need to add the assert annotation to our class dependencies under 'use'.  
+
+More inforation on using validation can be found at the [symfony website](https://symfony.com/doc/current/validation.html), but it is als worth notting that tis component comes pre packed with some typical NL validators like BSN. You can find those [here]().
+
+## Using UUID
+As default doctrine uses auto increment integers as identifiers (1,2, etc). For modern webapplications we however prefer the use of UUID's. (e.g. e2984465-190a-4562-829e-a8cca81aa35d). Why? Wel for one it is more secure integer id's are easily gasable and make it possible to "aks" endpoint about objects that you should know about. But UUID's also have a benifit in futere proofing the application. If we in the futere want to merge a table with another table (for example because two organizations using a component perform a merger) then we would have to reassign al id's and relations if we where using int based id's (both tables would have a row 1,2 etc) with UUID's however the change of doubles range somwhere in the billions. Meaning that it i likely that we oly need to either re identify only a handful of rows or more likely none at al! Turning our entire migration into a copy pase action.
+
+The proto component supports ramsy's uuid objects strategy out of the box, so to use UUID's as identifier simply replace the default id property
+
+```PHP
+//...
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+//...
+```
+with
+
+```PHP
+//...
+	/**
+	 * @var \Ramsey\Uuid\UuidInterface
+	 *
+	 * @ApiProperty(
+	 * 	   identifier=true,
+	 *     attributes={
+	 *         "openapi_context"={
+	 *         	   "description" = "The UUID identifier of this object",
+	 *             "type"="string",
+	 *             "format"="uuid",
+	 *             "example"="e2984465-190a-4562-829e-a8cca81aa35d"
+	 *         }
+	 *     }
+	 * )
+	 *
+	 * @Groups({"read"})
+	 * @ORM\Id
+	 * @ORM\Column(type="uuid", unique=true)
+	 * @ORM\GeneratedValue(strategy="CUSTOM")
+	 * @ORM\CustomIdGenerator(class="Ramsey\Uuid\Doctrine\UuidGenerator")
+	 */
+	private $id;
+//..	
+```
+
+and remove the integer on the getter turning this:
+
+```PHP
+//...
+    public function getId(): ?integer
+    {
+        return $this->id;
+    }
+//...
+```
+
+into this
+
+```PHP
+//...
+    public function getId()
+    {
+        return $this->id;
+    }
+//...
+```
+
+and your all done
+
+### trouble shooting
+If you have already spun up your component including your new entity, you are going to run into some trouble because doctrine is going to try to change your primary key colum (id) from an integer to string (tables tend not to like that). In that case its best to just drop your database and reinstall it using the following commands:
+
+```CLI
+$ bin/console doctrine:schema:drop
+$ bin/console doctrine:schema:update --force
+```
+
+## Datafixtures
+For testing cases it can be usefull to use datafixtures a predefined set of data that fills the database of your component at startup. Since we use php classes to describe our objects creating fixtures is easy (you can find an example in your project folder at api/src/DataFixtures). We simply go trough some classes assign values and persist them to the database. Once we have written our fixtures we can use a single command to load them  
+
+```CLI
+$ bin/console doctrine:fixtures:load --env=dev
+```
+
+Be mindfull of the --env=dev here! Doctrine wil only allow fixture loading on a dev environment (for obvious security reasons)
+
+More inforation on using datafixtures can be found at the [symfony website](https://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html)(you can skip the installation instructions) we also encourage you to take a look at the [tabbelen component](https://github.com/ConductionNL/landelijketabellencatalogus) that makes extensive use of datafixtures.
+
+## Sharing your work 
+A vital part of te common ground community is sharing your work, and telling other people what you are working on . This way people can help you whit problems that you run into and keep tabs on any (security) updates that you make to you code. Sounds like a lot of work right?
+
+Wel it actually isn't, there is a specific commonground platform over at common-gorund.dev that reads repository's and updates users. So the only thing we need to do is tell this platform that we have started a new common ground repository. And tell it when we have updates ours. We can do all that by simply adding a webhook to our component. 
 
 When using Github. To set up a webhook, go to the settings page of your repository or organization. From there, click Webhooks, then Add webhook. Use te following settings:
 
@@ -104,10 +289,23 @@ When using Github. To set up a webhook, go to the settings page of your reposito
 * Secret: [leave blanck]
 * Events: [just the push event]
 
-Now every time you update your repository the commonground dev page will allerted, rescan your repository and do al the apropriate platform actions. It just as easy as that.
+Now every time you update your repository the commonground dev page will allerted, rescan your repository and do al the appropriate platform actions. It just as easy as that.
 
 
+Automated Testing
+-------
+adasd
 
+### Unit / Behat
+
+adas
+
+### Postman
+ad
+
+Setting up continues integration and continues delivery
+-------
+adasd
 
 ## Commonground specific data types
 
