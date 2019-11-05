@@ -1,39 +1,97 @@
 # Installation
-
-## Setting up tiller
+This document dives a little bit deeper into installing your component on a kubernetes cluster, looking for information on setting up your component on a local machine? Take a look at the [tutorial](TUTORIAL.md) instead. 
 
 ## Setting up helm
 
+
+## Setting up tiller
+Create the tiller serviceaccount:
+
+```CLI
+$ kubectl -n kube-system create serviceaccount tiller --kubeconfig="api/helm/kubeconfig.yaml"
+```
+
+Next, bind the tiller serviceaccount to the cluster-admin role:
+```CLI
+$ kubectl create clusterrolebinding tiller --clusterrole cluster-admin --serviceaccount=kube-system:tiller --kubeconfig="api/helm/kubeconfig.yaml"
+```
+
+Now we can run helm init, which installs Tiller on our cluster, along with some local housekeeping tasks such as downloading the stable repo details:
+```CLI
+$ helm init --service-account tiller --kubeconfig="api/helm/kubeconfig.yaml"
+```
+
+To verify that Tiller is running, list the pods in thekube-system namespace:
+```CLI
+$ kubectl get pods --namespace kube-system --kubeconfig="api/helm/kubeconfig.yaml"
+```
+
+The Tiller pod name begins with the prefix tiller-deploy-.
+
+Now that we�ve installed both Helm components, we�re ready to use helm to install our first application.
+
 ## Setting up Kubernetes Dashboard
-Nadat we helm hebben geïnstalleerd, kunnen we helm ook meteen gebruiken om gemakkelijke kubernetes dashboard te downloaden
-helm install stable/kubernetes-dashboard --name dashboard --kubeconfig="kubernetes/kubeconfig.yaml" --namespace="kube-system"
+After we installed helm and tiller we can easily use both to install kubernetes dashboard
+```CLI
+$ helm install stable/kubernetes-dashboard --name dashboard --kubeconfig="api/helm/kubeconfig.yaml" --namespace="kube-system"
+```
 
-Maar voordat we op het dashboard kunnen inloggen hebben we eerste een token nodig, die kunnen we ophalen via de secrets 
-kubectl -n kube-system get secret  --kubeconfig="kubernetes/kubeconfig.yaml"
+But before we can login to tille we need a token, we can get one of those trough the secrets. Get yourself a secret list by running the following command
+```CLI
+$ kubectl -n kube-system get secret  --kubeconfig="api/helm/kubeconfig.yaml"
+```
 
-Omdat we deployen vanuit helm over tiller is het handig om het dashboard ook als tiller te gebruiken. Kijk naar het tiller secret <tiller-token-XXXXX>, en vraag vervolgens het token daarvoor op met:
+Because we just bound tiller to our admin account and use tiller (trough helm) to manage our code deployment it makes sense to use the tiller token, lets look at the tilles secret (it should look something like "tiller-token-XXXXX") and ask for the coresponding token. 
 
-kubectl -n kube-system describe secrets tiller-token-5m4tg  --kubeconfig="kubernetes/kubeconfig.yaml"
+```CLI
+$ kubectl -n kube-system describe secrets tiller-token-5m4tg  --kubeconfig="api/helm/kubeconfig.yaml"
+```
 
-Vanaf hier is het simpel we starten een proxy op
-kubectl proxy --kubeconfig="api/helm/kubeconfig.yaml"
-En kunnen vervolgens het dashboard aanroepen in onze favoriete browser met:
+This should return the token, copy it to somewhere save (just the token not the other returned information) and start up a dashboard connection
+
+```CLI
+$kubectl proxy --kubeconfig="api/helm/kubeconfig.yaml"
+```
+
+This should proxy our dashboard to helm making it available trough our favorite browser and a simple link
+```CLI
 http://localhost:8001/api/v1/namespaces/kube-system/services/https:dashboard-kubernetes-dashboard:https/proxy/#!/login
+```
 
 ## Deploying trough helm
-First we always need to update our dependencys
+First we always need to update our dependencies
+```CLI
 $ helm dependency update ./api/helm
 
 If you want to create a new instance
-$ helm install ./api/helm --name vrc --kubeconfig="api/helm/kubeconfig.yaml"
+```CLI
+$ helm install ./api/helm --name protocomponent --kubeconfig="api/helm/kubeconfig.yaml"
+```
+
+```CLI
+$ helm install ./api/helm --name vrc-dev --kubeconfig="api/helm/kubeconfig.yaml"   --set settings.env=dev,settings.debug=1
+$ helm install ./api/helm --name vrc-stag --kubeconfig="api/helm/kubeconfig.yaml"  --set settings.env=stag,settings.debug=0
+$ helm install ./api/helm --name vrc-prod --kubeconfig="api/helm/kubeconfig.yaml"  --set settings.env=prod,settings.debug=0
+```
 
 Or update if you want to update an existing one
-$ helm upgrade vrc  ./api/helm --kubeconfig="api/helm/kubeconfig.yaml" 
+```CLI
+$ helm upgrade protocomponent  ./api/helm --kubeconfig="api/helm/kubeconfig.yaml" 
+```
 
 Or del if you want to delete an existing  one
-$ helm del vrc  --purge --kubeconfig="api/helm/kubeconfig.yaml" 
+```CLI
+$ helm del protocomponent  --purge --kubeconfig="api/helm/kubeconfig.yaml" 
+```
 
-Note that you can replace commonground with the namespace that you want to use (normally the name of your component).
+
+
+## Making your app known on NLX
+The proto component comes with an default NLX setup, if you made your own component however you might want to provide it trough the [NLX](https://www.nlx.io/) service. Fortunately the proto component commes with an nice setup for NLX integration.
+
+First of all change the necessary lines in the [.env](.env) file, basically everything under the NLX setup tag. Keep in mind that you wil need to have your component available on an (sub)domain name (a simple IP wont suffice).
+
+To force the re-generation of certificates simply delete the org.crt en org.key in the api/nlx-setup folder
 
 
 ## Deploying trough common-ground.dev
@@ -47,7 +105,7 @@ Have you seen our sweet support-chat on the documentation page? We didn't build 
 Would you like to use a different analytics or chat-tool? Just shoot us a [feature request](https://github.com/ConductionNL/commonground-component/issues/new?assignees=&labels=&template=feature_request.md&title=New Analytics or Chat provider)  
 
 ## Setting up NLX
-Let first check if we have a propper nlx root certidicate
+Lets first check if we have a propper nlx root certificate
 
 ```
 docker-compose exec vrc-php openssl x509 -in nlx-setup/root.crt -text | grep Subject:

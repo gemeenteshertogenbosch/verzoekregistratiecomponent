@@ -51,13 +51,13 @@ class Submitter
 	private $id;
 
     /**
-     * @var string $assent The Assent that is ussued to check if this submitter given assent to this request
+     * @var string $assent The Assent that is used to check if this submitter given assent to this request
 	 * @example irc.zaakonline.nl/assent/e2984465-190a-4562-829e-a8cca81aa35d
 	 *
 	 * @ApiProperty(
 	 *     attributes={
 	 *         "swagger_context"={
-	 *         	   "description" = "The Assent that is ussued to check if this submitter given assent to this request",
+	 *         	   "description" = "The Assent that is used to check if this submitter given assent to this request",
 	 *             "type"="string",
 	 *             "format"="url",
 	 *             "example"="irc.zaakonline.nl/assent/e2984465-190a-4562-829e-a8cca81aa35d",
@@ -76,13 +76,13 @@ class Submitter
 	private $assent;
 	
 	/**
-     * @var string $contact The person that is ussued for contact information if no BSN or identification of subitter is required
+     * @var string $contact The person that is used for contact information if no BSN or identification of the subitter is required
 	 * @example crc.zaakonline.nl/person/e2984465-190a-4562-829e-a8cca81aa35d
 	 *
 	 * @ApiProperty(
 	 *     attributes={
 	 *         "swagger_context"={
-	 *         	   "description" = "The person that is ussued for contact information if no BSN or identification of subitter is required",
+	 *         	   "description" = "The person that is used for contact information if no BSN or identification of the subitter is required",
 	 *             "type"="string",
 	 *             "format"="url",
 	 *             "example"="crc.zaakonline.nl/person/e2984465-190a-4562-829e-a8cca81aa35d",
@@ -131,7 +131,7 @@ class Submitter
 	 * @ApiProperty(
 	 *     attributes={
 	 *         "swagger_context"={
-	 *         	   "description" = "The RSIN of the organisation that submitted this request",
+	 *         	   "description" = "The RSIN of the organization that submitted this request",
 	 *             "type"="string",
 	 *             "format"="rsin",
 	 *             "example"="002851234",
@@ -146,10 +146,10 @@ class Submitter
 	 * @Groups({"read", "write"})
      * @ORM\Column(type="string", length=10, nullable=true)
      */
-    private $organisation;
+    private $organization;
 
     /**
-     * @var Object $request The request that this submitter subitted
+     * @var Object $request The request that this submitter submitted
      * 
      * @MaxDepth(1)
 	 * @Groups({"read", "write"})
@@ -166,6 +166,33 @@ class Submitter
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $createdAt;
+
+    /**
+	 * @param string $role The role that a party has on this request
+	 * @example initiator
+	 *
+	 * @ApiProperty(
+	 *     attributes={
+	 *         "swagger_context"={
+	 *         	   "description" = "The role that a party has on this request",
+	 *             "type"="string",
+	 *             "example"="initiator",
+	 *             "maxLength"="255",
+	 *             "enum"={"advisor","practitioner","interested_party","interested_party","initiator","customer_care","coordinator","co_initiator"},
+	 *             "default"="initiator"
+	 *         }
+	 *     }
+	 * )	 
+	 *
+     * @Assert\Choice({"advisor","practitioner","interested_party","interested_party","initiator","customer_care","coordinator","co_initiator"})
+	 * @Assert\Length(
+	 *      max = 255
+	 * )
+	 * 
+	 * @Groups({"read","write"})
+     * @ORM\Column(type="string", length=255)
+     */
+    private $role = "initiator";
 
     public function getId()
     {
@@ -208,14 +235,14 @@ class Submitter
         return $this;
     }
 
-    public function getOrganisation(): ?string
+    public function getOrganization(): ?string
     {
-        return $this->organisation;
+        return $this->organization;
     }
 
-    public function setOrganisation(?string $organisation): self
+    public function setOrganization(?string $organization): self
     {
-        $this->organisation = $organisation;
+        $this->organization = $organization;
 
         return $this;
     }
@@ -228,6 +255,18 @@ class Submitter
     public function setRequest(?Request $request): self
     {
         $this->request = $request;
+
+        return $this;
+    }
+
+    public function getRole(): ?string
+    {
+        return $this->role;
+    }
+
+    public function setRole(string $role): self
+    {
+        $this->role = $role;
 
         return $this;
     }

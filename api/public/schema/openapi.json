@@ -7,6 +7,96 @@
         "description": "                      \n"
     },
     "paths": {
+        "\/open_cases": {
+            "get": {
+                "tags": [
+                    "OpenCase"
+                ],
+                "operationId": "getOpenCaseCollection",
+                "produces": [
+                    "application\/hal+json",
+                    "application\/ld+json",
+                    "application\/vnd.api+json",
+                    "application\/json",
+                    "application\/xml",
+                    "application\/x-yaml",
+                    "text\/csv",
+                    "text\/html"
+                ],
+                "summary": "Retrieves the collection of OpenCase resources.",
+                "responses": {
+                    "200": {
+                        "description": "OpenCase collection response",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#\/definitions\/OpenCase-read"
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "description": "The collection page number",
+                        "type": "integer"
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "OpenCase"
+                ],
+                "operationId": "postOpenCaseCollection",
+                "consumes": [
+                    "application\/hal+json",
+                    "application\/ld+json",
+                    "application\/vnd.api+json",
+                    "application\/json",
+                    "application\/xml",
+                    "application\/x-yaml",
+                    "text\/csv",
+                    "text\/html"
+                ],
+                "produces": [
+                    "application\/hal+json",
+                    "application\/ld+json",
+                    "application\/vnd.api+json",
+                    "application\/json",
+                    "application\/xml",
+                    "application\/x-yaml",
+                    "text\/csv",
+                    "text\/html"
+                ],
+                "summary": "Creates a OpenCase resource.",
+                "responses": {
+                    "201": {
+                        "description": "OpenCase resource created",
+                        "schema": {
+                            "$ref": "#\/definitions\/OpenCase-read"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "openCase",
+                        "in": "body",
+                        "description": "The new OpenCase resource",
+                        "schema": {
+                            "$ref": "#\/definitions\/OpenCase-write"
+                        }
+                    }
+                ]
+            }
+        },
         "\/open_cases\/{id}": {
             "get": {
                 "tags": [
@@ -33,13 +123,259 @@
                     }
                 ],
                 "responses": {
-                    "204": {
-                        "description": "OpenCase resource response"
+                    "200": {
+                        "description": "OpenCase resource response",
+                        "schema": {
+                            "$ref": "#\/definitions\/OpenCase-read"
+                        }
                     },
                     "404": {
                         "description": "Resource not found"
                     }
                 }
+            },
+            "delete": {
+                "tags": [
+                    "OpenCase"
+                ],
+                "operationId": "deleteOpenCaseItem",
+                "summary": "Removes the OpenCase resource.",
+                "responses": {
+                    "204": {
+                        "description": "OpenCase resource deleted"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "OpenCase"
+                ],
+                "operationId": "putOpenCaseItem",
+                "consumes": [
+                    "application\/hal+json",
+                    "application\/ld+json",
+                    "application\/vnd.api+json",
+                    "application\/json",
+                    "application\/xml",
+                    "application\/x-yaml",
+                    "text\/csv",
+                    "text\/html"
+                ],
+                "produces": [
+                    "application\/hal+json",
+                    "application\/ld+json",
+                    "application\/vnd.api+json",
+                    "application\/json",
+                    "application\/xml",
+                    "application\/x-yaml",
+                    "text\/csv",
+                    "text\/html"
+                ],
+                "summary": "Replaces the OpenCase resource.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "openCase",
+                        "in": "body",
+                        "description": "The updated OpenCase resource",
+                        "schema": {
+                            "$ref": "#\/definitions\/OpenCase-write"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OpenCase resource updated",
+                        "schema": {
+                            "$ref": "#\/definitions\/OpenCase-read"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "OpenCase"
+                ],
+                "operationId": "patchOpenCaseItem",
+                "summary": "Updates the OpenCase resource.",
+                "consumes": [
+                    "application\/hal+json",
+                    "application\/ld+json",
+                    "application\/vnd.api+json",
+                    "application\/json",
+                    "application\/xml",
+                    "application\/x-yaml",
+                    "text\/csv",
+                    "text\/html"
+                ],
+                "produces": [
+                    "application\/hal+json",
+                    "application\/ld+json",
+                    "application\/vnd.api+json",
+                    "application\/json",
+                    "application\/xml",
+                    "application\/x-yaml",
+                    "text\/csv",
+                    "text\/html"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "openCase",
+                        "in": "body",
+                        "description": "The updated OpenCase resource",
+                        "schema": {
+                            "$ref": "#\/definitions\/OpenCase-write"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OpenCase resource updated",
+                        "schema": {
+                            "$ref": "#\/definitions\/OpenCase-read"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            }
+        },
+        "\/organisations": {
+            "get": {
+                "tags": [
+                    "Organisation"
+                ],
+                "operationId": "getOrganisationCollection",
+                "produces": [
+                    "application\/hal+json",
+                    "application\/ld+json",
+                    "application\/vnd.api+json",
+                    "application\/json",
+                    "application\/xml",
+                    "application\/x-yaml",
+                    "text\/csv",
+                    "text\/html"
+                ],
+                "summary": "Retrieves the collection of Organisation resources.",
+                "responses": {
+                    "200": {
+                        "description": "Organisation collection response",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#\/definitions\/Organisation-read"
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "status[]",
+                        "in": "query",
+                        "required": false,
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi"
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "description": "The collection page number",
+                        "type": "integer"
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Organisation"
+                ],
+                "operationId": "postOrganisationCollection",
+                "consumes": [
+                    "application\/hal+json",
+                    "application\/ld+json",
+                    "application\/vnd.api+json",
+                    "application\/json",
+                    "application\/xml",
+                    "application\/x-yaml",
+                    "text\/csv",
+                    "text\/html"
+                ],
+                "produces": [
+                    "application\/hal+json",
+                    "application\/ld+json",
+                    "application\/vnd.api+json",
+                    "application\/json",
+                    "application\/xml",
+                    "application\/x-yaml",
+                    "text\/csv",
+                    "text\/html"
+                ],
+                "summary": "Creates a Organisation resource.",
+                "responses": {
+                    "201": {
+                        "description": "Organisation resource created",
+                        "schema": {
+                            "$ref": "#\/definitions\/Organisation-read"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "organisation",
+                        "in": "body",
+                        "description": "The new Organisation resource",
+                        "schema": {
+                            "$ref": "#\/definitions\/Organisation-write"
+                        }
+                    }
+                ]
             }
         },
         "\/organisations\/{id}": {
@@ -68,8 +404,148 @@
                     }
                 ],
                 "responses": {
+                    "200": {
+                        "description": "Organisation resource response",
+                        "schema": {
+                            "$ref": "#\/definitions\/Organisation-read"
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Organisation"
+                ],
+                "operationId": "deleteOrganisationItem",
+                "summary": "Removes the Organisation resource.",
+                "responses": {
                     "204": {
-                        "description": "Organisation resource response"
+                        "description": "Organisation resource deleted"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Organisation"
+                ],
+                "operationId": "putOrganisationItem",
+                "consumes": [
+                    "application\/hal+json",
+                    "application\/ld+json",
+                    "application\/vnd.api+json",
+                    "application\/json",
+                    "application\/xml",
+                    "application\/x-yaml",
+                    "text\/csv",
+                    "text\/html"
+                ],
+                "produces": [
+                    "application\/hal+json",
+                    "application\/ld+json",
+                    "application\/vnd.api+json",
+                    "application\/json",
+                    "application\/xml",
+                    "application\/x-yaml",
+                    "text\/csv",
+                    "text\/html"
+                ],
+                "summary": "Replaces the Organisation resource.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "organisation",
+                        "in": "body",
+                        "description": "The updated Organisation resource",
+                        "schema": {
+                            "$ref": "#\/definitions\/Organisation-write"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Organisation resource updated",
+                        "schema": {
+                            "$ref": "#\/definitions\/Organisation-read"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Organisation"
+                ],
+                "operationId": "patchOrganisationItem",
+                "summary": "Updates the Organisation resource.",
+                "consumes": [
+                    "application\/hal+json",
+                    "application\/ld+json",
+                    "application\/vnd.api+json",
+                    "application\/json",
+                    "application\/xml",
+                    "application\/x-yaml",
+                    "text\/csv",
+                    "text\/html"
+                ],
+                "produces": [
+                    "application\/hal+json",
+                    "application\/ld+json",
+                    "application\/vnd.api+json",
+                    "application\/json",
+                    "application\/xml",
+                    "application\/x-yaml",
+                    "text\/csv",
+                    "text\/html"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "organisation",
+                        "in": "body",
+                        "description": "The updated Organisation resource",
+                        "schema": {
+                            "$ref": "#\/definitions\/Organisation-write"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Organisation resource updated",
+                        "schema": {
+                            "$ref": "#\/definitions\/Organisation-read"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
                     },
                     "404": {
                         "description": "Resource not found"
@@ -502,6 +978,96 @@
                 }
             }
         },
+        "\/submitters": {
+            "get": {
+                "tags": [
+                    "Submitter"
+                ],
+                "operationId": "getSubmitterCollection",
+                "produces": [
+                    "application\/hal+json",
+                    "application\/ld+json",
+                    "application\/vnd.api+json",
+                    "application\/json",
+                    "application\/xml",
+                    "application\/x-yaml",
+                    "text\/csv",
+                    "text\/html"
+                ],
+                "summary": "Retrieves the collection of Submitter resources.",
+                "responses": {
+                    "200": {
+                        "description": "Submitter collection response",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#\/definitions\/Submitter-read"
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "description": "The collection page number",
+                        "type": "integer"
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Submitter"
+                ],
+                "operationId": "postSubmitterCollection",
+                "consumes": [
+                    "application\/hal+json",
+                    "application\/ld+json",
+                    "application\/vnd.api+json",
+                    "application\/json",
+                    "application\/xml",
+                    "application\/x-yaml",
+                    "text\/csv",
+                    "text\/html"
+                ],
+                "produces": [
+                    "application\/hal+json",
+                    "application\/ld+json",
+                    "application\/vnd.api+json",
+                    "application\/json",
+                    "application\/xml",
+                    "application\/x-yaml",
+                    "text\/csv",
+                    "text\/html"
+                ],
+                "summary": "Creates a Submitter resource.",
+                "responses": {
+                    "201": {
+                        "description": "Submitter resource created",
+                        "schema": {
+                            "$ref": "#\/definitions\/Submitter-read"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "submitter",
+                        "in": "body",
+                        "description": "The new Submitter resource",
+                        "schema": {
+                            "$ref": "#\/definitions\/Submitter-write"
+                        }
+                    }
+                ]
+            }
+        },
         "\/submitters\/{id}": {
             "get": {
                 "tags": [
@@ -528,8 +1094,148 @@
                     }
                 ],
                 "responses": {
+                    "200": {
+                        "description": "Submitter resource response",
+                        "schema": {
+                            "$ref": "#\/definitions\/Submitter-read"
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Submitter"
+                ],
+                "operationId": "deleteSubmitterItem",
+                "summary": "Removes the Submitter resource.",
+                "responses": {
                     "204": {
-                        "description": "Submitter resource response"
+                        "description": "Submitter resource deleted"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Submitter"
+                ],
+                "operationId": "putSubmitterItem",
+                "consumes": [
+                    "application\/hal+json",
+                    "application\/ld+json",
+                    "application\/vnd.api+json",
+                    "application\/json",
+                    "application\/xml",
+                    "application\/x-yaml",
+                    "text\/csv",
+                    "text\/html"
+                ],
+                "produces": [
+                    "application\/hal+json",
+                    "application\/ld+json",
+                    "application\/vnd.api+json",
+                    "application\/json",
+                    "application\/xml",
+                    "application\/x-yaml",
+                    "text\/csv",
+                    "text\/html"
+                ],
+                "summary": "Replaces the Submitter resource.",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "submitter",
+                        "in": "body",
+                        "description": "The updated Submitter resource",
+                        "schema": {
+                            "$ref": "#\/definitions\/Submitter-write"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Submitter resource updated",
+                        "schema": {
+                            "$ref": "#\/definitions\/Submitter-read"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Submitter"
+                ],
+                "operationId": "patchSubmitterItem",
+                "summary": "Updates the Submitter resource.",
+                "consumes": [
+                    "application\/hal+json",
+                    "application\/ld+json",
+                    "application\/vnd.api+json",
+                    "application\/json",
+                    "application\/xml",
+                    "application\/x-yaml",
+                    "text\/csv",
+                    "text\/html"
+                ],
+                "produces": [
+                    "application\/hal+json",
+                    "application\/ld+json",
+                    "application\/vnd.api+json",
+                    "application\/json",
+                    "application\/xml",
+                    "application\/x-yaml",
+                    "text\/csv",
+                    "text\/html"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "submitter",
+                        "in": "body",
+                        "description": "The updated Submitter resource",
+                        "schema": {
+                            "$ref": "#\/definitions\/Submitter-write"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Submitter resource updated",
+                        "schema": {
+                            "$ref": "#\/definitions\/Submitter-read"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
                     },
                     "404": {
                         "description": "Resource not found"

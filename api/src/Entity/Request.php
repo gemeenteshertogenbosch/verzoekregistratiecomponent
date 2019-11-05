@@ -6,6 +6,8 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -15,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 /**
- * A request (or verzoek in dutch) to an organizations (usually govenmental) to do 'something' on behave of a citicen or other organisation
+ * A request (or verzoek in dutch) to an organization (usually governmental) to do 'something' on behalf of a citizen or another organization
  *
  * @ApiResource(
  *     normalizationContext={"groups"={"read"}, "enable_max_depth"=true},
@@ -26,30 +28,51 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
  * @ApiFilter(SearchFilter::class, properties={
  * 		"submitter":"exact",
  * 		"reference":"exact",
- * 		"reference":"exact",
  * 		"status":"exact",
  * 		"requestType":"exact",
  * 		"processType":"exact",
- * 		"organisations.rsin": "exact",
- * 		"organisations.status": "exact",
- * 		"submitters.organisation": "exact", 
+ * 		"organizations.rsin": "exact",
+ * 		"organizations.status": "exact",
+ * 		"submitters.organization": "exact", 
  * 		"submitters.person": "exact", 
  * 		"submitters.contact": "exact", 
- * 		"opencase.open_case": "exact"
+ * 		"requestCases.request_case": "exact",
+ * })
+ * @ApiFilter(DateFilter::class, properties={
+ * 		"createdAt",
+ * 		"submittedAt",
+ * })
+ * @ApiFilter(OrderFilter::class, properties={
+ * 		"submitter",
+ * 		"reference",
+ * 		"status",
+ * 		"requestType",
+ * 		"processType",
+ * 		"organizations.rsin",
+ * 		"organizations.status",
+ * 		"submitters.organization", 
+ * 		"submitters.person", 
+ * 		"submitters.contact", 
+ * 		"requestCases.request_case",
+ * 		"archive.nomination",
+ * 		"archive.status",
+ * 		"createdAt",
+ * 		"submittedAt",
+ *
  * })
 
  */
 class Request
 {
 	/**
-	 * @var \Ramsey\Uuid\UuidInterface $id The UUID identifier of this object
+	 * @var \Ramsey\Uuid\UuidInterface $id The UUID identifier of this resource
 	 * @example e2984465-190a-4562-829e-a8cca81aa35d
 	 *
 	 * @ApiProperty(
 	 * 	   identifier=true,
 	 *     attributes={
 	 *         "swagger_context"={
-	 *         	   "description" = "The UUID identifier of this object",
+	 *         	   "description" = "The UUID identifier of this resource",
 	 *             "type"="string",
 	 *             "format"="uuid",
 	 *             "example"="e2984465-190a-4562-829e-a8cca81aa35d"
@@ -67,13 +90,12 @@ class Request
 	private $id;
 	
 	/**
-	 * @var string $reference The human readable reference for this request, build as {gemeentecode}-{year}-{referenceId}. Where gemeentecode is a four digit number for gemeenten and a four letter abriviation for other organisations 
-	 * @example 6666-2019-0000000012
+	 * @var string $reference The human readable reference of this request, build as {gemeentecode}-{year}-{referenceId}. Where gemeentecode is a four digit number for gemeenten and a four letter abriviation for other organizations 
 	 *
 	 * @ApiProperty(
 	 *     attributes={
 	 *         "swagger_context"={
-	 *         	   "description" = "The human readable reference for this request",
+	 *         	   "description" = "The human readable reference of this request",
 	 *             "type"="string",
 	 *             "example"="6666-2019-0000000012",
 	 *             "maxLength"="255"
@@ -90,7 +112,7 @@ class Request
 	private $reference;
 	
 	/**
-	 * @var string $referenceId The autoincrementing id part of the reference, unique on a organisation-year-id basis
+	 * @param string $referenceId The autoincrementing id part of the reference, unique on an organization-year-id basis
 	 *	 
 	 * @Assert\Positive
 	 * @Assert\Length(
@@ -102,11 +124,12 @@ class Request
 	
 	/**
 	 * @var string $status The status of this request. e.g submitted
+	 * @example incomplete
 	 *
 	 * @ApiProperty(
 	 *     attributes={
 	 *         "swagger_context"={
-	 *         	   "description" = "The status of this request.",
+	 *         	   "description" = "The status of this request. Where *incomplete* is unfinished request, *complete* means that a request has been posted by the submitter, *submitted* means that an organization has started handling the request and *processed* means that any or all cases attached to a request have been handled ",
 	 *             "type"="string",
 	 *             "example"="incomplete",
 	 *             "maxLength"="255",
@@ -127,13 +150,13 @@ class Request
 	private $status = "incomplete";
 	
 	/**
-	 * @var string $requestType The request type agains wich this request should be validated
+	 * @var string $requestType The type of request against which this request should be validated
 	 * @example http://vtc.zaakonline.nl/9bd169ef-bc8c-4422-86ce-a0e7679ab67a
 	 *
 	 * @ApiProperty(
 	 *     attributes={
 	 *         "swagger_context"={
-	 *         	   "description" = "The request type agains wich this request should be validated",
+	 *         	   "description" = "The type of request against which this request should be validated",
 	 *             "type"="string",
 	 *             "format"="uri",
 	 *             "example"="http://vtc.zaakonline.nl/9bd169ef-bc8c-4422-86ce-a0e7679ab67a",
@@ -176,14 +199,14 @@ class Request
 	private $targetOrganization;
 	
 	/**
-	 * @var string $submitter The BSN (if person) or RSIN (if organization) that is the primary submiter this request
+	 * @var string $submitter The BSN (if its a person) or RSIN (if its an organization) that is the primary submiter of this request
 	 * @example 002851234
 	 * @deprecated
 	 *
 	 * @ApiProperty(
 	 *     attributes={
 	 *         "swagger_context"={
-	 *         	   "description" = "The BSN (if person) or RSIN (if organization) that is the primary submiter this request",
+	 *         	   "description" = "The BSN (if its a person) or RSIN (if its an organization) that is the primary submiter of this request",
 	 *             "type"="string",
 	 *             "example"="002851234",
 	 *             "maxLength"="255",
@@ -207,14 +230,14 @@ class Request
 	private $submitters;
 	
 	/**
-	 * @var boolean $submitterPerson True if the submitters is a person
+	 * @var boolean $submitterPerson True if the submitter is a person
 	 * @example true
 	 * @deprecated
 	 *
 	 * @ApiProperty(
 	 *     attributes={
 	 *         "swagger_context"={
-	 *         	   "description" = "True if the submitters is a person",
+	 *         	   "description" = "True if the submitter is a person",
 	 *             "type"="boolean",
 	 *             "example"=true,
 	 *             "default"=true,
@@ -229,13 +252,13 @@ class Request
 	private $submitterPerson = true;
 	
 	/**
-	 * @var array $properties The actual properties of the request
+	 * @var array $properties The actual properties of the request, as described by the request type in the [vtc](http://vrc.zaakonline.nl/).
 	 * @example {}
 	 *
 	 * @ApiProperty(
 	 *     attributes={
 	 *         "swagger_context"={
-	 *         	   "description" = "The actual properties of the request",
+	 *         	   "description" = "The actual properties of the request, as described by the request type in the [vtc](http://vrc.zaakonline.nl/)",
 	 *             "type"="array",
 	 *             "format"="json",
 	 *             "example"={}
@@ -249,13 +272,13 @@ class Request
 	private $properties;
 		
 	/**
-	 * @var string $processType The processType type that made this request
+	 * @var string $processType The processType that made this request
 	 * @example http://ptc.zaakonline.nl/9bd169ef-bc8c-4422-86ce-a0e7679ab67a
 	 *
 	 * @ApiProperty(
 	 *     attributes={
 	 *         "swagger_context"={
-	 *         	   "description" = "The processType type that made this reques",
+	 *         	   "description" = "The processType that made this request",
 	 *             "type"="string",
 	 *             "format"="url",
 	 *             "example"="http://ptc.zaakonline.nl/9bd169ef-bc8c-4422-86ce-a0e7679ab67a",
@@ -274,7 +297,8 @@ class Request
 	private $processType;
 	
 	/**
-	 * @var Datetime $createdAt The moment this request was created by the submitter
+	 * @var Datetime $createdAt The moment this request was created by the submitter 
+	 * 
 	 * @Groups({"read"})
      * @Gedmo\Timestampable(on="create")
 	 * @ORM\Column(type="datetime", nullable=true)
@@ -290,34 +314,82 @@ class Request
 	private $submittedAt;
 
     /**
-	 * @var ArrayCollection $organisations Organisations that are handling this request
+	 * @var ArrayCollection $organizations Organizations that are handling this request, the use of this under discussion since it would mean giving an organization all request info there where it might need less. Forcing AVG issues upon the parties. The sollotion for this might be found in goal binding.
 	 * 
      * @MaxDepth(1)
 	 * @Groups({"read","write"})
-     * @ORM\OneToMany(targetEntity="App\Entity\Organisation", mappedBy="request", orphanRemoval=true, fetch="EAGER", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Organization", mappedBy="request", orphanRemoval=true, fetch="EAGER", cascade={"persist"})
      */
-    private $organisations;
+    private $organizations;
 
     /**
-	 * @var ArrayCollection $openCases Any open cases currently atached to this request
+	 * @var ArrayCollection $requestCases Any or all cases currently attached to this request
 	 * 
      * @MaxDepth(1)
 	 * @Groups({"read","write"})
-     * @ORM\OneToMany(targetEntity="App\Entity\OpenCase", mappedBy="request", orphanRemoval=true, fetch="EAGER", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\RequestCase", mappedBy="request", orphanRemoval=true, fetch="EAGER", cascade={"persist"})
      */
-    private $openCases;
+    private $requestCases;
+
+    /**
+	 * @var Request $parent The request that this request was based on
+	 * 
+     * @MaxDepth(1)
+	 * @Groups({"read","write"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Request", inversedBy="children")
+     */
+    private $parent;
+
+    /**
+	 * @var ArrayCollection $children The requests that are bassed on this request
+	 * 
+     * @MaxDepth(1)
+	 * @Groups({"read","write"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Request", mappedBy="parent")
+     */
+    private $children;
+
+    /**
+	 * @var boolean $confidential Whether or not this request is considered confidential 
+	 * @example false
+	 *
+	 * @ApiProperty(
+	 *     attributes={
+	 *         "swagger_context"={
+	 *         	   "description" = "Whether or not this request is considered confidential ",
+	 *             "type"="boolean",
+	 *             "example"=false,
+	 *             "default"= false
+	 *         }
+	 *     }
+	 * )
+	 * 
+	 * @Groups({"read","write"})
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $confidential;
+
+    /**
+	 * @var Archive $archive Archivation rules of this resource
+	 * 
+     * @MaxDepth(1)
+	 * @Groups({"read","write"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Archive", cascade={"persist", "remove"})
+     */
+    private $archive;
 
     public function __construct()
     {
         $this->submitters = new ArrayCollection();
-        $this->organisations = new ArrayCollection();
-        $this->openCases = new ArrayCollection();
+        $this->organizations = new ArrayCollection();
+        $this->requestCases = new ArrayCollection();
+        $this->children = new ArrayCollection();
     }
 	
 	public function getId()
-                                                      	{
-                                                      		return $this->id;
-                                                      	}
+                                                                                                                        	{
+                                                                                                                        		return $this->id;
+                                                                                                                        	}
 	
 	public function setId($id): self
 	{
@@ -327,137 +399,137 @@ class Request
 	}
 	
 	public function getReference(): ?string
-                                                      	{
-                                                      		return $this->reference;
-                                                      	}
+                                                                                                                        	{
+                                                                                                                        		return $this->reference;
+                                                                                                                        	}
 	
 	public function setReference(string $reference): self
-                                                      	{
-                                                      		$this->reference = $reference;
-                                                      		
-                                                      		return $this;
-                                                      	}
+                                                                                                                        	{
+                                                                                                                        		$this->reference = $reference;
+                                                                                                                        		
+                                                                                                                        		return $this;
+                                                                                                                        	}
 	
 	public function getReferenceId(): ?int
-	{
-		return $this->referenceId;
-	}
+                                                                                                                        	{
+                                                                                                                        		return $this->reference;
+                                                                                                                        	}
 	
 	public function setReferenceId(int $referenceId): self
-                                                      	{
-                                                      		$this->referenceId = $referenceId;
-                                                      		
-                                                      		return $this;
-	}
+                                                                                                                        	{
+                                                                                                                        		$this->referenceId = $referenceId;
+                                                                                                                        		
+                                                                                                                        		return $this;
+                                                                  	}
 	
 	public function getStatus(): ?string
-	{
-		return $this->status;
-	}
+                                                                  	{
+                                                                  		return $this->status;
+                                                                  	}
 	
 	public function setStatus(string $status): self
-	{
-		$this->status = $status;
-		
-		return $this;
-	}
+                                                                  	{
+                                                                  		$this->status = $status;
+                                                                  		
+                                                                  		return $this;
+                                                                  	}
 	
 	
 	public function getRequestType(): ?string
-                                                      	{
-                                                      		return $this->requestType;
-                                                      	}
+                                                                                                                        	{
+                                                                                                                        		return $this->requestType;
+                                                                                                                        	}
 	
 	public function setRequestType(string $requestType): self
-                                                      	{
-                                                      		$this->requestType = $requestType;
-                                                      		
-                                                      		return $this;
-                                                      	}
+                                                                                                                        	{
+                                                                                                                        		$this->requestType = $requestType;
+                                                                                                                        		
+                                                                                                                        		return $this;
+                                                                                                                        	}
 	
 	public function getTargetOrganization(): ?string
-                                                      	{
-                                                      		return $this->targetOrganization;
-                                                      	}
+                                                                                                                        	{
+                                                                                                                        		return $this->targetOrganization;
+                                                                                                                        	}
 	
 	public function setTargetOrganization(string $targetOrganization): self
-                                                      	{
-                                                      		$this->targetOrganization= $targetOrganization;
-                                                      		
-                                                      		return $this;
-                                                      	}
+                                                                                                                        	{
+                                                                                                                        		$this->targetOrganization= $targetOrganization;
+                                                                                                                        		
+                                                                                                                        		return $this;
+                                                                                                                        	}
 	
 	public function getSubmitter(): ?string
-                                                      	{
-                                                      		return $this->submitter;
-                                                      	}
+                                                                                                                        	{
+                                                                                                                        		return $this->submitter;
+                                                                                                                        	}
 	
 	public function setSubmitter(string $submitter): self
-                                                      	{
-                                                      		$this->submitter = $submitter;
-                                                      		
-                                                      		return $this;
-                                                      	}
+                                                                                                                        	{
+                                                                                                                        		$this->submitter = $submitter;
+                                                                                                                        		
+                                                                                                                        		return $this;
+                                                                                                                        	}
 	
 	public function getSubmitterPerson(): ?bool
-                                                      	{
-                                                      		return $this->submitterPerson;
-                                                      	}
+                                                                                                                        	{
+                                                                                                                        		return $this->submitterPerson;
+                                                                                                                        	}
 	
 	public function setSubmitterPerson(bool $submitterPerson): self
-                                                      	{
-                                                      		$this->submitterPerson = $submitterPerson;
-                                                      		
-                                                      		return $this;
-                                                      	}
+                                                                                                                        	{
+                                                                                                                        		$this->submitterPerson = $submitterPerson;
+                                                                                                                        		
+                                                                                                                        		return $this;
+                                                                                                                        	}
 	
 	public function getProperties()
-                                                      	{
-                                                      		return $this->properties;
-                                                      	}
+                                                                                                                        	{
+                                                                                                                        		return $this->properties;
+                                                                                                                        	}
 	
 	public function setProperties($properties): self
-                                                      	{
-                                                      		$this->properties = $properties;
-                                                      		
-                                                      		return $this;
-                                                      	}
+                                                                                                                        	{
+                                                                                                                        		$this->properties = $properties;
+                                                                                                                        		
+                                                                                                                        		return $this;
+                                                                                                                        	}
 	
 	public function getProcess(): ?string
-                                                      	{
-                                                      		return $this->process;
-                                                      	}
+                                                                                                                        	{
+                                                                                                                        		return $this->process;
+                                                                                                                        	}
 	
 	public function setProcess(?string $process): self
-                                                      	{
-                                                      		$this->process = $process;
-                                                      		
-                                                      		return $this;
-                                                      	}
+                                                                                                                        	{
+                                                                                                                        		$this->process = $process;
+                                                                                                                        		
+                                                                                                                        		return $this;
+                                                                                                                        	}
 	
 	public function getCreatedAt(): ?\DateTimeInterface
-                                                      	{
-                                                      		return $this->createdAt;
-                                                      	}
+                                                                                                                        	{
+                                                                                                                        		return $this->createdAt;
+                                                                                                                        	}
 	
 	public function setCreatedAt(\DateTimeInterface $createdAt): self
-                                                      	{
-                                                      		$this->createdAt = $createdAt;
-                                                      		
-                                                      		return $this;
-                                                      	}
+                                                                                                                        	{
+                                                                                                                        		$this->createdAt = $createdAt;
+                                                                                                                        		
+                                                                                                                        		return $this;
+                                                                                                                        	}
 	
 	public function getSubmittedAt(): ?\DateTimeInterface
-                                                      	{
-                                                      		return $this->submittedAt;
-                                                      	}
+                                                                                                                        	{
+                                                                                                                        		return $this->submittedAt;
+                                                                                                                        	}
 	
 	public function setSubmittedAt(\DateTimeInterface $submittedAt): self
-                                                      	{
-                                                      		$this->submittedAt = $submittedAt;
-                                                      		
-                                                      		return $this;
-                                                      	}
+                                                                                                                        	{
+                                                                                                                        		$this->submittedAt = $submittedAt;
+                                                                                                                        		
+                                                                                                                        		return $this;
+                                                                                                                        	}
 
     /**
      * @return Collection|Submitter[]
@@ -491,30 +563,30 @@ class Request
     }
 
     /**
-     * @return Collection|Organisation[]
+     * @return Collection|Organization[]
      */
-    public function getOrganisations(): Collection
+    public function getOrganizations(): Collection
     {
-        return $this->organisations;
+        return $this->organizations;
     }
 
-    public function addOrganisation(Organisation $organisation): self
+    public function addOrganization(Organization $organization): self
     {
-        if (!$this->organisations->contains($organisation)) {
-            $this->organisations[] = $organisation;
-            $organisation->setRequest($this);
+        if (!$this->organizations->contains($organization)) {
+            $this->organizations[] = $organization;
+            $organization->setRequest($this);
         }
 
         return $this;
     }
 
-    public function removeOrganisation(Organisation $organisation): self
+    public function removeOrganization(Organization $organization): self
     {
-        if ($this->organisations->contains($organisation)) {
-            $this->organisations->removeElement($organisation);
+    	if ($this->organizations->contains($organization)) {
+    		$this->organizations->removeElement($organization);
             // set the owning side to null (unless already changed)
-            if ($organisation->getRequest() === $this) {
-                $organisation->setRequest(null);
+    		if ($organization->getRequest() === $this) {
+    			$organization->setRequest(null);
             }
         }
 
@@ -522,32 +594,99 @@ class Request
     }
 
     /**
-     * @return Collection|OpenCase[]
+     * @return Collection|RequestCase[]
      */
-    public function getOpenCases(): Collection
+    public function getRequestCases(): Collection
     {
-        return $this->openCases;
+    	return $this->requestCases;
     }
 
-    public function addOpenCase(OpenCase $openCase): self
+    public function addRequestCase(RequestCase $requestCase): self
     {
-        if (!$this->openCases->contains($openCase)) {
-            $this->openCases[] = $openCase;
-            $openCase->setRequest($this);
+    	if (!$this->requestCases->contains($requestCase)) {
+    		$this->requestCases[] = $requestCase;
+    		$requestCase->setRequest($this);
         }
 
         return $this;
     }
 
-    public function removeOpenCase(OpenCase $openCase): self
+    public function removeOpenCase(RequestCase $requestCase): self
     {
-        if ($this->openCases->contains($openCase)) {
-            $this->openCases->removeElement($openCase);
+    	if ($this->requestCases->contains($requestCase)) {
+    		$this->requestCases->removeElement($requestCase);
             // set the owning side to null (unless already changed)
-            if ($openCase->getRequest() === $this) {
-                $openCase->setRequest(null);
+    		if ($requestCase->getRequest() === $this) {
+    			$requestCase->setRequest(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getParent(): ?self
+    {
+        return $this->parent;
+    }
+
+    public function setParent(?self $parent): self
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getChildren(): Collection
+    {
+        return $this->children;
+    }
+
+    public function addChild(self $child): self
+    {
+        if (!$this->children->contains($child)) {
+            $this->children[] = $child;
+            $child->setParent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChild(self $child): self
+    {
+        if ($this->children->contains($child)) {
+            $this->children->removeElement($child);
+            // set the owning side to null (unless already changed)
+            if ($child->getParent() === $this) {
+                $child->setParent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getConfidential(): ?bool
+    {
+        return $this->confidential;
+    }
+
+    public function setConfidential(?bool $confidential): self
+    {
+        $this->confidential = $confidential;
+
+        return $this;
+    }
+
+    public function getArchive(): ?Archive
+    {
+        return $this->archive;
+    }
+
+    public function setArchive(?Archive $archive): self
+    {
+        $this->archive = $archive;
 
         return $this;
     }
