@@ -2,11 +2,9 @@
 
 For this tutorial you need the following:
 
-* Browser
-* Github account
-* Git client
-* Docker account
-* Docker for desktop
+## Setting up your enviroment
+
+You can install docker-desktop from [the docker website](). 
 
 
 ## Generating your component (repository/codebase)
@@ -61,7 +59,7 @@ Next let's add our own entities, we can do this in two ways, we can do old fashi
 Let's open a new command line window and navigate to our root folder, exactly like we did under *“spinning up your component”*. And then lets fire up maker bundle (make sure that your component is still running in your other command window). We can do so by the following command:
 
 ```CLI
-$ docker-compose exec php php bin/console make:entity --api-platform
+$ docker-compose exec php bin/console make:entity
 ```
 We should now see a wizward that allows us to either make new entities, or add parameters to existing entities (by supplying the name of an existing entity). 
 
@@ -193,7 +191,15 @@ More inforation on using validation can be found at the [symfony website](https:
 ## Using UUID
 As default doctrine uses auto increment integers as identifiers (1,2, etc). For modern webapplications we however prefer the use of UUID's. (e.g. e2984465-190a-4562-829e-a8cca81aa35d). Why? Wel for one it is more secure integer id's are easily gasable and make it possible to "aks" endpoint about objects that you should know about. But UUID's also have a benifit in futere proofing the application. If we in the futere want to merge a table with another table (for example because two organizations using a component perform a merger) then we would have to reassign al id's and relations if we where using int based id's (both tables would have a row 1,2 etc) with UUID's however the change of doubles range somwhere in the billions. Meaning that it i likely that we oly need to either re identify only a handful of rows or more likely none at al! Turning our entire migration into a copy pase action.
 
-The proto component supports ramsy's uuid objects strategy out of the box, so to use UUID's as identifier simply replace the default id property
+The proto component supports ramsy's uuid objects stratagy out of the box, so to use UUID's as intifier simply we need to add the ApiProperty as a dependecy
+
+
+```PHP
+//...
+use Symfony\Component\Serializer\Annotation\Groups;
+//...
+```
+and  replace the default id property
 
 ```PHP
 //...
@@ -302,6 +308,10 @@ adas
 
 ### Postman
 ad
+
+Audittrail
+-------
+as
 
 Setting up continues integration and continues delivery
 -------
